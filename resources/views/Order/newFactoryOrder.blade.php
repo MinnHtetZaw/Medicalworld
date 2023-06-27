@@ -90,9 +90,9 @@
                                             @if(session('status'))
                                                 <p class="alert alert-success">{{session('status')}}</p>
                                             @endif
-                                            @php
+                                            {{-- @php
                                             $main_order= \App\Order::find($factoryOrder->order_id);
-                                            @endphp
+                                            @endphp --}}
                                                 @foreach($main_order->customUnitOrder as $customUnit)
                                                 <div class="card mb-2 shadow-sm py-2 px-5">
                                                     <div class="d-flex justify-content-between align-items-center">
@@ -127,16 +127,21 @@
                                                             </p>
                                                         </div>
                                                         <div>
-                                                            @php
+                                                            {{-- @php
                                                             $fo = \App\CustomUnitFactoryOrder::where('custom_unit_order_id',$customUnit->id)->get()->pluck('quantity');
                                                             $q=0;
                                                             foreach ($fo as $f) {
                                                                 $q += $f;
                                                             }
-                                                            @endphp
+                                                            @endphp --}}
+
                                                             <h5 class="text-primary font-weight-bold">Current Quantity</h5>
                                                             <p class="mb-0 text-center">
-                                                                {{$q ?? 0}}
+                                                             @foreach ($qty as $q )
+                                                                @if ($q->custom_unit_order_id == $customUnit->id)
+                                                                    {{$q->Total ?? 0}}
+                                                                @endif
+                                                             @endforeach
                                                             </p>
                                                         </div>
                                                         <div class="btn-group-sm">

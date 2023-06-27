@@ -24,14 +24,15 @@ use App\OrderCustomer;
 use http\Env\Response;
 use App\EcommerceOrder;
 use App\CustomUnitOrder;
-use App\Exports\FactoryPoListExport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
 use App\CustomUnitFactoryOrder;
 use App\EcommerceOrderScreenshot;
 use Illuminate\Support\Facades\DB;
 use App\Exports\OrderHistoryExport;
+use App\Exports\FactoryPoListExport;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Schema;
 use App\Exports\TotalOrderHistoryExport;
 use Illuminate\Support\Facades\Validator;
@@ -1235,10 +1236,21 @@ class OrderController extends Controller
     public function showFactoryOrderItem($id)
     {
         $factoryOrder = FactoryOrder::find($id);
-        $designs=   Design::all();
-        $sizes = Size::all();
-        $colours = Colour::all();
-        return view('Order.newFactoryOrder', compact("factoryOrder",'designs','sizes','colours'));
+
+        $main_order =Order::find($factoryOrder->order_id);
+        foreach($main_order->customUnitOrder as $customUnit){
+            $qty_id[]=[
+                $customUnit->id
+            ];
+        }
+
+        $qty= CustomUnitFactoryOrder::select('quantity','custom_unit_order_id')->wherein('custom_unit_order_id',$qty_id)->get();
+
+        $designs=   Design::get();
+        $sizes = Size::get();
+        $colours = Colour::get();
+
+        return view('Order.newFactoryOrder', compact("factoryOrder",'designs','sizes','colours','main_order','qty'));
     }
 
     public function updateFactoryOrderItem($id)
@@ -1249,11 +1261,20 @@ class OrderController extends Controller
         $factoryOrder->print_status = 0;
         $factoryOrder->save();
 
-        $designs=   Design::all();
-        $sizes = Size::all();
-        $colours = Colour::all();
+        $main_order =Order::find($factoryOrder->order_id);
+        foreach($main_order->customUnitOrder as $customUnit){
+            $qty_id[]=[
+                $customUnit->id
+            ];
+        }
 
-        return view('Order.newFactoryOrder', compact("factoryOrder",'designs','sizes','colours'));
+        $qty= CustomUnitFactoryOrder::selectRaw('SUM(quantity) as Total , custom_unit_order_id')->wherein('custom_unit_order_id',$qty_id)->groupBy('custom_unit_order_id')->get();
+
+        $designs=   Design::get();
+        $sizes = Size::get();
+        $colours = Colour::get();
+
+        return view('Order.newFactoryOrder', compact("factoryOrder",'designs','sizes','colours','main_order','qty'));
     }
 
     public function saveFactoryOrder(Request $request, $id)
