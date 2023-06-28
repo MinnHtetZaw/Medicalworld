@@ -40,7 +40,7 @@
                                     <h3 class="text-black mt-3" style="font-size : 15px">Customer Name : {{ $order->name }} </h3>
                                     <h3 class="text-black mt-3" style="font-size : 15px">Customer Phone : {{  $order->phone }}</h3>
                                     <h3 class="text-black mt-3" style="font-size : 15px">Delivered By : {{  $order->delivered_by }}</h3>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -128,7 +128,7 @@
                                                                         <div class="">
                                                                         <h4 class="font-weight-bold">Payment Information</h4>
 
-                                        <table>
+                                        <table class="table table-borderless">
                                             <thead>
                                                 <tr>
                                                     <th>No.</th>

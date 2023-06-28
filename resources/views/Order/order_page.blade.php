@@ -175,7 +175,7 @@
                                     <td>{{++$i}}</td>
                                 	<td>{{$order->order_number}}</td>
                                     <td>{{$order->name}}</td>
-                                	<td style="overflow:hidden;white-space: nowrap;">{{$order->address}}</td>
+                                	<td>{{$order->address}}</td>
                                 	<td style="overflow:hidden;white-space: nowrap;">{{date('d-m-Y', strtotime($order->order_date))}}</td>
                                     @if($order->status == 5)
                                     <td style="overflow:hidden;white-space: nowrap;">{{date('d-m-Y h:i A' , strtotime($order->accepted_date))}}</td>
