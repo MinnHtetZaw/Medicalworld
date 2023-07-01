@@ -145,6 +145,13 @@ Route::group(['middleware' => ['UserAuth']], function () {
     //item adjust
     Route::get('item-adjust', 'Web\StockController@itemadjust')->name('itemadjust');
 
+    // Fabric Costing
+    Route::get('fabric_costing', 'Web\InventoryController@getFabricCosting')->name('fabric_costing');
+    Route::post('color_search', 'Web\InventoryController@searchColor');
+    Route::post('fabric_costing_save', 'Web\InventoryController@saveFabricCosting')->name('fabric_costing_save');
+    Route::post('fabric_costing/delete', 'Web\InventoryController@deleteFabricCosting');
+    Route::post('fabric_costing_update/{id}', 'Web\InventoryController@updateFabricCosting')->name('fabric_costing_update');
+
     //StockCount
     Route::get('Stock-Count/Count', 'Web\StockController@getStockCountPage')->name('stock_count');
     Route::get('Fabric-Count/Count', 'Web\StockController@getFabricCountPage')->name('fabric_count');

@@ -4,13 +4,18 @@ namespace App\Http\Controllers\Web;
 
 use App\From;
 use App\Item;
+use App\Size;
 use Exception;
+use App\Colour;
+use App\Design;
+use App\Fabric;
 use App\Category;
 use App\Stockcount;
 use App\FactoryItem;
 use App\SubCategory;
 use App\CountingUnit;
 use App\UnitRelation;
+use App\FabricCosting;
 use App\UnitConversion;
 use App\Exports\ItemExport;
 use App\Imports\ItemsImport;
@@ -1111,6 +1116,56 @@ class InventoryController extends Controller
     }
 
 
+    public function getFabricCosting()
+    {
+        $fabricCost = FabricCosting::with('design:id,design_name', 'fabric:id,fabric_name', 'color:id,colour_name', 'size:id,size_name')->get();
+        $designs = Design::all();
+        $fabrics = Fabric::all();
+        $colors = Colour::all();
+        $sizes = Size::all();
 
+        return view('Inventory.fabric_costing', compact('fabricCost', 'designs', 'fabrics', 'colors', 'sizes'));
+    }
+
+    public function searchColor(Request $request)
+    {
+        $colors = Colour::where('fabric_id', $request->fabric_id)->get();
+        return response()->json($colors);
+    }
+
+    public function saveFabricCosting(Request $request)
+    {
+        FabricCosting::create([
+            'design_id' => $request->design,
+            'fabric_id' => $request->fabric,
+            'color_id' => $request->color,
+            'size_id' => $request->size,
+            'yards' => $request->yards,
+            'pricing' => $request->pricing
+        ]);
+        return back();
+    }
+
+    public function deleteFabricCosting(Request $request)
+    {
+        FabricCosting::destroy($request->cost_id);
+
+        return response()->json(['success' => 'success']);
+    }
+
+    public function updateFabricCosting(Request $request,$id)
+    {
+        $data =  FabricCosting::find($id);
+
+        $data->design_id = $request->design;
+        $data->fabric_id = $request->fabric;
+        $data->color_id = $request->color;
+        $data->size_id = $request->size;
+        $data->yards = $request->yards;
+        $data->pricing = $request->pricing;
+        $data->save();
+
+        return back();
+    }
 
 }

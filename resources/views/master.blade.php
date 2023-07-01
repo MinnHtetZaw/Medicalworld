@@ -244,6 +244,7 @@
                                 <li><a href="{{route('subcategory_list')}}">@lang('lang.subcategory') @lang('lang.list')</a></li>
                                 <li><a href="{{route('item_list')}}">Sales Product @lang('lang.list')</a></li>
                                 <li><a href="{{route('factoryitem_list')}}">Factory Item @lang('lang.list')</a></li>
+                                 <li><a href="{{route('fabric_costing')}}">Fabric_Costing</a></li>
 {{--                                Specification List--}}
                                 <li>
                                     <a class="has-arrow " href="#" aria-expanded="false">
@@ -293,7 +294,7 @@
                             </ul>
                         </li>
                         @endif
-			
+
 			@if(session()->get('user')->role == "Agent")
 			<li>
 			     <a class="has-arrow" href="#" aria-expanded="false">
@@ -305,7 +306,7 @@
                             </ul>
                        </li>
                        @endif
-	
+
                         @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Sales" || session()->get('user')->role == "Sales_Inventory")
                         <li>
                             <a class="has-arrow " href="#" aria-expanded="false">
@@ -462,7 +463,7 @@
                         @endif
 
                         @if((session()->get('user')->role == "Owner" || session()->get('user')->role == "Finance") && session()->get('user')->name != "ShwinPyone" )
-                       
+
                         <li>
                             <a class="has-arrow " href="#" aria-expanded="false">
                                 <i class="mdi mdi-account-multiple-outline" style="font-size: 18px"></i>
