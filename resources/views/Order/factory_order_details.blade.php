@@ -55,6 +55,7 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr class="text-center text-info">
+                                <th></th>
                                 <th>Person Name</th>
                                 <th>Person Id</th>
                                 <th>Design</th>
@@ -65,12 +66,15 @@
                                 <th>Male</th>
                                 <th>Female</th>
                                 <th>Quantity</th>
+                                <th>SubTotal(Pricing)</th>
                                 <th>Remark</th>
                             </tr>
                             </thead>
                             <tbody>
                             @forelse($factoryItems as $factory)
                                 <tr class="text-center" style="font-size: 13px;">
+                                    <td><input class="w-2 form-check-input" type="checkbox" value="{{$factory->id}}" id="checkitem{{$factory->id}}" data-fabric={{$factory->fabric_name}} data-colour={{$factory->colour_name}} data-qty={{$factory->quantity}} data-subtotal={{$factory->subtotal}}>
+                                        <label class="w-2 form-check-label font14" for="checkitem{{$factory->id}}"></label></td>
                                     <td>{{$factory->person_name}}</td>
                                     <td>{{$factory->person_id}}</td>
                                     <td>{{$factory->design_name}}</td>
@@ -81,6 +85,7 @@
                                     <td>{{$factory->male_size_name?? "-"}}</td>
                                     <td>{{$factory->female_size_name?? "-"}}</td>
                                     <td>{{$factory->quantity}}</td>
+                                    <td>{{$factory->subtotal ?? "-"}}</td>
                                     <td style="width: 150px;">{{$factory->remark?? "-"}}</td>
                                 </tr>
                             @empty
@@ -91,22 +96,56 @@
 
                     </div>
                     <div class="d-flex justify-content-center">
-                        
+
                 <select class="mr-2" id="type_select">
                     <option value="1">Portrait</option>
                    <option value="2">Landscape</option>
                 </select>
-            
+
                         @if($factoryOrder->status == 1 || $factoryOrder->status == 3)
                         <button id="print" class="btn btn-sm btn-info mr-2"><i class="fas fa-print mr-1"></i>Print</button>
                         <button class="btn btn-sm btn-primary mr-2" title="Deliver Factory Order" data-toggle="modal" data-target="#deliver{{$factoryOrder->id}}">
                             Finish
                         </button>
+                        <button class="btn btn-sm btn-warning mr-2" id="FPO_entry" title="Send Factory Preorder">
+                            Factory PO
+                        </button>
 {{--                        Deliver Modal --}}
-                        
-                        
-                        
-                        
+                            <div class="modal" id="FPO" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title text-primary font-weight-bold">Factory Preorder</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="{{route('assignFPO')}}" method="post">
+                                            @csrf
+                                            <input id="assignItems" type="text" name="items" hidden>
+                                            <input id="assignTotal" type="text" name="grandtotal" hidden>
+
+                                        <div class="modal-body py-3 px-5">
+                                            <div class="form-group row">
+                                                <label class="col-12 col-form-label">
+                                                    <h3 class="font-weight-bold">Are You Sure to Confirm this Order?</h3>
+                                                </label>
+
+                                            </div>
+                                            <div class="d-flex justify-content-around align-items-center">
+                                                <button class="btn btn-sm rounded btn-danger" data-dismiss="modal" aria-label="Close">
+                                                    No
+                                                </button>
+                                                <button type="submit" class="btn btn-sm rounded btn-primary">Yes</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                         @elseif($factoryOrder->status == 2)
                             <button id="print" class="btn btn-sm btn-info mr-2"><i class="fas fa-print mr-1"></i>Print</button>
                         @endif
@@ -125,11 +164,11 @@
                                     <form action="{{route('deliverFactoryOrder',$factoryOrder->id)}}" method="post">
                                         @csrf
                                         <div class="mb-3">
-                                            <label for="">Finish Date</label>
+                                            <label>Finish Date</label>
                                             <input type="date" name="delivery_date" class="form-control form-control-sm">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="">Finish Remark</label>
+                                            <label>Finish Remark</label>
                                             <input type="text" name="delivery_remark" class="form-control form-control-sm">
                                         </div>
                                         <div class="d-flex justify-content-center align-items-center">
@@ -230,6 +269,7 @@
 @section('js')
     <script>
         $(document).ready(function() {
+            $('#FPO').modal('hide')
             $("#print").click(function() {
                 var order_id = $('#order_id').val();
                 var print_status = $('#print_status').val();
@@ -259,18 +299,64 @@
                 };
                 if(print_type == 2){
                     $("#print_area").css({ transform: 'rotate(' + degree + 'deg)',width:'250mm',height: '270mm'});
-                    
+
                 }
-               
+
                 $("div.printableArea").printArea(options);
-                
+
                 $(".printableArea").toggleClass("d-none");
                 if(print_type == 2){
                      $("#print_area").css({ transform: 'rotate(' + 360 + 'deg)'});
-                     
+
                 }
-                
+
             });
+
+
+    $('#FPO_entry').click(function(){
+        var myarrivedCart = '[]';
+        var grandtotal = 0;
+        var myarrivedCartobj = JSON.parse(myarrivedCart);
+        $('.form-check-input:checkbox:checked').each(function () {
+            var id = $(this).val();
+
+            var fabric = $(this).data('fabric')
+            var colour = $(this).data('colour')
+            var qty = $(this).data('qty')
+            var subtotal = $(this).data('subtotal')
+
+            var entryItem = {
+                id: id,
+                fabric: fabric,
+                colour: colour,
+                qty: qty,
+                subtotal: subtotal
+            };
+            myarrivedCartobj.push(entryItem);
+            grandtotal += parseInt(subtotal == "" ? 0 :subtotal);
+        });
+        localStorage.setItem('myarrivedCart', JSON.stringify(myarrivedCartobj));
+        localStorage.setItem('grandtotal', grandtotal);
+        if(!Object.keys(myarrivedCartobj).length){
+            swal({
+                icon: 'error',
+                title: 'Order ရွေးပါ!',
+                text : 'Please choose items for Factory Preorder',
+                button: true,
+            })
+        }
+        else{
+            var items = localStorage.getItem('myarrivedCart')
+            var grandtotal = localStorage.getItem('grandtotal')
+
+            $('#assignItems').val(items)
+            $('#assignTotal').val(grandtotal)
+
+
+            $('#FPO').modal('show');
+        }
+    })
+
         });
     </script>
 @endsection

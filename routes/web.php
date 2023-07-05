@@ -80,6 +80,7 @@ Route::group(['middleware' => ['UserAuth']], function () {
 
     Route::post('changePrintStatus', 'Web\OrderController@changePrintStatus')->name('changePrintStatus');
 
+
     Route::post('AjaxStoreOrderCustomer', 'Web\AdminController@storeOrderCustomer')->name('AjaxStoreOrderCustomer');
 
     Route::post('changeCustomerPassword', 'Web\AdminController@changeCustomerPassword');
@@ -286,7 +287,7 @@ Route::group(['middleware' => ['UserAuth']], function () {
 
     Route::get('updateFactoryOrderItem/{id}', "Web\OrderController@updateFactoryOrderItem")->name('updateFactoryOrderItem');
 
-
+    Route::post('searchFabricCosting', "Web\OrderController@searchFabricCosting")->name('searchFabricCosting');
     Route::post('saveFactoryItem',"Web\OrderController@saveFactoryItem")->name('saveFactoryItem');
     Route::post('editFactoryItem/{id}',"Web\OrderController@editFactoryItem")->name('editFactoryItem');
     Route::get('deleteFactoryItem/{id}',"Web\OrderController@destoryFactoryItem")->name('deleteFactoryItem');
@@ -295,6 +296,7 @@ Route::group(['middleware' => ['UserAuth']], function () {
     Route::post('saveFactoryOrder/{id}', "Web\OrderController@saveFactoryOrder")->name('saveFactoryOrder');
     Route::get('factoryOrder', 'Web\OrderController@factoryOrder')->name('factoryOrder');
     Route::get('factoryOrderDetail/{id}', 'Web\OrderController@factoryOrderDetail')->name('factoryOrderDetail');
+    Route::post('assignFPO', 'Web\OrderController@assignFPO')->name('assignFPO');
     //    New Order Price
     Route::post('newOrderItemPrice', 'Web\OrderController@newOrderItemPrice')->name('newOrderItemPrice');
 

@@ -166,12 +166,12 @@
                                                                                 @csrf
                                                                                 <input type="hidden" name="factory_order_id" value="{{$factoryOrder->id}}">
                                                                                 <input type="hidden" name="custom_unit_order_id" value="{{$customUnit->id}}">
-                                                                                <input type="hidden" id="design_name{{$customUnit->id}}" name="design_name" value="{{$customUnit->design_name}}">
-                                                                                <input type="hidden" id="design_id{{$customUnit->id}}" name="design_id" value="{{$customUnit->design_id}}">
-                                                                                <input type="hidden" id="fabric_name{{$customUnit->id}}" name="fabric_name" value="{{$customUnit->fabric_name}}">
-                                                                                <input type="hidden" id="fabric_id{{$customUnit->id}}" name="fabric_id" value="{{$customUnit->fabric_id}}">
-                                                                                <input type="hidden" id="colour_name{{$customUnit->id}}" name="colour_name" value="{{$customUnit->colour_name}}">
-                                                                                <input type="hidden" id="colour_id{{$customUnit->id}}" name="colour_id" value="{{$customUnit->colour_id}}">
+                                                                                <input type="hidden" name="design_name" value="{{$customUnit->design_name}}">
+                                                                                <input type="hidden" name="design_id" value="{{$customUnit->design_id}}">
+                                                                                <input type="hidden" name="fabric_name" value="{{$customUnit->fabric_name}}">
+                                                                                <input type="hidden" id="fabric_ajax{{$customUnit->id}}" name="fabric_id" value="{{$customUnit->fabric_id}}">
+                                                                                <input type="hidden" name="colour_name" value="{{$customUnit->colour_name}}">
+                                                                                <input type="hidden" name="colour_id" value="{{$customUnit->colour_id}}">
                                                                                 <div class="form-group mb-1">
                                                                                     <label class="" for="person_name">Person Name</label>
                                                                                     <input type="text" name="person_name"  class="form-control form-control-sm" required>
@@ -183,13 +183,13 @@
                                                                                 <div class="form-group mb-1">
                                                                                     <label for="">PP</label>
                                                                                     <div class="d-flex justify-content-between">
-                                                                                        <select name="pp_design_id" class="custom-select custom-select-sm mr-2" style="font-size: 14px">
+                                                                                        <select name="pp_design_id" id="design_ajax{{$customUnit->id}}" class="custom-select custom-select-sm mr-2" style="font-size: 14px">
                                                                                             @foreach($designs as $design)
                                                                                                 <option value="{{$design->id}}" {{$customUnit->design_id == $design->id? 'selected':''}}>{{$design->design_name}}</option>
                                                                                             @endforeach
 
                                                                                         </select>
-                                                                                        <select name="pp_colour_id" class="custom-select custom-select-sm " style="font-size: 14px">
+                                                                                        <select name="pp_colour_id" id="color_ajax{{$customUnit->id}}" class="custom-select custom-select-sm " style="font-size: 14px">
                                                                                             @foreach($colours as $colour)
                                                                                                 <option value="{{$colour->id}}" {{$customUnit->colour_id == $colour->id? 'selected':''}}>{{$colour->colour_name}}</option>
                                                                                             @endforeach
@@ -209,7 +209,7 @@
                                                                                 <div class="form-row mb-3 justify-content-between">
                                                                                     <div class="form-group col-6 mb-1">
                                                                                         <label for="">Size</label>
-                                                                                        <select id="size{{$customUnit->id}}" name="size_id" class="custom-select custom-select-sm" style="font-size: 14px">
+                                                                                        <select id="size_ajax{{$customUnit->id}}" name="size_id" class="custom-select custom-select-sm" style="font-size: 14px">
                                                                                             @foreach($sizes as $size)
                                                                                                 <option value="{{$size->id}}" {{$customUnit->size_id == $size->id? 'selected':''}}>{{$size->size_name}}</option>
                                                                                             @endforeach
@@ -217,8 +217,12 @@
                                                                                     </div>
                                                                                     <div class="form-group col-6 mb-1">
                                                                                         <label for="">Quantity</label>
-                                                                                        <input type="number" name="quantity" class="form-control form-control-sm" required>
+                                                                                        <input type="number" name="quantity" class="form-control form-control-sm"  onchange="setsubtotal(this.value,{{$customUnit->id}})" required>
                                                                                     </div>
+                                                                                </div>
+                                                                                <div class="form-group mb-1">
+                                                                                    <label for="">SubTotal</label>
+                                                                                    <input type="number" id="subTotal{{$customUnit->id}}" name="subtotal" class="form-control form-control-sm text-black" readonly>
                                                                                 </div>
                                                                                 <div class="form-group mb-1">
                                                                                     <label for="">Remark <span class="small text-success">( Optional! )</span></label>
@@ -254,6 +258,7 @@
                                                                     <th class="text-info font-weight-bold">Male</th>
                                                                     <th class="text-info font-weight-bold">Female</th>
                                                                     <th class="text-info font-weight-bold">Quantity</th>
+                                                                    <th class="text-info font-weight-bold">SubTotal(Pricing)</th>
                                                                     <th class="text-info font-weight-bold">Remark</th>
                                                                     <th class="text-info font-weight-bold">Action</th>
                                                                 </tr>
@@ -270,6 +275,7 @@
                                                                         <td>{{$customFactory->male_size_name ?? "-" }}</td>
                                                                         <td>{{$customFactory->female_size_name ?? "-" }}</td>
                                                                         <td>{{$customFactory->quantity }}</td>
+                                                                        <td>{{$customFactory->subtotal ??"-" }}</td>
                                                                         <td>{{$customFactory->remark ?? "-" }}</td>
                                                                         <td>
                                                                             <button class="btn btn-sm rounded btn-outline-info" title="Edit Factory Order Item" data-toggle="modal" data-target="#edit{{$customFactory->id}}">
@@ -297,12 +303,12 @@
                                                                                             @csrf
                                                                                             <input type="hidden" name="factory_order_id" value="{{$factoryOrder->id}}">
                                                                                             <input type="hidden" name="custom_unit_order_id" value="{{$customUnit->id}}">
-                                                                                            <input type="hidden" id="design_name{{$customUnit->id}}" name="design_name" value="{{$customUnit->design_name}}">
-                                                                                            <input type="hidden" id="design_id{{$customUnit->id}}" name="design_id" value="{{$customUnit->design_id}}">
-                                                                                            <input type="hidden" id="fabric_name{{$customUnit->id}}" name="fabric_name" value="{{$customUnit->fabric_name}}">
-                                                                                            <input type="hidden" id="fabric_id{{$customUnit->id}}" name="fabric_id" value="{{$customUnit->fabric_id}}">
-                                                                                            <input type="hidden" id="colour_name{{$customUnit->id}}" name="colour_name" value="{{$customUnit->colour_name}}">
-                                                                                            <input type="hidden" id="colour_id{{$customUnit->id}}" name="colour_id" value="{{$customUnit->colour_id}}">
+                                                                                            {{-- <input type="hidden" id="design_name{{$customUnit->id}}" name="design_name" value="{{$customUnit->design_name}}"> --}}
+                                                                                            {{-- <input type="hidden" id="design_id{{$customUnit->id}}" name="design_id" value="{{$customUnit->design_id}}"> --}}
+                                                                                            {{-- <input type="hidden" id="fabric_name{{$customUnit->id}}" name="fabric_name" value="{{$customUnit->fabric_name}}"> --}}
+                                                                                            {{-- <input type="hidden" id="fabric_id{{$customUnit->id}}" name="fabric_id" value="{{$customUnit->fabric_id}}"> --}}
+                                                                                            {{-- <input type="hidden" id="colour_name{{$customUnit->id}}" name="colour_name" value="{{$customUnit->colour_name}}"> --}}
+                                                                                            {{-- <input type="hidden" id="colour_id{{$customUnit->id}}" name="colour_id" value="{{$customUnit->colour_id}}"> --}}
                                                                                             <div class="form-group mb-1">
                                                                                                 <label class="" for="person_name">Person Name</label>
                                                                                                 <input type="text" name="person_name"  class="form-control form-control-sm" value="{{$currentCustomFactory->person_name}}">
@@ -314,7 +320,7 @@
                                                                                             <div class="form-group mb-1">
                                                                                                 <label for="">PP</label>
                                                                                                 <div class="d-flex justify-content-between">
-                                                                                                    <select id="pp_design{{$currentCustomFactory->id}}" name="pp_design_id" onchange="pp_design(${id})" class="custom-select custom-select-sm mr-2" style="font-size: 14px">
+                                                                                                    <select id="pp_design{{$currentCustomFactory->id}}" name="pp_design_id"  class="custom-select custom-select-sm mr-2" style="font-size: 14px">
 
                                                                                                     @foreach($designs as $design)
                                                                                                         <option value="{{$design->id}}" {{$currentCustomFactory->pp_design_id == $design->id? 'selected':''}}>{{$design->design_name}}</option>
@@ -322,7 +328,7 @@
 
 
                                                                                                     </select>
-                                                                                                    <select id="pp_colour{{$currentCustomFactory->id}}" name="pp_colour_id" onchange="pp_colour(${id})" class="custom-select custom-select-sm " style="font-size: 14px">
+                                                                                                    <select id="pp_colour{{$currentCustomFactory->id}}" name="pp_colour_id" class="custom-select custom-select-sm " style="font-size: 14px">
                                                                                                         @foreach($colours as $colour)
                                                                                                             <option value="{{$colour->id}}" {{$currentCustomFactory->pp_colour_id == $colour->id? 'selected':''}}>{{$colour->colour_name}}</option>
                                                                                                         @endforeach
@@ -409,177 +415,40 @@
         </div>
 @endsection
 @section('js')
-{{--    <script type="text/javascript">--}}
-{{--        let orderId = $("#order_id").val();--}}
-{{--        let factoryOrderNo = $("#factory_order_number").val();--}}
-{{--        let department_name = "";--}}
-{{--        let remark = "";--}}
-{{--        let delivery_date = "";--}}
-{{--        let totalQuantity = $("#order_qty").val();--}}
-{{--        let order_item = {--}}
-{{--            order_id: orderId,--}}
-{{--            factoryOrderNo: factoryOrderNo,--}}
-{{--            department_name: department_name,--}}
-{{--            remark: remark,--}}
-{{--            deliveryDate: delivery_date,--}}
-{{--            totalQuantity: totalQuantity,--}}
-{{--        };--}}
-{{--        let mycart = localStorage.getItem('mycart');--}}
-{{--        let grand_total = localStorage.getItem('grandTotal');--}}
-{{--        if (mycart == null) {--}}
-{{--            mycart = '[]';--}}
-{{--            let mycartobj = JSON.parse(mycart);--}}
-{{--            mycartobj.push(order_item);--}}
-{{--            localStorage.setItem('mycart', JSON.stringify(mycartobj));--}}
-{{--        } else {--}}
-{{--            let mycartobj = JSON.parse(mycart);--}}
-{{--            let hasid = false;--}}
-{{--            $.each(mycartobj, function (i, v) {--}}
-{{--                if (v.id == itemid) {--}}
-{{--                    hasid = true;--}}
-{{--                    v.order_qty = parseInt(1) + parseInt(v.order_qty);--}}
-{{--                    v.each_sub = parseInt(v.selling_price) * parseInt(v.order_qty);--}}
-{{--                    console.log(v.each_sub);--}}
-{{--                }--}}
-{{--            })--}}
-{{--            if (!hasid) {--}}
-{{--                mycartobj.push(order_item);--}}
-{{--            }--}}
-{{--            localStorage.setItem('mycart', JSON.stringify(mycartobj));--}}
-{{--        }--}}
-{{--        function departmentName(){--}}
-{{--            let mycart = localStorage.getItem('mycart');--}}
-{{--            let mycartobj = JSON.parse(mycart);--}}
-{{--            let item = mycartobj;--}}
-{{--            item[0].department_name = $("#department_name").val();--}}
-{{--            localStorage.setItem('mycart', JSON.stringify(mycartobj));--}}
-{{--        }--}}
-{{--        function deliveryDate(){--}}
-{{--            let mycart = localStorage.getItem('mycart');--}}
-{{--            let mycartobj = JSON.parse(mycart);--}}
-{{--            let item = mycartobj;--}}
-{{--            item[0].deliveryDate = $("#delivery_date").val();--}}
-{{--            localStorage.setItem('mycart', JSON.stringify(mycartobj));--}}
-{{--        }--}}
-{{--        function re_mark(value){--}}
-{{--            let mycart = localStorage.getItem('mycart');--}}
-{{--            let mycartobj = JSON.parse(mycart);--}}
-{{--            let item = mycartobj;--}}
-{{--            item[0].remark = value;--}}
-{{--            localStorage.setItem('mycart', JSON.stringify(mycartobj));--}}
-{{--        }--}}
-{{--        // function addFactoryOrder(id){--}}
-{{--        //     let itemid = 1;--}}
-{{--        //     let itemcount = localStorage.getItem('item-count');--}}
-{{--        //     if (itemcount != null) {--}}
-{{--        //         itemcount = parseInt(itemcount) + 1;--}}
-{{--        //         itemid = itemcount;--}}
-{{--        //     } else {--}}
-{{--        //         itemcount = itemid;--}}
-{{--        //     }--}}
-{{--        //     localStorage.setItem('item-count', itemcount);--}}
-{{--        //     let person_name = "";--}}
-{{--        //     let person_id = "";--}}
-{{--        //     let design_id = $("#design_id"+id).val();--}}
-{{--        //     let design_name = $("#design_name"+id).val();--}}
-{{--        //     let fabric_id = $("#fabric_id"+id).val();--}}
-{{--        //     let fabric_name = $("#fabric_name"+id).val();--}}
-{{--        //     let colour_id = $("#colour_id"+id).val();--}}
-{{--        //     let colour_name = $("#colour_name"+id).val();--}}
-{{--        //     let pp_design_id = 0;--}}
-{{--        //     let pp_design_name = "";--}}
-{{--        //     let pp_colour_id = 0;--}}
-{{--        //     let pp_colour_name = "";--}}
-{{--        //     let male_size_id = 0;--}}
-{{--        //     let male_size_name = "";--}}
-{{--        //     let female_size_id = 0;--}}
-{{--        //     let female_size_name = "";--}}
-{{--        //     let gender_id = 0;--}}
-{{--        //     let gender_name = "";--}}
-{{--        //     let quantity = 0;--}}
-{{--        //     let order_item = {--}}
-{{--        //         id: itemid,--}}
-{{--        //         person_name: person_name,--}}
-{{--        //         person_id: person_id,--}}
-{{--        //         design_id: design_id,--}}
-{{--        //         design_name: design_name,--}}
-{{--        //         fabric_id: fabric_id,--}}
-{{--        //         fabric_name: fabric_name,--}}
-{{--        //         colour_id:colour_id,--}}
-{{--        //         colour_name:colour_name,--}}
-{{--        //         pp_design_id: pp_design_id,--}}
-{{--        //         pp_design_name: pp_design_name,--}}
-{{--        //         pp_colour_id: pp_colour_id,--}}
-{{--        //         pp_colour_name: pp_colour_name,--}}
-{{--        //         male_size_id: male_size_id,--}}
-{{--        //         male_size_name: male_size_name,--}}
-{{--        //         female_size_id: female_size_id,--}}
-{{--        //         female_size_name: female_size_name,--}}
-{{--        //         gender_id: gender_id,--}}
-{{--        //         gender_name: gender_name,--}}
-{{--        //         quantity: quantity,--}}
-{{--        //     };--}}
-{{--        //     let total_amount = {--}}
-{{--        //         total_qty: 0,--}}
-{{--        //     };--}}
-{{--        //     let factoryItem = localStorage.getItem('factoryItem');--}}
-{{--        //     let grand_total = localStorage.getItem('grandTotal');--}}
-{{--        //     if (factoryItem == null) {--}}
-{{--        //--}}
-{{--        //         factoryItem = '[]';--}}
-{{--        //--}}
-{{--        //         let factoryItemobj = JSON.parse(factoryItem);--}}
-{{--        //--}}
-{{--        //         factoryItemobj.push(order_item);--}}
-{{--        //--}}
-{{--        //         localStorage.setItem('factoryItem', JSON.stringify(factoryItemobj));--}}
-{{--        //--}}
-{{--        //     } else {--}}
-{{--        //--}}
-{{--        //         let factoryItemobj = JSON.parse(factoryItem);--}}
-{{--        //--}}
-{{--        //         let hasid = false;--}}
-{{--        //--}}
-{{--        //         $.each(factoryItemobj, function (i, v) {--}}
-{{--        //--}}
-{{--        //             if (v.id == itemid) {--}}
-{{--        //--}}
-{{--        //                 hasid = true;--}}
-{{--        //                 v.order_qty = parseInt(1) + parseInt(v.order_qty);--}}
-{{--        //             }--}}
-{{--        //         })--}}
-{{--        //--}}
-{{--        //         if (!hasid) {--}}
-{{--        //--}}
-{{--        //             factoryItemobj.push(order_item);--}}
-{{--        //         }--}}
-{{--        //--}}
-{{--        //         localStorage.setItem('factoryItem', JSON.stringify(factoryItemobj));--}}
-{{--        //     }--}}
-{{--        //--}}
-{{--        //     if (grand_total == null) {--}}
-{{--        //--}}
-{{--        //         localStorage.setItem('grandTotal', JSON.stringify(total_amount));--}}
-{{--        //--}}
-{{--        //     } else {--}}
-{{--        //--}}
-{{--        //         let grand_total_obj = JSON.parse(grand_total);--}}
-{{--        //         grand_total_obj.total_qty = parseInt(grand_total_obj.total_qty);--}}
-{{--        //         localStorage.setItem('grandTotal', JSON.stringify(grand_total_obj));--}}
-{{--        //     }--}}
-{{--        // }--}}
 
-{{--        // function personName(id){--}}
-{{--        //     let personName = $("#person_name"+id).val();--}}
-{{--        //     let factoryItem = localStorage.getItem('factoryItem');--}}
-{{--        //     let factoryItemobj = JSON.parse(factoryItem);--}}
-{{--        //     let item = factoryItemobj.filter(item=> item.id == id);--}}
-{{--        //     item[0].person_name = personName;--}}
-{{--        //     localStorage.setItem('factoryItem', JSON.stringify(factoryItemobj));--}}
-{{--        // }--}}
+<script>
+    // $(document).ready(function(){
+        function setsubtotal(value,id)
+    {
+        var design =  $('#design_ajax'+id).val()
+        var color = $('#color_ajax'+id).val()
+        var size = $('#size_ajax'+id).val()
+        var fabric = $('#fabric_ajax'+id).val()
+
+        if(design && color && size && fabric != null)
+        {
+            $.ajax({
+                        type: 'POST',
+                        url: '{{ route('searchFabricCosting') }}',
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "design_id": design,
+                            "color_id": color,
+                            "size_id": size,
+                            "fabric_id":fabric,
+                        },
+                        success:function(data)
+                        {
+                          $('#subTotal'+id).val(data * value);
+                        }
+            })
+        }
+    }
+    // })
 
 
-{{--    </script>--}}
+
+</script>
 @endsection
 
 

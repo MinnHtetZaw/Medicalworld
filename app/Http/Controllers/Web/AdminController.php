@@ -529,7 +529,7 @@ class AdminController extends Controller {
         return response()->json($credit_purchases);
     }
 
-    
+
  protected function getTotalSaleReport(Request $request){
 
         $type = $request->type;
@@ -3721,6 +3721,7 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
         }else{
             $po_code =  "FPR-" .date('y') . sprintf("%02s", (intval(date('m')))) .sprintf("%02s", 1);
         }
+
 
 
     	// dd($salescustomers);

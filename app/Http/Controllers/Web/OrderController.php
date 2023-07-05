@@ -20,7 +20,9 @@ use App\Transaction;
 use App\CountingUnit;
 use App\FactoryOrder;
 use App\OrderVoucher;
+use App\FabricCosting;
 use App\OrderCustomer;
+use App\SalesCustomer;
 use http\Env\Response;
 use App\EcommerceOrder;
 use App\CustomUnitOrder;
@@ -56,13 +58,15 @@ class OrderController extends Controller
     protected function getOrderPage($type)
     {
 
-        $order_lists = Order::where('status', $type)->orderBy('id', 'desc')->get();
+        $order_lists = Order::where('status', $type)->orderBy('id', 'desc')->paginate(5);
         $vouchers = Voucher::find($type);
 
         $employee_lists = Employee::all();
 
         return view('Order.order_page', compact('order_lists', 'type', 'employee_lists', 'vouchers'));
     }
+
+
 
     protected function getWebsiteOrder()
     {
@@ -1244,7 +1248,7 @@ class OrderController extends Controller
             ];
         }
 
-        $qty= CustomUnitFactoryOrder::select('quantity','custom_unit_order_id')->wherein('custom_unit_order_id',$qty_id)->get();
+        $qty= CustomUnitFactoryOrder::selectRaw('SUM(quantity) as Total , custom_unit_order_id')->wherein('custom_unit_order_id',$qty_id)->groupBy('custom_unit_order_id')->get();
 
         $designs=   Design::get();
         $sizes = Size::get();
@@ -1288,8 +1292,16 @@ class OrderController extends Controller
         $factoryOrder->save();
         return redirect()->back();
     }
+
+    public function searchFabricCosting(Request $request)
+    {
+       $data= FabricCosting::where('design_id',$request->design_id)->where('color_id',$request->color_id)->where('size_id',$request->size_id)->where('fabric_id',$request->fabric_id)->first();
+
+        return response()->json($data->pricing);
+    }
     public function saveFactoryItem(Request $request)
     {
+
         $request->validate([
             "person_name" => "required",
             "quantity" => "required",
@@ -1315,6 +1327,7 @@ class OrderController extends Controller
         $customUnitFactoryOrder->pp_colour_name = $colour->colour_name ?? "NA";
         $customUnitFactoryOrder->quantity = $request->quantity;
         $customUnitFactoryOrder->remark = $request->remark;
+        $customUnitFactoryOrder->subtotal = $request->subtotal;
 
         if ($request->gender == "male") {
             $customUnitFactoryOrder->male_size_id = $request->size_id;
@@ -1339,6 +1352,30 @@ class OrderController extends Controller
         }
         return view('Order.factory_order_details', compact("factoryItems", "factoryOrder", 'order_quantity', 'factory_item_quantity'));
     }
+
+    public function assignFPO(Request $request)
+    {
+        $assignItems=[];
+
+            foreach(json_decode($request->items) as $item)
+            {
+                $fabric = SubCategory::where('name','Like','%'.$item->fabric.'%')->first();
+                $assignItem = FactoryItem::where('subcategory_id',$fabric->id)->where('item_name','Like','%'.$item->colour.'%')->first();
+
+                $assignItems[] =[
+                    'id'=>$assignItem->id,
+                    'item_name'=>$assignItem->item_name,
+                    'yards'=>$item->qty,
+                    'eachsub'=>$item->subtotal,
+                    'purchase_price'=>$item->subtotal/$item->qty
+                    ];
+            }
+
+
+        return redirect()->route('newcreate_itemrequest')->with(['assignItems'=>$assignItems,'assginGrandTotal'=>$request->grandtotal]);
+
+    }
+
 
     public function getIncomingFactoryOrder(Request $request)
     {

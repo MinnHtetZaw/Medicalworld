@@ -73,6 +73,8 @@
         </div>
 
     </div>
+    <input type="text" id="assignItems" value="{{json_encode(session()->get('assignItems'))}}" hidden>
+    <input type="text" id="assginGrandTotal" value="{{json_encode(session()->get('assginGrandTotal'))}}" hidden>
 
     <div class="row justify-content-center">
         <div class="col-10 pr-0">
@@ -419,6 +421,41 @@
                 var mycart = localStorage.getItem('mycart');
                 var mycartobj = JSON.parse(mycart);
                 var arr = [];
+
+
+                if($('#assignItems').val() != null)
+                {
+                    var assignItems=JSON.parse($('#assignItems').val());
+                    mycart = '[]'
+                    var mycartobj = JSON.parse(mycart);
+                    var sub_assign_yards = 0;
+
+                    $.each(assignItems,function(i,data){
+
+                        var item={
+                            id: parseInt(data.id),
+                            item_name:data.item_name,
+                            rolls: 1,
+                            yards_per_roll: data.yards,
+                            sub_yards:data.yards,
+                            purchase_price:data.purchase_price,
+                            each_sub:data.eachsub,
+                            remark:"",
+                        };
+                        sub_assign_yards +=data.yards;
+                        mycartobj.push(item)
+                    })
+
+                    var total_amount = {
+                        sub_total: parseInt(JSON.parse($('#assginGrandTotal').val())),
+                        total_rolls: assignItems.length,
+                        total_yards:sub_assign_yards
+                        };
+
+                    localStorage.setItem('mycart', JSON.stringify(mycartobj));
+                    localStorage.setItem('grandTotal', JSON.stringify(total_amount));
+                }
+
 
 
 

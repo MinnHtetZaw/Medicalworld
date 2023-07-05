@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Category List')
+@section('title', 'Fabric Costing')
 
 @section('place')
 
