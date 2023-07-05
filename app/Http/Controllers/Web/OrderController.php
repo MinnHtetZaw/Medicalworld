@@ -1355,6 +1355,7 @@ class OrderController extends Controller
 
     public function assignFPO(Request $request)
     {
+
         $assignItems=[];
 
             foreach(json_decode($request->items) as $item)
@@ -1363,16 +1364,27 @@ class OrderController extends Controller
                 $assignItem = FactoryItem::where('subcategory_id',$fabric->id)->where('item_name','Like','%'.$item->colour.'%')->first();
 
                 $assignItems[] =[
-                    'id'=>$assignItem->id,
-                    'item_name'=>$assignItem->item_name,
-                    'yards'=>$item->qty,
-                    'eachsub'=>$item->subtotal,
-                    'purchase_price'=>$item->subtotal/$item->qty
-                    ];
+                            'id'=>$assignItem->id,
+                            'item_name'=>$assignItem->item_name,
+                            'yards'=>$item->qty,
+                            'eachsub'=>$item->subtotal,
+                            'purchase_price'=>$item->subtotal/$item->qty
+                            ];
+
             }
 
+            $data=collect($assignItems)->groupBy('id')->values()->map(function ($group) {
+                  return [
+                    'id'=>$group[0]['id'],
+                    'item_name'=>$group[0]['item_name'],
+                    'yards'=>$group->sum('yards'),
+                    'eachsub'=>$group->sum('eachsub'),
+                    'purchase_price'=>$group[0]['purchase_price']
+                    ] ;
+                 });
 
-        return redirect()->route('newcreate_itemrequest')->with(['assignItems'=>$assignItems,'assginGrandTotal'=>$request->grandtotal]);
+
+        return redirect()->route('newcreate_itemrequest')->with(['assignItems'=>$data,'assginGrandTotal'=>$request->grandtotal]);
 
     }
 
