@@ -217,7 +217,7 @@
                                                                                     </div>
                                                                                     <div class="form-group col-6 mb-1">
                                                                                         <label for="">Quantity</label>
-                                                                                        <input type="number" name="quantity" class="form-control form-control-sm"  onchange="setsubtotal(this.value,{{$customUnit->id}})" required>
+                                                                                        <input type="number" name="quantity" class="form-control form-control-sm"  onkeyup="setsubtotal(this.value,{{$customUnit->id}})" required>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="form-group mb-1">

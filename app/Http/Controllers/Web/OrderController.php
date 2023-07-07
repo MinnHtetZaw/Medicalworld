@@ -58,7 +58,7 @@ class OrderController extends Controller
     protected function getOrderPage($type)
     {
 
-        $order_lists = Order::where('status', $type)->orderBy('id', 'desc')->paginate(5);
+        $order_lists = Order::where('status', $type)->orderBy('id', 'desc')->get();
         $vouchers = Voucher::find($type);
 
         $employee_lists = Employee::all();
@@ -1370,7 +1370,6 @@ class OrderController extends Controller
                             'eachsub'=>$item->subtotal,
                             'purchase_price'=>$item->subtotal/$item->qty
                             ];
-
             }
 
             $data=collect($assignItems)->groupBy('id')->values()->map(function ($group) {
@@ -1383,9 +1382,7 @@ class OrderController extends Controller
                     ] ;
                  });
 
-
         return redirect()->route('newcreate_itemrequest')->with(['assignItems'=>$data,'assginGrandTotal'=>$request->grandtotal]);
-
     }
 
 
