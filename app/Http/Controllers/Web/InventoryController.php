@@ -28,6 +28,7 @@ use App\Imports\SubcategoryImport;
 use App\Imports\CountingUnitImport;
 use App\Exports\TotalInvValueExport;
 use App\Http\Controllers\Controller;
+use App\Imports\FabricCostingImport;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -1166,6 +1167,13 @@ class InventoryController extends Controller
         $data->save();
 
         return back();
+    }
+
+
+    public function costingImport(Request $request){
+        Excel::import(new FabricCostingImport(),$request->file('import_file'));
+        alert()->success('Excel Import Succeeded');
+        return redirect()->back();
     }
 
 }

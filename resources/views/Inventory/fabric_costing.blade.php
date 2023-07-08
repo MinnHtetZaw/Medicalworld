@@ -21,13 +21,13 @@
             <h4 class="font-weight-normal">Fabric Costing List</h4>
         </div>
     </div>
-    {{--
+
     <div class="row">
         <div class="col-md-5">
             <div class="card shadow-sm rounded">
                 <div class="card-header">
                     <div class="d-flex">
-                        <form action="{{route('categoryImport')}}" enctype="multipart/form-data" method="post">
+                        <form action="{{route('fabric_costing_import')}}" enctype="multipart/form-data" method="post">
                         @csrf
                         <input type="file" name="import_file" required>
                         <button type="submit" class="btn btn-danger">Import</button>
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 
     <div class="row">
         <div class="col-md-8">

@@ -152,7 +152,7 @@ Route::group(['middleware' => ['UserAuth']], function () {
     Route::post('fabric_costing_save', 'Web\InventoryController@saveFabricCosting')->name('fabric_costing_save');
     Route::post('fabric_costing/delete', 'Web\InventoryController@deleteFabricCosting');
     Route::post('fabric_costing_update/{id}', 'Web\InventoryController@updateFabricCosting')->name('fabric_costing_update');
-
+    Route::post('fabric_costing_import','Web\InventoryController@costingImport')->name('fabric_costing_import');
     //StockCount
     Route::get('Stock-Count/Count', 'Web\StockController@getStockCountPage')->name('stock_count');
     Route::get('Fabric-Count/Count', 'Web\StockController@getFabricCountPage')->name('fabric_count');
