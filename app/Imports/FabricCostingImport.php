@@ -19,10 +19,9 @@ class FabricCostingImport implements ToCollection,WithHeadingRow
 
         foreach($rows as $row)
         {
-            $fabric_nopsace=str_replace(' ', '', $row['fabric']);
 
             $design = Design::where('design_name','Like','%'.$row['design'].'%')->first();
-            $fabric = Fabric::where('fabric_name','Like','%'.$fabric_nopsace.'%')->first();
+            $fabric = Fabric::where('fabric_name','Like','%'.$row['fabric'].'%')->first();
 
             $color = Colour::where('colour_name','Like','%'.$row['color'].'%')->first();
             $size = Size::where('size_name','Like','%'.$row['size'].'%')->first();
