@@ -75,13 +75,13 @@ class SaleController extends Controller
 
         $today_date = strtotime($date->format('d-m-Y H:i'));
         $vou_date = $date->format('d M Y');
-        
-       
+
+
 
         $last_voucher = Voucher::count();
         if($last_voucher != null){
             $voucher_code =  "SVOU-" .date('y') . sprintf("%02s", (intval(date('m')))) . sprintf("%02s", ($last_voucher - 916));
-           
+
         }else{
             $voucher_code =  "SVOU-" .date('y') . sprintf("%02s", (intval(date('m')))) .sprintf("%02s", 1);
         }
@@ -417,9 +417,12 @@ class SaleController extends Controller
 
         $voucher_lists =Voucher::orderBy('id','desc')->get();
 
+
+        $voucher_lists_notreturn =Voucher::orderBy('id','desc')->whereSaleReturnFlag(0)->get();
+
         $total_sales  = 0;
 
-        foreach ($voucher_lists as $voucher_list){
+        foreach ($voucher_lists_notreturn as $voucher_list){
             if($voucher_list->discount_value > 1 && $voucher_list->discount_type != 'foc'){
                 $total_sales += $voucher_list->total_price - $voucher_list->discount_value;
             }
@@ -439,7 +442,7 @@ class SaleController extends Controller
         $weekly = date('Y-m-d', strtotime('-1week', $current_date));
 
 
-        $weekly_data = Voucher::whereBetween('voucher_date', [$weekly,$to])->get();
+        $weekly_data = Voucher::whereBetween('voucher_date', [$weekly,$to])->whereSaleReturnFlag(0)->get();
 
         $weekly_sales = 0;
 
@@ -459,7 +462,7 @@ class SaleController extends Controller
         $current_month_year = $date->format('Y');
 
         $today_date = $date->format('Y-m-d');
-        $daily = Voucher::whereDate('created_at', $today_date)->get();
+        $daily = Voucher::whereDate('created_at', $today_date)->whereSaleReturnFlag(0)->get();
 
 
         $daily_sales = 0;
@@ -475,7 +478,7 @@ class SaleController extends Controller
             }
         }
 
-        $monthly = Voucher::whereMonth('created_at',$current_month)->whereYear('created_at',$current_month_year)->get();
+        $monthly = Voucher::whereMonth('created_at',$current_month)->whereYear('created_at',$current_month_year)->whereSaleReturnFlag(0)->get();
 
 
         $monthly_sales = 0;
@@ -496,11 +499,11 @@ class SaleController extends Controller
         $search_sales = 0;
         return view('Sale.sale_history_page',compact('search_sales','voucher_lists','total_sales','daily_sales','monthly_sales','weekly_sales'));
     }
-    
+
     protected function saleHistoryExport(Request $request,$from,$to,$id,$sales,$data_type,$type){
         return $this->excel->download(new SalesHistoryExport($from,$to,$id,$sales,$data_type),'sale_voucher_history.xlsx');
     }
-    
+
     protected function show_discount_list()
     {
         $discounts = Discount::all();
@@ -605,7 +608,7 @@ class SaleController extends Controller
         return view('Sale.sale_discount_record_list',compact('discounts','discount_main','all','between'));
 
     }
-    
+
     public function validateData($request)
     {
         return  Validator::make($request->all(), [
@@ -620,7 +623,7 @@ class SaleController extends Controller
             alert()->error('Something Wrong!');
             return redirect()->back();
         }
-        
+
         if($request->customer == 0 && $request->sales == 'All'){
             $saleVouchers = Voucher::whereBetween('voucher_date',[$request->from, $request->to])->get();
         }else if($request->customer == 0 && $request->sales != 'All'){
@@ -630,10 +633,10 @@ class SaleController extends Controller
         }else{
             $saleVouchers = Voucher::whereBetween('voucher_date',[$request->from, $request->to])->where('sales_customer_id',$request->customer)->where('sale_by',$request->sales)->get();
         }
-        
+
         return response()->json($saleVouchers);
     }
-    
+
     protected function searchSaleHistory(Request $request){
 
         $validator = Validator::make($request->all(), [
@@ -790,6 +793,25 @@ class SaleController extends Controller
         return view('Sale.voucher_details', compact('unit','voucher'));
     }
 
+    protected function saleReturn(Request $request)
+    {
+        $data=Voucher::with('counting_unit')->find($request->voucher_id);
+
+        foreach($data->counting_unit as $item)
+        {
+
+        $counting_unit = CountingUnit::find($item->id);
+
+        $counting_unit->current_quantity += $item->pivot->quantity;
+
+        $counting_unit->save();
+        }
+        $data->sale_return_flag = 1;
+        $data->save();
+
+        return response()->json(['success'=>'Succeed']);
+    }
+
     protected function getVoucherSummaryMain(){
         return view('Sale.voucher_history');
     }
@@ -886,19 +908,19 @@ class SaleController extends Controller
 
             return response()->json(0);
         }
-        
+
         if($request->admin_code != "ADMINMDW2022")
         {
             return response()->json(0);
         }
 
-        
+
 
         try {
             $voucher = Voucher::findOrfail($request->voucher_id);
-            
+
             foreach($voucher->counting_unit as $unit){
-                
+
                 $balanceQty = $unit->current_quantity + $unit->pivot->quantity;
                 $unit->current_quantity = $balanceQty ;
                 $unit->save();
@@ -930,11 +952,11 @@ class SaleController extends Controller
 //        return $request;
         $items = Item::where("category_id",$category_id)->where("sub_category_id",$subcategory_id)->get();
         $item_ids=[];
-       
+
             foreach ($items as $item){
                 array_push($item_ids,$item->id);
             }
-        
+
         $counting_units = CountingUnit::whereIn('item_id',$item_ids)->with('design')->with('fabric')->with('colour')->with('size')->get();
         return response()->json($counting_units);
     }

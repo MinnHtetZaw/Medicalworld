@@ -24,6 +24,7 @@ class CreateVouchersTable extends Migration
             $table->date('voucher_date');
             $table->Integer('order_id')->default(0);
             $table->softDeletes();
+            $table->tinyInteger('sale_return_flag')->nullable();
             $table->timestamps();
         });
     }

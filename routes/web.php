@@ -204,6 +204,7 @@ Route::group(['middleware' => ['UserAuth']], function () {
     });
     Route::post('Sale/search_sale_discount_record', 'Web\SaleController@search_sale_discount_record')->name('search_sale_discount_record');
     Route::get('Sale/Voucher-Details/{id}', 'Web\SaleController@getVoucherDetails')->name('getVoucherDetails');
+    Route::post('Sale/sale_return','Web\SaleController@saleReturn');
     Route::get('discount_record_list', 'Web\SaleController@show_discount_list')->name('discount_record_list');
     Route::post('getSelectionDiscount', 'Web\SaleController@show_discount_type')->name('getSelectionDiscount');
     Route::post('getDateDiscount', 'Web\SaleController@show_discount_date')->name('getDateDiscount');

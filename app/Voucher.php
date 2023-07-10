@@ -34,7 +34,8 @@ class Voucher extends Model
         'discount_type',
         'discount_value',
         'sales_remark',
-    	'deleted_at'
+    	'deleted_at',
+        'sale_return_flag'
     ];
 
     public function counting_unit() {

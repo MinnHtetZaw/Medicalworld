@@ -124,7 +124,7 @@
                             @endforeach
                         </select>
                     </div>
-                    
+
                     <div class="col-2">
                         <label class="">Sales Person</label>
                         <select name="sales_person" id="sales_person" class="form-control form-control-sm select2" onChange="setSales(this.value)">
@@ -144,10 +144,10 @@
                 </div>
             </div>
         </div>
-        
+
          @if(session()->get('user')->role != "Partner")
          <div class="col-md-4 mt-4">
-             
+
              <form id="exportForm" onsubmit="return exportForm()" method="get">
                  <div class="row">
                 <input type="hidden" name="export_from" id="export_from" class="form-control form-control-sm hidden" required>
@@ -158,25 +158,25 @@
                      <select name="export_data_type" id="export_data_type" class="form-control form-control-sm select2" style="font-size: 12px;">
                                 <option value=1 selected>Vouchers</option>
                                 <option value=2 >Items</option>
-                        </select>  
-                    
+                        </select>
+
                 </div>
                 <div class="col-3">
                      <select name="export_type" id="export_type" class="form-control form-control-sm select2" style="font-size: 12px;">
                                 <option value=1 selected>Excel</option>
                                 <option value=2 >PDF</option>
-                        </select>  
-                    
+                        </select>
+
                 </div>
-                
+
                 <div class="col-6">
                 <input type="submit" class="btn btn-sm rounded btn-outline-info col-4" value=" Export ">
                 </div>
-                </div>            
-                        
+                </div>
+
             </form>
-            
-            
+
+
         </div>
         @endif
 
@@ -186,17 +186,17 @@
 
     </div>
     <br/>
-    
-        
-            
+
+
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card shadow-sm">
-                            
+
                         <div class="row p-2 offset-10">
-                        <input  type="text" id="table_search" placeholder="Quick Search" onkeyup="search_table()" >    
+                        <input  type="text" id="table_search" placeholder="Quick Search" onkeyup="search_table()" >
                     </div>
-                        
+
                         <div class="table-responsive text-black" id="slimtest2">
                             <table class="table" id="item_table">
                                 <thead class="head">
@@ -209,6 +209,7 @@
                                         <th>@lang('lang.total') @lang('lang.price')</th>
                                         <th>Discount</th>
                                         <th>Sales By</th>
+                                        <th>Sale Return</th>
                                         <th>@lang('lang.details')</th>
                                     </tr>
                                 </thead>
@@ -227,6 +228,13 @@
                                         <td>{{$voucher->total_price}}</td>
                                         <td>{{$voucher->discount_value ?? 0}}</td>
                                         <td>{{$voucher->sale_by}}</td>
+                                        <td>
+                                            @if ($voucher->sale_return_flag == 1)
+                                            <span class="text-success">Refund</span>
+                                            @else
+                                            <span class="text-info">Not Refund</span>
+                                            @endif
+                                        </td>
                                         @if(session()->get('user')->role != "Partner")
                                         <td style="text-align: center;"><a href="{{ route('getVoucherDetails',$voucher->id)}}" class="btn btn-sm rounded  btn-outline-info">Details</a></td>
                                         @endif
@@ -238,9 +246,9 @@
                         </div>
                     </div>
                 </div>
-            
-        
-    
+
+
+
 </section>
 
 @endsection
@@ -265,23 +273,23 @@
 	    $('#export_data_type').val(1);
 	    $("#export_type").val(1);
 	});
-	
+
 	function search_table(){
             var input, filter, table,tr,td,i;
             input = document.getElementById("table_search");
             filter = input.value.toUpperCase();
             table = document.getElementById("item_table");
             tr = table.getElementsByTagName("tr");
-            
+
             var searchColumn = [1,2,3,4,5,6,7];
-            
+
             for(i = 0; i < tr.length; i++){
                 if($(tr[i]).parent().attr('class') == 'head'){
                     continue;
                 }
-                
+
                 var found = false;
-                
+
                 for(var k=0; k < searchColumn.length; k++){
                     td = tr[i].getElementsByTagName("td")[searchColumn[k]];
                     if(td){
@@ -302,24 +310,24 @@
         color: '#00f',
         height: '600px'
     });
-    
+
     function setFrom(value){
         $("#exportForm :input[name=export_from]").val(value);
     }
-    
+
      function setTo(value){
         $("#exportForm :input[name=export_to]").val(value);
     }
-    
+
      function setCustomer(value){
         $("#exportForm :input[name=export_customer]").val(value);
     }
-    
+
     function setSales(value){
         $("#exportForm :input[name=export_sales]").val(value);
     }
     function exportForm(){
-       
+
         //var form = document.getElementById("exportForm");
         //var data = new URLSearchParams(form).toString();
         var from = $("#exportForm :input[name=export_from]").val();
@@ -329,7 +337,7 @@
         var data_type = $("#exportForm :input[name=export_data_type]").find(":selected").val();
         var type = $("#exportForm :input[name=export_type]").find(":selected").val();
         console.log(from,to,id,data_type,type,sales);
-        
+
         // fetch("http://medicalworldinvpos.kwintechnologykw09.com/Sale/Voucher/HistoryExport/${from}/${to}/${id}",{
         //     method: "get"
         // }).then(()=>{console.log('Export Success');})
@@ -352,18 +360,18 @@
 	   // $('#export_sales').val('All');
 	   // $('#export_data_type').val(1);
 	   // $("#export_type").val(1);
-        
+
         return false;
     };
-    
+
     $('#search_vouchers').click(function(){
         // let current_Date = $('#current_Date').val();
         // let fb_page = $('#fb_pages').val();
         // let order_type = $('#order_type').val();
         // let url = `/arrived-orders/${current_Date}/${fb_page}/${order_type}`;
         // window.location.href= url;
-        
-        
+
+
         var from = $('#from').val();
         var to = $('#to').val();
         var customer = $("#customer").find(":selected").val();
@@ -377,7 +385,7 @@
 
             data: {
                 "_token": "{{ csrf_token() }}",
-                
+
                 "from" : from,
                 "to" : to,
                 "customer" : customer,
@@ -389,8 +397,8 @@
                     console.log(data);
                     var html = '';
                     $.each(data, function(i, voucher) {
-                       
-                       
+
+
                         var url1 = '{{ route('getVoucherDetails', ':voucher_id') }}';
 
                         url1 = url1.replace(':voucher_id', voucher.id);
@@ -411,7 +419,7 @@
                         $('#item_list').empty();
                        $('#item_list').html(html);
                     })
-                    
+
                   // $('#item_table').DataTable().clear().draw();
                     // $('#item_table').DataTable( {
 
@@ -428,12 +436,12 @@
                     //     text:"Orders Changed!",
                     //     button:false,
                     //     timer:500,
-                    //     icon:"success"  
+                    //     icon:"success"
                     // });
 
                 } else {
                     var html = `
-                    
+
                     <tr>
                         <td colspan="9" class="text-danger text-center">No Data Found</td>
                     </tr>
@@ -441,14 +449,14 @@
                     `;
                     $('#item_list').empty();
                     $('#item_list').html(html);
-                
+
                 }
             },
             });
-        
+
     })
-    
-   
+
+
 
 </script>
 

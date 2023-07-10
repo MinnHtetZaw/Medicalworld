@@ -379,6 +379,12 @@
             <button id="delete" class="btn btn-danger" data-id="{{$unit->id}}" type="button">
                 <span><i class="fa fa-trash"></i> Delete</span>
             </button>
+            @if ($unit->sale_return_flag != 1)
+            <button id="sale_return" class="btn btn-info" data-id="{{$unit->id}}" type="button">
+                <span>Sale Return</span>
+            </button>
+            @endif
+
         </div>
     </div>
 
@@ -404,7 +410,7 @@
             });
             $('#edit').click(function(){
                 var unit = @json($unit);
-               
+
                // console.log(unit);
 
 
@@ -536,6 +542,45 @@
                 });
 
             })
+
+            $('#sale_return').click(function(){
+                    var id = $(this).data('id');
+                    swal(
+                    {
+                      title: "Sale Return",
+                      text: "Enter Admin Code to refund voucher!",
+                      content: "input",
+                      showCancelButton: true,
+                      closeOnConfirm: false,
+                      animation: "slide-from-top",
+                      inputPlaceholder: "Admin Code"
+                    }
+
+                ).then((result)=> {
+                    $.ajax({
+                        type : 'POST',
+                        url  : '/Sale/sale_return',
+                        data : {
+                            "_token" : "{{csrf_token()}}",
+                            "voucher_id": id,
+                        },
+
+                        success:function(data)
+                        {
+                            swal({
+                                        title: "Success",
+                                        text: "Sale Return Completed!",
+                                        icon: "info",
+                                    });
+
+                                    setTimeout(function() {
+                                        window.location.href = "{{ route('sale_history')}}";
+                                    }, 600);
+                        }
+
+                    })
+            })
+        })
         });
     </script>
 
