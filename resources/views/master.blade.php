@@ -228,7 +228,7 @@
                         @endif
 
 
-                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Stock" || session()->get('user')->role == "Sales" || session()->get('user')->name == "MON" || session()->get('user')->name == "POE" || session()->get('user')->role == "Finance")
+                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Stock" || session()->get('user')->role == "Sales" || session()->get('user')->name == "MON" || session()->get('user')->name == "POE" || session()->get('user')->role == "Finance" || session()->get('user')->name == "HOK")
 
                         <li>
                             <a class="has-arrow " href="#" aria-expanded="false">
@@ -276,7 +276,7 @@
                         </li>
                         @endif
 
-                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Stock" || session()->get('user')->role == "Sales_Inventory")
+                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Stock" || session()->get('user')->role == "Sales_Inventory" || session()->get('user')->name == "HOK")
                         <li>
                             <a class="has-arrow " href="#" aria-expanded="false">
                                 <i class="mdi mdi-cart" style="font-size: 18px"></i>
