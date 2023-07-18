@@ -3965,12 +3965,14 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
 
     protected function TransactionList($id)
     {
-        // dd("dd");
+
         $orders = Order::with('customUnitOrder')->find($id);
-        // dd($unit);
-        $bank = BankAccount::all();
+
+        $oldBankID= [2,3,4,5,6,7];
+        $bank = BankAccount::whereNotIn('id',$oldBankID)->get();
+
         $transaction = Transaction::where('order_id',$id)->get();
-        // dd($transaction);
+
         return view('Admin.transaction_list', compact('orders','bank','transaction'));
     }
     protected function store_transaction_now(Request $request)
