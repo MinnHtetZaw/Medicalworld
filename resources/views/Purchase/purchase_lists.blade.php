@@ -57,7 +57,7 @@
                                 <th>{{date('d-m-Y', strtotime($list->purchase_date))}}</th>
                                 <th>{{$list->total_quantity}}</th>
                                 <th>{{$list->total_price}}</th>
-                                <th>{{$list->factory_po_number ? "From PO" :"Default Purchase"}}</th>
+                                <th>{{$list->factory_po_number ?? "Default Purchase"}}</th>
                                 <th>{{$list->user->name}}</th>
                                 <th>{{$list->supplier_name}}</th>
                                 <th class="text-center">
