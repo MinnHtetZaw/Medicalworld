@@ -3300,6 +3300,8 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
     }
 
     protected function storePurchaseHistory(Request $request){
+
+
         $validator = Validator::make($request->all(), [
             'purchase_number' => 'required',
             'purchase_date' => 'required',
@@ -3371,6 +3373,8 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
                 'adjustment_flag'=>$request->adjustment,
                 'purchase_by' => $user_code,
                 'credit_amount' => $request->credit_amount,
+                'factory_po_id' => $request->unit_Data_id ?? null,
+                'factory_po_number'=>$request->unit_Data_Po ?? null
             ]);
 
             if($request->pay_method == 1)
@@ -3417,8 +3421,6 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
 
                         if($factory_item->category_id === 9){
 
-
-
                             $fabric_count= FabricCount::where('count_date',$request->purchase_date)->get();
                             $fcount=[];
                             foreach($fabric_count as $f_count)
@@ -3440,16 +3442,16 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
                                     $fabricCount->factory_item_id = $factory_item->id;
                                     $fabricCount->factory_item_name = $factory_item->item_name;
                                     $fabricCount->count_date = $request->purchase_date;
-                                    $fabricCount->open_stock = $fabric_before_entry->instock_qty ;
+                                    $fabricCount->open_stock = $fabric_before_entry->instock_qty ; // ?? 0
                                     $fabricCount->in_stock =  $qty[$count];
                                     $fabricCount->out_stock = 0 ;
-                                    $fabricCount->close_stock =  $fabric_before_entry->instock_qty + $qty[$count];
+                                    $fabricCount->close_stock =  $fabric_before_entry->instock_qty + $qty[$count];  // ?? 0
                                     $fabricCount->remark =  $request->purchase_remark;
                                     $fabricCount->save();
                                 }
 
                                  $fabric_update_entry = FabricEntryItem::where('factory_item_id',$factory_item->id)->first();
-                                 $fabric_before_update_instock = $fabric_update_entry->instock_qty;
+                                 $fabric_before_update_instock = $fabric_update_entry->instock_qty ;  //  ?? 0
                                  $fabric_update_entry->instock_qty += $qty[$count];
                                  $fabric_update_entry->save();
                         }
@@ -3464,6 +3466,7 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
 
         } catch (\Exception $e) {
 
+            // dd($e);
             alert()->error('Something Wrong! When Purchase Store.');
 
             return redirect()->back();

@@ -258,9 +258,11 @@
                 var totalPrice = 0;
                 var totalQty = 0;
 
-
+                    console.log(unit);
                 localStorage.removeItem('myprcart');
                 localStorage.removeItem('prTotal');
+                localStorage.removeItem('unitData');
+                localStorage.setItem('unitData',JSON.stringify(unit));
 
                 $.each(unit.factory_items,function(i,item){
 

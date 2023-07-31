@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\FactoryPo;
 use Illuminate\Database\Eloquent\Model;
 
 class Purchase extends Model
@@ -20,6 +21,8 @@ class Purchase extends Model
 		'purchase_remark',
 		'purchase_type',
         'adjustment_flag',
+        'factory_po_id',
+        'factory_po_number'
 	];
 
 	public function counting_unit() {
@@ -39,5 +42,10 @@ class Purchase extends Model
 
     public function supplier_credit_list(){
         return $this->hasOne('App\SupplierCreditList');
+    }
+
+    public function po()
+    {
+        return $this->belongsTo(FactoryPo::class);
     }
 }

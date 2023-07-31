@@ -20,13 +20,21 @@
     <div class="col-md-5 col-8 align-self-center">
         <h4 class="font-weight-normal">@lang('lang.purchase') @lang('lang.details') @lang('lang.page')</h4>
     </div>
+    @if ($purchase->factory_po_number != null)
+    <div class="col-md-7 col-4" style="text-align:end">
+        <h4 class="font-weight-normal">Go To &nbsp; &nbsp;<a href="{{route('po_details',$purchase->factory_po_id)}}" class="btn btn-primary">{{$purchase->factory_po_number}} </a></h4>
+
+    </div>
+    @endif
+
 </div>
 
 <div class="row">
     <div class="col-md-14">
         <div class="card shadow">
             <div class="card-header">
-                <h4 class="font-weight-bold mt-2">@lang('lang.purchase') @lang('lang.details')</h4>
+                    <h4 class="font-weight-bold mt-2">@lang('lang.purchase') @lang('lang.details')</h4>
+
             </div>
             <div class="card-body">
 
@@ -34,10 +42,10 @@
             		<div class="col-md-6">
 
             			<div class="row">
-			              	<div class="font-weight-bold text-primary col-md-5">@lang('lang.purchase_date')</div>
-			              	<h5 class="font-weight-bold col-md-4 mt-1">
-			              		{{date('d-m-Y', strtotime($purchase->purchase_date))}}
-			              	</h5>
+                                <div class="font-weight-bold text-primary col-md-5">@lang('lang.purchase_date')</div>
+                                <h5 class="font-weight-bold col-md-4 mt-1">
+                                    {{date('d-m-Y', strtotime($purchase->purchase_date))}}
+                                </h5>
 				        </div>
 
 				        <div class="row mt-1">

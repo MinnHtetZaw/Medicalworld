@@ -32,6 +32,9 @@ $from_id = 1;
 
                 <form class="form-material m-t-40" method="post" action="{{route('store_purchase')}}" id="store_purchase">
                     @csrf
+                    <input type="text" name="unit_Data_Po" id="unit_Data_Po" value="" hidden>
+                    <input type="text" name="unit_Data_id" id="unit_Data_id" value="" hidden>
+
                     <input type="hidden" name="type" id="type" value="1">
 
                     <div class="form-group">
@@ -717,6 +720,7 @@ function submit_store()
     $('#store_purchase').submit();
     localStorage.removeItem('myprcart');
     localStorage.removeItem('prTotal');
+    localStorage.removeItem('unitData');
 }
 function showmodal()
 {
@@ -725,6 +729,8 @@ function showmodal()
     var my_pr_total = localStorage.getItem('prTotal');
     var pr_total_obj = JSON.parse(my_pr_total);
     var myprcartobj = JSON.parse(myprcart);
+    var unitData = JSON.parse(localStorage.getItem('unitData'));
+
     var jj=1;
     $.each(myprcartobj,function(i,v){
         html+=`<div class="form-group" id="removeclass_${i}">
@@ -765,10 +771,15 @@ function showmodal()
                     </div>
             </div>`
         });
+
+
         $("#unit_place").html(html);
         $('#total_place').html(pr_total_obj.sub_total);
         $('#tot_amt').val(pr_total_obj.sub_total);
         $('#show_total').html(pr_total_obj.sub_total);
+        $('#unit_Data_id').val(unitData.id);
+        $('#unit_Data_Po').val(unitData.po_number);
+
 }
 function change_amt(id,qty)
 {
