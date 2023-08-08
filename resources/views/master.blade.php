@@ -228,7 +228,7 @@
                         @endif
 
 
-                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Stock" || session()->get('user')->role == "Sales" || session()->get('user')->name == "MON" || session()->get('user')->name == "POE" || session()->get('user')->role == "Finance" || session()->get('user')->name == "ATDK" || session()->get('user')->name == "Wai")
+                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Stock" || session()->get('user')->role == "Sales" || session()->get('user')->name == "MON" || session()->get('user')->name == "POE" || session()->get('user')->role == "Finance" || session()->get('user')->name == "ATDK" || session()->get('user')->name == "Wai" || session()->get('user')->name == "Store-HHW")
 
                         <li>
                             <a class="has-arrow " href="#" aria-expanded="false">
@@ -276,7 +276,7 @@
                         </li>
                         @endif
 
-                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Stock" || session()->get('user')->role == "Sales_Inventory" || session()->get('user')->name == "ATDK")
+                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Stock" || session()->get('user')->role == "Sales_Inventory" || session()->get('user')->name == "ATDK" || session()->get('user')->name == "Store-HHW")
                         <li>
                             <a class="has-arrow " href="#" aria-expanded="false">
                                 <i class="mdi mdi-cart" style="font-size: 18px"></i>
@@ -318,7 +318,7 @@
                             <ul aria-expanded="false" class="collapse">
 
                                 <li><a href="{{route('sale_panel')}}">@lang('lang.sales') @lang('lang.panel')</a></li>
-                                @if (session()->get('user')->name != "Wai")
+                                @if (session()->get('user')->name != "Wai" ||  session()->get('user')->name != "OS-AMThu" ||  session()->get('user')->name == "OS-HTZA")
                                 <li><a href="{{route('sale_page')}}">@lang('lang.sale')</a></li>
                                 @endif
                                 @if(session()->get('user')->role == "Owner")
@@ -346,7 +346,7 @@
                             </a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{route('order_panel')}}">@lang('lang.order_panel')</a></li>
-                                @if (session()->get('user')->name != "Wai")
+                                @if (session()->get('user')->name != "Wai" ||  session()->get('user')->name != "OS-AMThu" || session()->get('user')->name == "OS-HTZA")
                                 <li><a href="{{route('neworder_page')}}">Create New Order</a></li>
                                 @endif
                                 <li><a href="{{route('order_page','1')}}">@lang('lang.incoming_order')</a></li>
