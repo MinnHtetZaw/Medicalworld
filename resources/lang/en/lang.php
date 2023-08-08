@@ -23,7 +23,8 @@
     'mmk' => 'MMK',
     'revenue' => 'Revenue',
     'notifications' => 'Notifications',
-    'finan'   => 'Financial',
+    'finan'   => 'Accounting',//Change Financial to Accounting by z
+    'accounting_finance'=>"Financial",//by writing z
     'fixasset'  => 'Fix Asset',
     'supplier' => 'Add Supplier',
     'Capital Panel' => 'Capital Panel',

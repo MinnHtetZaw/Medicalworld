@@ -4,36 +4,36 @@
 <head>
     <!-- Tell the browser to be responsive to screen width -->
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/favicon.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/favicon.png') }}">
 
     <title>@yield('title')</title>
     <!-- Bootstrap Core CSS -->
-    <link href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <style>
-
-    .groundqty{
-       display: block;
-    }
-
+        .groundqty {
+            display: block;
+        }
     </style>
-    <link href="{{asset('assets/plugins/c3-master/c3.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/c3-master/c3.min.css') }}" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="{{asset('css/style.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <!-- You can change the theme colors from here -->
-    <link href="{{asset('css/colors/blue.css')}}" id="theme" rel="stylesheet">
+    <link href="{{ asset('css/colors/blue.css') }}" id="theme" rel="stylesheet">
 
-    <link href="{{asset('assets/plugins/select2/dist/css/select2.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/plugins/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css">
 
-    <link rel="stylesheet" href="{{asset('assets/plugins/dropify/dist/css/dropify.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/dropify/dist/css/dropify.min.css') }}">
 
-    <link rel="stylesheet" href="{{asset('js/dist/css/qrcode-reader.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('js/dist/css/qrcode-reader.min.css') }}">
 
-    <link href="{{asset('assets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css')}}" rel="stylesheet">
+    <link
+        href="{{ asset('assets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
+        rel="stylesheet">
 
-    <link href="{{asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     {{-- <link href="{{asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.css')}}" rel="stylesheet"> --}}
-    <link href="{{asset('assets/plugins/bootstrap-datepicker/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/bootstrap-datepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
 
 
     <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
@@ -87,10 +87,10 @@
                         <!-- Search -->
                         <!-- ============================================================== -->
 
-                            <h2 class="text-white" style="font-weight: 500; font-size:19px"> Medical World</h2>
+                        <h2 class="text-white" style="font-weight: 500; font-size:19px"> Medical World</h2>
 
-                            <input type="hidden" id="unique_role" value="{{session()->get('user')->role}}">
-                            <input type="hidden" id="unique_from_id" value="{{session()->get('from')}}">
+                        <input type="hidden" id="unique_role" value="{{ session()->get('user')->role }}">
+                        <input type="hidden" id="unique_from_id" value="{{ session()->get('from') }}">
 
                         <!-- ============================================================== -->
                         <!-- End Messages -->
@@ -105,7 +105,7 @@
                         <!-- ============================================================== -->
                         @php
                             $date = new DateTime('Asia/Yangon');
-
+                            
                             $current_Date = $date->format('Y-m-d');
                         @endphp
 
@@ -155,25 +155,30 @@
 
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="{{asset('image/user.jpg')}}" alt="user" class="profile-pic" />
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ asset('image/user.jpg') }}" alt="user" class="profile-pic" />
                             </a>
                             <div class="dropdown-menu dropdown-menu-right scale-up">
                                 <ul class="dropdown-user">
                                     <li>
                                         <div class="dw-user-box">
-                                            <div class="u-img"><img src="{{asset('image/user.jpg')}}" alt="user"></div>
+                                            <div class="u-img"><img src="{{ asset('image/user.jpg') }}"
+                                                    alt="user"></div>
                                             <div class="u-text">
-                                                <h4>{{session()->get('user')->name}}</h4>
-                                                <p class="text-muted">{{session()->get('user')->email}}</p>
-                                                <a href="#" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
+                                                <h4>{{ session()->get('user')->name }}</h4>
+                                                <p class="text-muted">{{ session()->get('user')->email }}</p>
+                                                <a href="#" class="btn btn-rounded btn-danger btn-sm">View
+                                                    Profile</a>
                                             </div>
                                         </div>
                                     </li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="{{route('change_password_ui')}}"><i class="mdi mdi-account-key"></i> Change Password </a></li>
+                                    <li><a href="{{ route('change_password_ui') }}"><i class="mdi mdi-account-key"></i>
+                                            Change Password </a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="{{route('logoutprocess')}}"><i class="mdi mdi-power"></i> Logout</a></li>
+                                    <li><a href="{{ route('logoutprocess') }}"><i class="mdi mdi-power"></i> Logout</a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -181,26 +186,29 @@
                         <li class="nav-item dropdown">
 
 
-                            <a href="{{ url()->previous() }}" class="nav-link waves-effect waves-dark pt-2"><i class="fa fa-arrow-left"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="nav-link waves-effect waves-dark pt-2"><i
+                                    class="fa fa-arrow-left"></i> Back</a>
                         </li>
                     </ul>
 
                     <div class="dropdown">
-                      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      @foreach (Config::get('languages') as $lang => $language)
-                            @if ($lang == App::getLocale())
-                                  {{$language}}
-                            @endif
-                      @endforeach
-                      </a>
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @foreach (Config::get('languages') as $lang => $language)
+                                @if ($lang == App::getLocale())
+                                    {{ $language }}
+                                @endif
+                            @endforeach
+                        </a>
 
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                      @foreach (Config::get('languages') as $lang => $language)
-                            @if ($lang != App::getLocale())
-                                  <a class="dropdown-item english" href="{{url('localization/'.$lang)}}">{{$language}}</a>
-                            @endif
-                      @endforeach
-                      </div>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            @foreach (Config::get('languages') as $lang => $language)
+                                @if ($lang != App::getLocale())
+                                    <a class="dropdown-item english"
+                                        href="{{ url('localization/' . $lang) }}">{{ $language }}</a>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -218,13 +226,13 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
 
-                        @if(session()->get('user')->role == "Owner")
+                        @if (session()->get('user')->role == 'Owner')
                             <li>
-                            <a href="{{route('index')}}">
-                                <i class="mdi mdi-home" style="font-size: 18px"></i>
-                                <span>@lang('lang.home')</span>
-                            </a>
-                        </li>
+                                <a href="{{ route('index') }}">
+                                    <i class="mdi mdi-home" style="font-size: 18px"></i>
+                                    <span>@lang('lang.home')</span>
+                                </a>
+                            </li>
                         @endif
 
 
@@ -270,52 +278,53 @@
                                         </li>
                                     </ul>
                                 </li>
-
-
-                            </ul>
-                        </li>
                         @endif
 
-                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Stock" || session()->get('user')->role == "Sales_Inventory" || session()->get('user')->name == "ATDK" || session()->get('user')->name == "Store-HHW")
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false">
-                                <i class="mdi mdi-cart" style="font-size: 18px"></i>
-                                <span class="hide-menu">
-                                    @lang('lang.stock') <i class="fas fa-angle-down"></i>
-                                </span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse">
+                        @if (session()->get('user')->role == 'Owner' ||
+                                session()->get('user')->role == 'Stock' ||
+                                session()->get('user')->role == 'Sales_Inventory' ||
+                                session()->get('user')->name == 'ATDK')
+                            <li>
+                                <a class="has-arrow " href="#" aria-expanded="false">
+                                    <i class="mdi mdi-cart" style="font-size: 18px"></i>
+                                    <span class="hide-menu">
+                                        @lang('lang.stock') <i class="fas fa-angle-down"></i>
+                                    </span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse">
 
-                                <li><a href="{{route('stock_dashboard')}}">@lang('lang.stock_panel')</a></li>
-                                <li><a href="{{route('stock_count')}}">@lang('lang.stock_count') and Price</a></li>
+                                    <li><a href="{{ route('stock_dashboard') }}">@lang('lang.stock_panel')</a></li>
+                                    <li><a href="{{ route('stock_count') }}">@lang('lang.stock_count') and Price</a></li>
 
-                                <li><a href="{{route('stock_reorder_page')}}">@lang('lang.reorder_item')</a></li>
-                                <li><a href="{{route('stock_lists')}}">@lang('lang.total_inventory_value')</a></li>
-                            </ul>
-                        </li>
+                                    <li><a href="{{ route('stock_reorder_page') }}">@lang('lang.reorder_item')</a></li>
+                                    <li><a href="{{ route('stock_lists') }}">@lang('lang.total_inventory_value')</a></li>
+                                </ul>
+                            </li>
                         @endif
 
-			@if(session()->get('user')->role == "Agent")
-			<li>
-			     <a class="has-arrow" href="#" aria-expanded="false">
-                             <i class="mdi mdi-cart" style="font-size: 18px"></i>
-                             <span class="hide-menu">HQ Stock<i class="fas fa-angle-down"></i></span>
-                             </a>
-                             <ul aria-expanded="false"class="collapse">
-                                 <li><a href="{{route('stock_count')}}">Stock Count</a></li>
-                            </ul>
-                       </li>
-                       @endif
+                        @if (session()->get('user')->role == 'Agent')
+                            <li>
+                                <a class="has-arrow" href="#" aria-expanded="false">
+                                    <i class="mdi mdi-cart" style="font-size: 18px"></i>
+                                    <span class="hide-menu">HQ Stock<i class="fas fa-angle-down"></i></span>
+                                </a>
+                                <ul aria-expanded="false"class="collapse">
+                                    <li><a href="{{ route('stock_count') }}">Stock Count</a></li>
+                                </ul>
+                            </li>
+                        @endif
 
-                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Sales" || session()->get('user')->role == "Sales_Inventory")
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false">
-                                <i class="mdi mdi-sale" style="font-size: 18px"></i>
-                                <span class="hide-menu">
-                                    @lang('lang.sales') <i class="fas fa-angle-down"></i>
-                                </span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse">
+                        @if (session()->get('user')->role == 'Owner' ||
+                                session()->get('user')->role == 'Sales' ||
+                                session()->get('user')->role == 'Sales_Inventory')
+                            <li>
+                                <a class="has-arrow " href="#" aria-expanded="false">
+                                    <i class="mdi mdi-sale" style="font-size: 18px"></i>
+                                    <span class="hide-menu">
+                                        @lang('lang.sales') <i class="fas fa-angle-down"></i>
+                                    </span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse">
 
                                 <li><a href="{{route('sale_panel')}}">@lang('lang.sales') @lang('lang.panel')</a></li>
                                 @if (session()->get('user')->name != "Wai" ||  session()->get('user')->name != "OS-AMThu" ||  session()->get('user')->name == "OS-HTZA")
@@ -333,8 +342,18 @@
                                 <li><a href="{{ route('reset_quantity') }}">Result Quantity</a></li>
                             </ul>
                         </li>
-                        @endif
+			@endif
 
+                        @if (session()->get('user')->name == 'POE')
+                            <li>
+                                <a class="has-arrow " href="#" aria-expanded="false">
+                                    <i class="mdi mdi-cart" style="font-size: 18px"></i>
+                                    <span class="hide-menu">
+                                        Factory <i class="fas fa-angle-down"></i>
+                                    </span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{ route('newcreate_itemrequest') }}">Creat Factory PO</a></li>
 
                         @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Sales" || session()->get('user')->role == "Sales_Inventory" || session()->get('user')->role == "Finance")
                         <li>
@@ -364,180 +383,306 @@
                         </li>
                         @endif
 
-                        @if (session()->get('user')->name == "POE")
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false">
-                                <i class="mdi mdi-cart" style="font-size: 18px"></i>
-                                <span class="hide-menu">
-                                    Factory <i class="fas fa-angle-down"></i>
-                                </span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{route('newcreate_itemrequest')}}">Creat Factory PO</a></li>
 
-                            </ul>
-                        </li>
+                        @if (session()->get('user')->role == 'Owner' ||
+                                session()->get('user')->role == 'Factory' ||
+                                session()->get('user')->role == 'Finance')
+                            <li>
+                                <a class="has-arrow " href="#" aria-expanded="false">
+                                    <i class="mdi mdi-cart" style="font-size: 18px"></i>
+                                    <span class="hide-menu">
+                                        Factory <i class="fas fa-angle-down"></i>
+                                    </span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{ route('incomingFactoryOrder') }}">Incoming Factory Orders</a></li>
+                                    <li><a href="{{ route('changeFactoryOrder') }}">Change Factory Orders</a></li>
+                                    <li><a href="{{ route('deliveredFactoryOrder') }}">Delivered Factory Orders</a>
+                                    </li>
+                                    <li><a href="{{ route('newcreate_itemrequest') }}">Creat Factory PO</a></li>
+                                    <li><a href="{{ route('fabric_count') }}">Daily Fabric Count</a></li>
+                                    @if (session()->get('user')->role == 'Factory')
+                                        <li><a href="{{ route('order_history') }}">@lang('lang.order_voucher_history')</a></li>
+                                    @endif
+
+                                </ul>
+                            </li>
+                        @endif
+                        @if (session()->get('user')->role == 'Finance' || session()->get('user')->name == 'POE')
+                            <li>
+                                <a class="has-arrow " href="#" aria-expanded="false">
+                                    <i class="mdi mdi-account-multiple-outline" style="font-size: 18px"></i>
+                                    <span class="hide-menu">
+                                        @lang('lang.admin') <i class="fas fa-angle-down"></i>
+                                    </span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse">
+
+                                    <li><a href="{{ route('purchase_list') }}">@lang('lang.purchase')
+                                            @lang('lang.list')</a></li>
+                                    <li><a href="{{ route('supplier_credit_list') }}">@lang('lang.supplier_credit')</a></li>
+
+                                    <li><a href="{{ route('factorypo_page') }}">Factory PO List</a></li>
+                                    <li><a href="{{ route('itemadjust-lists') }}">@lang('lang.item_adjust')
+                                            @lang('lang.list')</a></li>
+                                    <li><a href="{{ route('products_qty') }}">Instock / Preorder</a></li>
+
+                                </ul>
+                            </li>
                         @endif
 
+                        @if (session()->get('user')->role == 'Factory')
+                            <li>
+                                <a class="has-arrow " href="#" aria-expanded="false">
+                                    <i class="mdi mdi-account-multiple-outline" style="font-size: 18px"></i>
+                                    <span class="hide-menu">
+                                        @lang('lang.admin') <i class="fas fa-angle-down"></i>
+                                    </span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse">
 
-                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Factory" || session()->get('user')->role == "Finance")
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false">
-                                <i class="mdi mdi-cart" style="font-size: 18px"></i>
-                                <span class="hide-menu">
-                                    Factory <i class="fas fa-angle-down"></i>
-                                </span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{route('incomingFactoryOrder')}}">Incoming Factory Orders</a></li>
-                                <li><a href="{{route('changeFactoryOrder')}}">Change Factory Orders</a></li>
-                                <li><a href="{{route('deliveredFactoryOrder')}}">Delivered Factory Orders</a></li>
-                                <li><a href="{{route('newcreate_itemrequest')}}">Creat Factory PO</a></li>
-                                <li><a href="{{route('fabric_count')}}">Daily Fabric Count</a></li>
-                                @if(session()->get('user')->role == "Factory")
-                                    <li><a href="{{route('order_history')}}">@lang('lang.order_voucher_history')</a></li>
-                                @endif
-
-                            </ul>
-                        </li>
-                        @endif
-                        @if (session()->get('user')->role == "Finance" ||  session()->get('user')->name == "POE" )
-
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false">
-                                <i class="mdi mdi-account-multiple-outline" style="font-size: 18px"></i>
-                                <span class="hide-menu">
-                                    @lang('lang.admin') <i class="fas fa-angle-down"></i>
-                                </span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse">
-
-                                <li><a href="{{route('purchase_list')}}">@lang('lang.purchase') @lang('lang.list')</a></li>
-                                <li><a href="{{route('supplier_credit_list')}}">@lang('lang.supplier_credit')</a></li>
-
-                                <li><a href="{{route('factorypo_page')}}">Factory PO List</a></li>
-                                <li><a href="{{route('itemadjust-lists')}}">@lang('lang.item_adjust') @lang('lang.list')</a></li>
-                                <li><a href="{{route('products_qty')}}">Instock / Preorder</a></li>
-
-                            </ul>
-                        </li>
+                                    <li><a href="{{ route('factorypo_page') }}">Factory PO List</a></li>
+                                </ul>
+                            </li>
                         @endif
 
-                        @if (session()->get('user')->role =="Factory")
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false">
-                                <i class="mdi mdi-account-multiple-outline" style="font-size: 18px"></i>
-                                <span class="hide-menu">
-                                    @lang('lang.admin') <i class="fas fa-angle-down"></i>
-                                </span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse">
-
-                                <li><a href="{{route('factorypo_page')}}">Factory PO List</a></li>
-                            </ul>
-                        </li>
+                        @if (session()->get('user')->role == 'Owner')
+                            <li>
+                                <a class="has-arrow " href="#" aria-expanded="false">
+                                    <i class="mdi mdi-account-multiple-outline" style="font-size: 18px"></i>
+                                    <span class="hide-menu">
+                                        @lang('lang.admin') <i class="fas fa-angle-down"></i>
+                                    </span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{ route('admin_dashboard') }}">@lang('lang.admin')
+                                            @lang('lang.panel')</a></li>
+                                    <li><a href="{{ route('employee_list') }}">@lang('lang.employee')
+                                            @lang('lang.list')</a></li>
+                                    <!--<li><a href="{{ route('customer_list') }}">@lang('lang.customer') @lang('lang.list')</a></li>-->
+                                    <li><a href="{{ route('purchase_list') }}">@lang('lang.purchase')
+                                            @lang('lang.list')</a></li>
+                                    <li><a href="{{ route('supplier_credit_list') }}">@lang('lang.supplier_credit')</a></li>
+                                    <!--<li><a href="{{ route('itemrequestlists') }}">@lang('lang.itemrequest') @lang('lang.list')</a></li>-->
+                                    <li><a href="{{ route('factorypo_page') }}">Factory PO List</a></li>
+                                    <li><a href="{{ route('itemadjust-lists') }}">@lang('lang.item_adjust')
+                                            @lang('lang.list')</a></li>
+                                    <li><a href="{{ route('products_flag') }}">Product Flag Control</a></li>
+                                    <li><a href="{{ route('products_qty') }}">Instock / Preorder</a></li>
+                                    <li><a href="{{ route('website_user') }}">Website User</a></li>
+                                    <li><a href="{{ route('email_marketing') }}">Email Marketing</a></li>
+                                    <li><a href="/facebook">Facebook</a></li>
+                                    <li><a href="/promotionphoto">Promotion Photos</a></li>
+                                    <li><a href="/youtube">YouTube</a></li>
+                                </ul>
+                            </li>
                         @endif
 
-                        @if(session()->get('user')->role == "Owner" )
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false">
-                                <i class="mdi mdi-account-multiple-outline" style="font-size: 18px"></i>
-                                <span class="hide-menu">
-                                    @lang('lang.admin') <i class="fas fa-angle-down"></i>
-                                </span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{route('admin_dashboard')}}">@lang('lang.admin') @lang('lang.panel')</a></li>
-                                <li><a href="{{route('employee_list')}}">@lang('lang.employee') @lang('lang.list')</a></li>
-                                <!--<li><a href="{{route('customer_list')}}">@lang('lang.customer') @lang('lang.list')</a></li>-->
-                                <li><a href="{{route('purchase_list')}}">@lang('lang.purchase') @lang('lang.list')</a></li>
-                                <li><a href="{{route('supplier_credit_list')}}">@lang('lang.supplier_credit')</a></li>
-                                <!--<li><a href="{{route('itemrequestlists')}}">@lang('lang.itemrequest') @lang('lang.list')</a></li>-->
-                                <li><a href="{{route('factorypo_page')}}">Factory PO List</a></li>
-                                <li><a href="{{route('itemadjust-lists')}}">@lang('lang.item_adjust') @lang('lang.list')</a></li>
-                                <li><a href="{{route('products_flag')}}">Product Flag Control</a></li>
-                                <li><a href="{{route('products_qty')}}">Instock / Preorder</a></li>
-                                <li><a href="{{route('website_user')}}">Website User</a></li>
-                                <li><a href="{{route('email_marketing')}}">Email Marketing</a></li>
-                                <li><a href="/facebook">Facebook</a></li>
-                                <li><a href="/promotionphoto">Promotion Photos</a></li>
-                                <li><a href="/youtube">YouTube</a></li>
-                            </ul>
-                        </li>
+                        @if (
+                            (session()->get('user')->role == 'Owner' || session()->get('user')->role == 'Finance') &&
+                                session()->get('user')->name != 'ShwinPyone')
+
+                            <li>
+                                <a class="has-arrow " href="#" aria-expanded="false">
+                                    <i class="mdi mdi-account-multiple-outline" style="font-size: 18px"></i>
+                                    <span class="hide-menu">
+                                        @lang('lang.finan') <i class="fas fa-angle-down"></i>
+                                    </span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{ route('financial') }}">Profit & Loss</a></li>
+                                    <li><a href="{{ route('expenses') }}">@lang('lang.expenses') @lang('lang.list')</a>
+                                    </li>
+                                    <li><a href="{{ route('incomes') }}">Income @lang('lang.list')</a></li>
+                                    <li><a href="{{ route('fixasset') }}">@lang('lang.fixasset') </a></li>
+                                    <li><a href="{{ route('show_capital') }}">Capital Panel</a></li>
+                                    <li><a href="{{ route('bank_list') }}">Bank Account Lists</a></li>
+                                    <li><a href="{{ route('admin_transaction_lists') }}">Transaction
+                                            @lang('lang.list')</a>
+                                    </li>
+                                    <li><a href="{{ route('receivable_payable_lists') }}">Receivable and Payable</a>
+                                    </li>
+
+                                    @if (session()->get('user')->role == 'Finance')
+                                        <li><a href="{{ route('purchase_list') }}">@lang('lang.purchase')
+                                                @lang('lang.list')</a></li>
+                                        <li><a href="{{ route('supplier_credit_list') }}">@lang('lang.supplier_credit')</a></li>
+                                        <li><a href="{{ route('sale_history') }}">@lang('lang.sale_history')</a></li>
+                                        <li><a href="{{ route('salescustomers_list') }}">@lang('lang.sale_customer_list')</a></li>
+                                        <li><a href="{{ route('discount_record_list') }}">@lang('lang.sale_discount_record')</a></li>
+                                        <li><a href="{{ route('stock_count') }}">@lang('lang.stock_count')and Price</a></li>
+                                    @endif
+                                </ul>
+                            </li>
                         @endif
 
-                        @if((session()->get('user')->role == "Owner" || session()->get('user')->role == "Finance") && session()->get('user')->name != "ShwinPyone" )
+                        {{-- financial accounting --}}
 
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false">
-                                <i class="mdi mdi-account-multiple-outline" style="font-size: 18px"></i>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link" id="trasnfer_data">
+                                <i class="nav-icon far fa-address-card"></i>
                                 <span class="hide-menu">
-                                    @lang('lang.finan') <i class="fas fa-angle-down"></i>
+                                    @lang('lang.accounting_finance') <i class="fas fa-angle-down"></i>
                                 </span>
                             </a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{route('financial')}}">Profit & Loss</a></li>
-                                <li><a href="{{route('expenses')}}">@lang('lang.expenses') @lang('lang.list')</a></li>
-                                <li><a href="{{route('incomes')}}">Income @lang('lang.list')</a></li>
-                                <li><a href="{{route('fixasset')}}">@lang('lang.fixasset') </a></li>
-                                <li><a href="{{route('show_capital')}}">Capital Panel</a></li>
-                                <li><a href="{{ route('bank_list') }}">Bank Account Lists</a></li>
-                                <li><a href="{{ route('admin_transaction_lists') }}">Transaction @lang('lang.list')</a>
+
+                            <ul class="nav nav-treeview">
+                                <li>
+                                    <a class="has-arrow " href="#" aria-expanded="false">
+                                        <span class="hide-menu">
+                                            Financial List</i>
+                                        </span>
+                                    </a>
+                                    <ul aria-expanded="false" class="collapse">
+                                        <li class="nav-item">
+                                            <a href="{{ route('accounttypeList') }}" class="nav-link ">
+                                                {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
+                                                <p>
+                                                    Account Type
+                                                </p>
+                                            </a>
+                                        </li> 
+                                        <li class="nav-item">
+                                            <a href="{{ route('headingList') }}" class="nav-link">
+                                                {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
+                                                <p>
+                                                    Heading
+                                                </p>
+                                            </a>
+                                        </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('subheadingList') }}" class="nav-link">
+                                        {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
+                                        <p>
+                                            Sub Heading
+                                        </p>
+                                    </a>
                                 </li>
-                                <li><a href="{{route('receivable_payable_lists')}}">Receivable and Payable</a>
+                                <li class="nav-item">
+                                    <a href="{{ route('account_list') }}" class="nav-link">
+                                        {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
+                                        <p>
+                                            Account Lists
+                                        </p>
+                                    </a>
+                                </li>
+                               
+                                
+                                    </ul>
                                 </li>
 
-                                @if(session()->get('user')->role == "Finance")
-                                <li><a href="{{route('purchase_list')}}">@lang('lang.purchase') @lang('lang.list')</a></li>
-                                <li><a href="{{route('supplier_credit_list')}}">@lang('lang.supplier_credit')</a></li>
-                                <li><a href="{{route('sale_history')}}">@lang('lang.sale_history')</a></li>
-                                <li><a href="{{route('salescustomers_list')}}">@lang('lang.sale_customer_list')</a></li>
-                                <li><a href="{{route('discount_record_list')}}">@lang('lang.sale_discount_record')</a></li>
-                                <li><a href="{{route('stock_count')}}">@lang('lang.stock_count')and Price</a></li>
-                                @endif
+
+                                
+                                {{--  --}}
+
+                                <li class="nav-item">
+                                    <a href="{{ route('currency') }}" class="nav-link">
+                                        {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
+                                        <p>
+                                            Currency Lists
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('incoming') }}" class="nav-link">
+                                        {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
+                                        <p>
+                                            Financial Income Lists
+                                        </p>
+                                    </a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a href="{{ route('financial_bank_list') }}" class="nav-link">
+                                        {{-- <i class="nav-icon fas fa-money-check-alt"></i> --}}
+                                        <p>
+                                            Bank List
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+
+                                    <a href="{{ route('financial_purchase_list') }}" class="nav-link">
+                                        {{-- <i class="nav-icon fas fa-circle"></i> --}}
+                                        <p>
+                                            Purchase List
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a href="{{ route('financial_transaction') }}" class="nav-link">
+                                        {{-- <i class="nav-icon far fa-address-card"></i> --}}
+                                        <p>
+                                            Transaction List
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('financial_expense') }}" class="nav-link">
+                                        {{-- <i class="nav-icon fas fa-circle"></i> --}}
+                                        <p>
+                                            Financial Expense List
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('journalEntry') }}" class="nav-link">
+                                        {{-- <i class="nav-icon far fa-address-card"></i> --}}
+                                        <p>
+                                            Journal Entry
+                                        </p>
+                                    </a>
+                                </li>
+
                             </ul>
                         </li>
+
+
+                        {{-- financial accounting end --}}
+
+
+                        @if (session()->get('user')->role == 'Partner')
+                            <li>
+                                <a class="has-arrow " href="#" aria-expanded="false">
+                                    <i class="mdi mdi-sale" style="font-size: 18px"></i>
+                                    <span class="hide-menu">
+                                        Reports <i class="fas fa-angle-down"></i>
+                                    </span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{ route('sale_history') }}">@lang('lang.sale_history')</a></li>
+                                    <li><a href="{{ route('order_page', '1') }}">@lang('lang.incoming_order')</a></li>
+                                </ul>
+                            </li>
                         @endif
 
-                        @if(session()->get('user')->role == "Partner")
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false">
-                                <i class="mdi mdi-sale" style="font-size: 18px"></i>
-                                <span class="hide-menu">
-                                    Reports <i class="fas fa-angle-down"></i>
-                                </span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse">
-                            <li><a href="{{route('sale_history')}}">@lang('lang.sale_history')</a></li>
-                            <li><a href="{{route('order_page','1')}}">@lang('lang.incoming_order')</a></li>
-                            </ul>
-                        </li>
-                        @endif
-
 
                         <li>
-                            <a href="{{route('logoutprocess')}}"><i class="mdi mdi-power" style="font-size: 18px"></i> <span>@lang('lang.logout')</span></a>
+                            <a href="{{ route('logoutprocess') }}"><i class="mdi mdi-power"
+                                    style="font-size: 18px"></i> <span>@lang('lang.logout')</span></a>
                         </li>
                         @php
-                        $shopname= session()->get('from');
-                        switch ($shopname) {
-                          case '1':
-                              $shop_name="Medical World";
-                              break;
-                          case '2':
-                          $shop_name="ရွှေကြာဖြူ(Super 9)";
-                          break;
-                          case '3':
-                              $shop_name="ရွှေကြာဖြူ(35)";
-                              break;
-                          default:
-                          $shop_name="Medical World";
-                            break;
-                      }
+                            $shopname = session()->get('from');
+                            switch ($shopname) {
+                                case '1':
+                                    $shop_name = 'Medical World';
+                                    break;
+                                case '2':
+                                    $shop_name = 'ရွှေကြာဖြူ(Super 9)';
+                                    break;
+                                case '3':
+                                    $shop_name = 'ရွှေကြာဖြူ(35)';
+                                    break;
+                                default:
+                                    $shop_name = 'Medical World';
+                                    break;
+                            }
                         @endphp
-                         <li>
-                          <span class="text-primary" style="margin-left: 20px;font-weight:600">{{session()->get('user')->name}}</span>
-                      </li>
+                        <li>
+                            <span class="text-primary"
+                                style="margin-left: 20px;font-weight:600">{{ session()->get('user')->name }}</span>
+                        </li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -589,55 +734,56 @@
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    <script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="{{asset('assets/plugins/popper/popper.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('assets/plugins/popper/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
-    <script src="{{asset('js/jquery.slimscroll.js')}}"></script>
+    <script src="{{ asset('js/jquery.slimscroll.js') }}"></script>
     <!--Wave Effects -->
-    <script src="{{asset('js/waves.js')}}"></script>
+    <script src="{{ asset('js/waves.js') }}"></script>
     <!--Menu sidebar -->
-    <script src="{{asset('js/sidebarmenu.js')}}"></script>
+    <script src="{{ asset('js/sidebarmenu.js') }}"></script>
     <!--stickey kit -->
-    <script src="{{asset('assets/plugins/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/sparkline/jquery.sparkline.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/sparkline/jquery.sparkline.min.js')}}"></script>
+    <script src="{{ asset('assets/plugins/sticky-kit-master/dist/sticky-kit.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
     <!--Custom JavaScript -->
-    <script src="{{asset('js/custom.min.js')}}"></script>
+    <script src="{{ asset('js/custom.min.js') }}"></script>
 
     <!--c3 JavaScript -->
-    <script src="{{asset('assets/plugins/d3/d3.min.js')}}"></script>
+    <script src="{{ asset('assets/plugins/d3/d3.min.js') }}"></script>
 
-    <script src="{{asset('assets/plugins/c3-master/c3.min.js')}}"></script>
+    <script src="{{ asset('assets/plugins/c3-master/c3.min.js') }}"></script>
 
-    <script src="{{asset('assets/plugins/dropify/dist/js/dropify.min.js')}}"></script>
+    <script src="{{ asset('assets/plugins/dropify/dist/js/dropify.min.js') }}"></script>
 
-    <script src="{{asset('assets/plugins/popper/popper.min.js')}}"></script>
+    <script src="{{ asset('assets/plugins/popper/popper.min.js') }}"></script>
 
-    <script src="{{asset('assets/plugins/multiselect/js/jquery.multi-select.js')}}" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/multiselect/js/jquery.multi-select.js') }}" type="text/javascript"></script>
 
-    <script src="{{asset('assets/plugins/select2/dist/js/select2.full.min.js')}}" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
 
-    <script src="{{asset('js/validation.js')}}"></script>
+    <script src="{{ asset('js/validation.js') }}"></script>
 
-    <script src="{{ asset('js/dist/js/qrcode-reader.min.js')}}"></script>
+    <script src="{{ asset('js/dist/js/qrcode-reader.min.js') }}"></script>
 
-    <script src="{{asset('assets/plugins/moment/moment.js')}}"></script>
+    <script src="{{ asset('assets/plugins/moment/moment.js') }}"></script>
 
-    <script src="{{asset('assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js')}}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}">
+    </script>
 
-    <script src="{{asset('assets/plugins/bootstrap-datepicker/bootstrap-datetimepicker.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-datepicker/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
 
-    <script src="{{asset('assets/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 
-    <script src="{{asset('assets/js/Chart.bundle.min.js')}}"></script>
+    <script src="{{ asset('assets/js/Chart.bundle.min.js') }}"></script>
 
 
     @yield('js')
 
-    <script src="{{asset('js/jquery.PrintArea.js')}}" type="text/JavaScript"></script>
+    <script src="{{ asset('js/jquery.PrintArea.js') }}" type="text/JavaScript"></script>
 
     {{-- <script>
 
