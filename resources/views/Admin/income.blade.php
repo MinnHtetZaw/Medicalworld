@@ -19,7 +19,7 @@
 @section('content')
         <div class="row">
             <div class="col-6">
-                <a href="#" class="btn btn-info" data-toggle="modal" data-target="#add_incomes" >Add Income</a>
+                <a href="#" class="btn btn-info " data-toggle="modal" data-target="#add_incomes" >Add Income</a>
                 <div class="modal fade" id="add_incomes" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">

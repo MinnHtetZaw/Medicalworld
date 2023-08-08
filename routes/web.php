@@ -2,8 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ProductFlagController;
+use App\Http\Controllers\JournalEntryController;
+use App\Http\Controllers\FinancialAccountController;
+use App\Http\Controllers\FinancialExpenseController;
+use App\Http\Controllers\FinancialPurchaseController;
+use App\Http\Controllers\FinancialTransactionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -363,6 +370,68 @@ Route::group(['middleware' => ['UserAuth']], function () {
     Route::post('receivable/newsearch', 'Web\AdminController@search_receivable_bydate')->name('search_receivable_bydate');
     Route::post('payable/newsearch', 'Web\AdminController@search_payable_bydate')->name('search_payable_bydate');
     Route::post('itemadjust/newsearch', 'Web\StockController@search_itemadjust')->name('search_itemadjust');
+
+    //FinancialAccounting by zi
+    Route::get('account_type',[FinancialAccountController::class,'getAccountType'])->name('accounttypeList');
+       Route::post('account_type_store',[FinancialAccountController::class,'storeAccountType'])->name('account_type_store');
+       Route::post('account_type_update/{id}',[FinancialAccountController::class,'updateAccountType'])->name('account_type_update');
+       Route::get('heading',[FinancialAccountController::class,'getHeading'])->name('headingList');
+       Route::post('heading_store',[FinancialAccountController::class,'storeHeading'])->name('heading_store');
+       Route::post('heading_update/{id}',[FinancialAccountController::class,'updateHeading'])->name('heading_update');
+       Route::get('subheading',[FinancialAccountController::class,'getSubHeading'])->name('subheadingList');
+       Route::post('subheading_store',[FinancialAccountController::class,'storeSubHeading'])->name('subheading_store');
+       Route::post('heading_search',[FinancialAccountController::class,'searchHeading']);//Ajax
+       Route::post('subheading_update/{id}',[FinancialAccountController::class,'updateSubHeading'])->name('subheading_update');
+       Route::get('AccountList', [FinancialAccountController::class,'ShowAccountList'])->name('account_list');
+    //    Route::post('store_accounting',[FinancialAccountController::class,'store_accounting_account'])->name('store_accounting');
+       Route::post('store_accounting',[FinancialAccountController::class,'storeAccounting'])->name('store_accounting');
+       Route::post('subheading_search',[FinancialAccountController::class,'searchSubHeading']);// with Ajax
+       Route::post('account_search',[FinancialAccountController::class,'searchAccount']);
+       Route::post('searchAccounting',[FinancialAccountController::class,'searchAccounting'])->name('searchAccounting');
+       Route::post('update_accounting/{id}',[FinancialAccountController::class,'update_accounting'])->name('update_accounting');
+
+
+       Route::get('currency',[CurrencyController::class,'currency'])->name('currency');
+       Route::post('store_currency',[CurrencyController::class,'store_currency'] )->name('store_currency');
+       Route::post('update_currency/{id}',[CurrencyController::class,'update_currency'] )->name('update_currency');
+
+       Route::get('incoming',[FinancialAccountController::class,'incoming'])->name('incoming');
+       Route::post('store_incoming',[FinancialAccountController::class,'store_incoming'] )->name('store_incoming');
+       Route::post('ajax_search_code', [FinancialAccountController::class,
+       'ajax_search_code'])->name('ajax_search_code');
+       Route::post('ajax_convert',  [FinancialAccountController::class,'ajax_convert'])->name('ajax_convert');
+       Route::post('ajax_date_filter', [FinancialAccountController::class,'ajax_date_filter'] )->name('ajax_date_filter');
+
+      
+       Route::get('financial_bank_list', [BankController::class,'financial_bank_list'])->name('financial_bank_list');
+       Route::post('store_bank', [BankController::class,'store_bank'])->name('store_bank');
+
+       Route::get('financialPurchase', [FinancialPurchaseController::class,'getPurchaseHistory'])->name('financial_purchase_list');
+       Route::post('store_factorypo_expense',[FinancialPurchaseController::class,'storeFactoryPoExpense'])->name('store_factorypo_expense');
+
+       Route::get('transaction',[FinancialTransactionsController::class,'getTransactionList'])->name('financial_transaction');
+       Route::post('financial_transaction_filter', [FinancialTransactionsController::class,'ajaxTransactionFilter'])->name('financial_transaction_filter');
+
+       Route::get('financial_expense', [FinancialExpenseController::class,'expense'])->name('financial_expense');
+       Route::post('store_financial_expense', [FinancialExpenseController::class,'financial_store_expense'])->name('store_financial_expense');
+       Route::post('financial_ajax_convert',[FinancialExpenseController::class,'financial_store_expense'])->name('ajax_convert');
+       Route::post('ajax_code_search', [FinancialExpenseController::class,'ajax_code_search'])->name('ajax_code_search');
+       Route::post('ajax_filter_date', [FinancialExpenseController::class,'ajax_filter_date'])->name('ajax_filter_date');
+       Route::get('expense_delete/{id}',[FinancialExpenseController::class,'expenseDelete'])->name('financial_expense_delete');
+       Route::get('journalEntry',[JournalEntryController::class,'getEntryList'])->name('journalEntry');
+       Route::post('transaction_filter', [JournalEntryController::class,'ajaxTransactionFilter'])->name('transaction_filter');
+
+
+
+      
+    
+
+
+
+
+
+
+
 
     //facebook_link
     Route::get('facebook', 'Web\AdminController@facebook_index')->name('facebook_index');
