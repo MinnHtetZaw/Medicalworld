@@ -278,6 +278,8 @@
                                         </li>
                                     </ul>
                                 </li>
+				</ul>
+			</li>
                         @endif
 
                         @if (session()->get('user')->role == 'Owner' ||
@@ -354,6 +356,9 @@
                                 </a>
                                 <ul aria-expanded="false" class="collapse">
                                     <li><a href="{{ route('newcreate_itemrequest') }}">Creat Factory PO</a></li>
+				</ul>
+				</li>
+			@endif
 
                         @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Sales" || session()->get('user')->role == "Sales_Inventory" || session()->get('user')->role == "Finance")
                         <li>
@@ -382,7 +387,6 @@
                             </ul>
                         </li>
                         @endif
-
 
                         @if (session()->get('user')->role == 'Owner' ||
                                 session()->get('user')->role == 'Factory' ||
