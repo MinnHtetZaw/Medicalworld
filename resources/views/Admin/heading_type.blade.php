@@ -77,7 +77,7 @@
                     <td>{{$heading->accountingtype->type_name}}</td>
 
                     <td><a href="" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#update_heading{{$heading->id}}">Update</a>
-                    <a href="" class="btn btn-danger btn-sm">Delete</a></td>
+                    <a href="{{route('financial_heading_delete',$heading->id)}} " class="btn btn-danger btn-sm">Delete</a></td>
             </tr>
 
 

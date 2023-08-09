@@ -88,7 +88,7 @@
                     <td>{{$subheading->name}}</td>
                     <td>{{$subheading->heading->type_name}}</td>
                     <td><a href="" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#update_subheading{{$subheading->id}}">Update</a>
-                    <a href="" class="btn btn-danger btn-sm">Delete</a></td>
+                    <a href=" {{route('financial_subheading_delete',$subheading->id)}} " class="btn btn-danger btn-sm">Delete</a></td>
             </tr>
 
 

@@ -65,7 +65,7 @@
                     <td>{{$accounttype->description}}</td>
 
                     <td><a href="" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#update_account_type{{$accounttype->id}}">Update</a>
-                    <a href="" class="btn btn-danger btn-sm">Delete</a></td>
+                    <a href="{{route("financial_accountType_delete",$accounttype->id)}} " class="btn btn-danger btn-sm">Delete</a></td>
             </tr>
 
 

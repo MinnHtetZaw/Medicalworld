@@ -50,6 +50,13 @@ class FinancialAccountController extends Controller
 
         return back();
     }//End Method
+    //Delete account type
+    public function delete_accountType($id){
+        FinancialAccountingType::where('id',$id)->delete();
+        return back();
+
+
+    }//End method
 
     //HeadingType Section
     public function getHeading()
@@ -90,6 +97,13 @@ class FinancialAccountController extends Controller
 
         return back();
     }//End Method
+
+    //Delete heading
+
+ public function financial_heading_delete($id){
+    HeadingType::where('id',$id)->delete();
+    return back();
+ }//End method
 
     //SubHeading List Section
     public function getSubHeading()
@@ -151,6 +165,13 @@ class FinancialAccountController extends Controller
 
         return back();
     }//End Method
+     //Delete Subheading
+     public function financial_subheading_delete($id){
+        SubHeading::where('id',$id)->delete();
+        return back();
+    
+    }
+
 
     //Account Lists
     public function ShowAccountList(Request $request) {

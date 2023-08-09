@@ -58,7 +58,7 @@
                                 <th>Credit/Debit</th>
                                 <th>Amount</th>
                                 <th>Remark</th>
-                                <th>Action</th>
+                                <th class="col-2">Action</th>
 
                             </tr>
                         </thead>
@@ -76,17 +76,29 @@
                                 <td style="font-size:15px; width:50px" class="border-0">
                                     <button class="btn btn-primary btn-sm"  data-toggle="collapse" data-target="#related_entry{{$data->id}}" >
                                         <i class="fa fa-caret-down" aria-hidden="true"></i>
+
                                     </button>
                                     {{-- {{route('journal_entry_edit',$data->id)}} --}}
-                                    <a href="#">
-                                        <button class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    <a href="{{route('journal_entry_edit',$data->id)}}">
+                                        <button class="btn btn-warning btn-sm">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            Edit
 
                                         </button>
                                         </a>
+                                        <a href="{{route('journal_entry_delete',$data->id)}}">
+                                            <button class="btn btn-danger btn-sm">
+                                                <i class="fa fa-trash-o" aria-hidden="true">
+                                                    
+                                                </i>
+                                                Delete
+    
+                                            </button>
+                                            </a>
 
-                                    <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    {{-- <button class="btn btn-danger btn-sm">
 
-                                    </button>
+                                    </button> --}}
 
                                 </td>
 
@@ -153,7 +165,7 @@
 
             <div class="modal-body">
 
-                <form action="#" method="POST">
+                <form action="{{route('store_journal_entry')}}" method="POST">
 
                     @csrf
                     <div class="row">

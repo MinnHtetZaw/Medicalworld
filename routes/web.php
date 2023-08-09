@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\TransferController;
 use App\Http\Controllers\ProductFlagController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\FinancialAccountController;
@@ -389,7 +390,16 @@ Route::group(['middleware' => ['UserAuth']], function () {
        Route::post('account_search',[FinancialAccountController::class,'searchAccount']);
        Route::post('searchAccounting',[FinancialAccountController::class,'searchAccounting'])->name('searchAccounting');
        Route::post('update_accounting/{id}',[FinancialAccountController::class,'update_accounting'])->name('update_accounting');
-
+       Route::get('financial_accountType_delete/{id}',[FinancialAccountController::class,'delete_accountType'])->name('financial_accountType_delete');
+       Route::get('financial_heading_delete/{id}',[FinancialAccountController::class,'financial_heading_delete'])->name('financial_heading_delete');
+       Route::get('financial_subheading_delete/{id}',[FinancialAccountController::class,'financial_subheading_delete'])->name('financial_subheading_delete');
+       Route::get('expense_delete/{id}',[FinancialExpenseController::class,'expenseDelete'])->name('financial_expense_delete');
+//
+       Route::post('store_journal_entry',[JournalEntryController::class,'storeEntry'])->name('store_journal_entry');
+       Route::get('journal_entry_edit/{id}',[JournalEntryController::class,'editEntry'])->name('journal_entry_edit');
+       Route::post('journal_entry_update/{entry}',[JournalEntryController::class,'updateEntry'])->name('journal_entry_update');
+       Route::get('journal_entry_delete/{id}',[JournalEntryController::class,'journal_entry_delete'])->name('journal_entry_delete');
+       
 
        Route::get('currency',[CurrencyController::class,'currency'])->name('currency');
        Route::post('store_currency',[CurrencyController::class,'store_currency'] )->name('store_currency');
@@ -420,6 +430,9 @@ Route::group(['middleware' => ['UserAuth']], function () {
        Route::get('expense_delete/{id}',[FinancialExpenseController::class,'expenseDelete'])->name('financial_expense_delete');
        Route::get('journalEntry',[JournalEntryController::class,'getEntryList'])->name('journalEntry');
        Route::post('transaction_filter', [JournalEntryController::class,'ajaxTransactionFilter'])->name('transaction_filter');
+      
+       Route::get('financial_tranfer_list',[TransferController::class,'TransferList'])->name('financialtransfer_list');
+       Route::post('store_transfer',[TransferController::class,'storeTransfer'])->name('store_transfer');
 
 
 

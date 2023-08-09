@@ -638,6 +638,15 @@
                                         </p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+
+                                    <a href="{{route('financialtransfer_list')}}" class="nav-link">
+                                      {{-- <i class="nav-icon fas fa-circle"></i> --}}
+                                      <p>
+                                        Transfer List
+                                      </p>
+                                    </a>
+                                  </li>
 
                             </ul>
                         </li>
