@@ -24,7 +24,8 @@ class FinancialTransactions extends Model
         'currency_id',
         'expense_id',
         'incoming_flag',
-        'incoming_id'
+        'incoming_id',
+        
     ];
     public function accounting(){
 		return $this->belongsTo('App\Accounting','account_id');

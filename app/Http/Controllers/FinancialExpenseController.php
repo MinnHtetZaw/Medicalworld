@@ -42,35 +42,15 @@ class FinancialExpenseController extends Controller
    //Store Financial Expense
    protected function financial_store_expense(Request $request)
    {
-    // // return $request;
-    //     $initialValue = $request->initial_amount;
-    //     $initialCurrency = $request->initial_currency;
-    //     $finalCurrency = $request->final_currency;
-    //     // return $initialCurrency;
-
-    //     $conversionRate = Currency::where('id', $initialCurrency)
-    //     ->value('exchange_rate');
-    //     return $conversionRate;
-
-    //     if (!$conversionRate) {
-    //         // Handle case where conversion rate is not found
-    //         // You can redirect back with an error message or handle it as needed.
-    //     }
-
-    //     // Calculate converted value
-    //     $convertedValue = $initialValue * $conversionRate;
-
-    //     return view('currency-converter', [
-    //         'initial_value' => $initialValue,
-    //         'initial_currency' => $initialCurrency,
-    //         'final_currency' => $finalCurrency,
-    //         'convertedValue' => $convertedValue,
-    //     ]);
-    // ////
+    // return $request;
 
       $exp = FinancialExpense::create([
 
-           'amount' => $request->amount,
+            "initial_currency_id"=>$request->initial_currency_id,
+            'final_currency_id'=>$request->final_currency_id,
+            'initial_amount'=>$request->initial_amount,
+            'final_amount'=>$request->final_amount,
+           'amount' => $request->final_amount,
            'remark' => $request->remark,
            'date' => $request->date,
        ]);
@@ -78,177 +58,54 @@ class FinancialExpenseController extends Controller
        $tran1 = FinancialTransactions::create([
            'account_id' =>$request->exp_acc ,
            'type' => 1,
-           'amount' => $request->amount,
+           'amount' => $request->final_amount,
            'remark' => $request->remark,
            'date' => $request->date,
            'type_flag' =>1,
            'expense_flag' => 1,
-           'currency_id' => $request->currency,
+           'currency_id' => $request->final_currency_id,
            'all_flag'  =>4,
            'expense_id'=> $exp->id
         ]);
        if($request->bank_acc == null){
-           $amt = Accounting::find( $request->cash_acc);
 
-           $usd_rate = Currency::find(5);
-           $euro_rate = Currency::find(6);
-           $sgp_rate = Currency::find(9);
-           $jpn_rate = Currency::find(10);
-           $chn_rate = Currency::find(11);
-           $idn_rate = Currency::find(12);
-           $mls_rate = Currency::find(13);
-           $thai_rate = Currency::find(14);
-           if($amt->currency_id == 4 && $request->currency == 5){
-               $con_amt = $request->amount * $usd_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 6){
-               $con_amt = $request->amount * $euro_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 9){
-               $con_amt = $request->amount * $sgp_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 10){
-               $con_amt = $request->amount * $jpn_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 11){
-               $con_amt = $request->amount * $chn_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 12){
-               $con_amt = $request->amount * $idn_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 13){
-               $con_amt = $request->amount * $mls_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 14){
-               $con_amt = $request->amount * $thai_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 5 && $request->currency == 4){
-               $con_amt = $request->amount / $usd_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 6 && $request->currency == 4){
-               $con_amt = $request->amount / $euro_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 9 && $request->currency == 4){
-               $con_amt = $request->amount / $sgp_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 10 && $request->currency == 4){
-               $con_amt = $request->amount / $jpn_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 11 && $request->currency == 4){
-               $con_amt = $request->amount / $chn_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 12 && $request->currency == 4){
-               $con_amt = $request->amount / $idn_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 13 && $request->currency == 4){
-               $con_amt = $request->amount / $mls_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 14 && $request->currency == 4){
-               $con_amt = $request->amount / $thai_rate->exchange_rate;
-           }
-           else{
-               $con_amt = $request->amount;
-           }
 
            $bc_acc = $request->cash_acc;
 
            $acc_cash = Accounting::find($bc_acc);
-           $acc_cash->balance -= $con_amt;
+           $acc_cash->balance -= $request->final_amount ;
            $acc_cash->save();
 
            $exp_cash = Accounting::find($request->exp_acc);
-           $exp_cash->balance += $request->amount;
+           $exp_cash->balance += $request->initial_amount;
            $exp_cash->save();
        }
        else if($request->cash_acc == null){
-           $amt = Accounting::find($request->bank_acc);
-
-           $usd_rate = Currency::find(5);
-           $euro_rate = Currency::find(6);
-           $sgp_rate = Currency::find(9);
-           $jpn_rate = Currency::find(10);
-           $chn_rate = Currency::find(11);
-           $idn_rate = Currency::find(12);
-           $mls_rate = Currency::find(13);
-           $thai_rate = Currency::find(14);
-
-           if($amt->currency_id == 4 && $request->currency == 5){
-               $con_amt = $request->amount * $usd_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 6){
-               $con_amt = $request->amount * $euro_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 9){
-               $con_amt = $request->amount * $sgp_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 10){
-               $con_amt = $request->amount * $jpn_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 11){
-               $con_amt = $request->amount * $chn_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 12){
-               $con_amt = $request->amount * $idn_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 13){
-               $con_amt = $request->amount * $mls_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 4 && $request->currency == 14){
-               $con_amt = $request->amount * $thai_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 5 && $request->currency == 4){
-               $con_amt = $request->amount / $usd_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 6 && $request->currency == 4){
-               $con_amt = $request->amount / $euro_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 9 && $request->currency == 4){
-               $con_amt = $request->amount / $sgp_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 10 && $request->currency == 4){
-               $con_amt = $request->amount / $jpn_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 11 && $request->currency == 4){
-               $con_amt = $request->amount / $chn_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 12 && $request->currency == 4){
-               $con_amt = $request->amount / $idn_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 13 && $request->currency == 4){
-               $con_amt = $request->amount / $mls_rate->exchange_rate;
-           }
-           else if($amt->currency_id == 14 && $request->currency == 4){
-               $con_amt = $request->amount / $thai_rate->exchange_rate;
-           }
-           else{
-               $con_amt = $request->amount;
-           }
-
 
            $bc_acc = $request->bank_acc;
 
            $acc_bank = Accounting::find($bc_acc);
-           $acc_bank->balance -= $con_amt;
+           $acc_bank->balance -= $request->final_amount;
            $acc_bank->save();
 
            $exp_bank = Accounting::find($request->exp_acc);
-           $exp_bank->balance += $request->amount;
+           $exp_bank->balance += $request->initial_amount;
            $exp_bank->save();
 
            $bank=Bank::where('account_id',$request->bank_acc)->first();
-           $bank->balance -= $con_amt;
+           $bank->balance -= $request->final_amount;
            $bank->save();
        }
 
        $tran = FinancialTransactions::create([
            'account_id' => $bc_acc,
            'type' => 2,
-           'amount' => $con_amt,
+           'amount' => $request->final_amount,
            'remark' => $request->remark,
            'date' => $request->date,
            'type_flag' =>2,
            'expense_flag' => 2,
-           'currency_id' => $request->currency,
+           'currency_id' => $request->final_currency_id,
            'all_flag'  =>4,
            'expense_id'=> $exp->id
        ]);

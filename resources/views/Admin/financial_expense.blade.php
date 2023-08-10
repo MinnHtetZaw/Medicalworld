@@ -83,7 +83,7 @@
 
 
                             <td style="font-size:15px;" class="text-center">{{$trans->date}}</td>
-                            <td style="font-size:15px;" class="text-center">{{$trans->amount}}</td>
+                            <td style="font-size:15px;" class="text-center">{{$trans->amount}}&nbsp;&nbsp;{{$trans->currency->name}}</td>
                             {{-- <td style="font-size:15px;" class="text-center">{{$trans->voucher_id}}</td> --}}
                             <td style="font-size:15px;" class="text-center">{{$trans->remark}}</td>
                             <td class="text-center col-2">
@@ -129,7 +129,7 @@
                                             <div class="col-md-2">
                                                 <label style="font-size:15px;" class="text-info">Amount</label>
 
-                                                <div style="font-size:15px;">{{$transa->amount}}</div>
+                                                <div style="font-size:15px;">{{$transa->amount}}&nbsp;&nbsp;{{$transa->currency->name}}</div>
 
                                             </div>
 
@@ -232,7 +232,7 @@
                                             <div class="form-group">
                                                 <label class="control-label">Iitial Amount</label>
 
-                                                <input type="number" class="form-control" name="initial_value" id="convert_amount" value="0">
+                                                <input type="number" class="form-control" name="initial_amount" id="convert_amount" value="0">
 
                                             </div>
                                         </div>
@@ -240,7 +240,7 @@
                                             <div class="form-group">
                                                 <label class="control-label">Initial Currency</label>
 
-                                                <select name="initial_currency" id="initial_currency" class="form-control mt-1">
+                                                <select name="initial_currency_id" id="initial_currency" class="form-control mt-1">
 
                                                     <option value="">Choose Currency</option>
                                                     @foreach ($currency as $curr)
@@ -263,7 +263,7 @@
                                             <div class="form-group">
                                                 <label class="control-label">Final Currency</label>
 
-                                                <select name="final_currency" id="" class="form-control mt-1" onchange="convert(this.value)">
+                                                <select name="final_currency_id" id="" class="form-control mt-1" onchange="convert(this.value)">
 
                                                     <option value="">Choose Currency</option>
                                                     @foreach ($currency as $curr)
