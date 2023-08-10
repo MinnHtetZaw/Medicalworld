@@ -392,13 +392,13 @@
     
 
                     </div>
-                @php
+                {{-- @php
                     $cash_account = App\Accounting::where('subheading_id',7)->get();
                     $bank_account = App\Accounting::where('subheading_id',19)->get();
                     // $financial_incoming_account = App\FinancialIncoming::get();
-                    $inc_account =  App\Accounting::where('subheading_id',6)->get()
+                    $inc_account =  App\Accounting::where('id',30)->first();
                     
-                @endphp
+                @endphp --}}
                 <div class="form-group mt-3" id="bankkk">
                     <label class="control-label">Bank Account</label>
                     <select class="form-control" name="bank_acc" id="bank_acc" class="bk">
@@ -419,7 +419,9 @@
                            @endforeach
                         </select>
                     </div>
-                    <div class="form-group mt-3">
+                    <input type="hidden" value="{{$inc_account->account_name}}">
+                    {{-- <div class="form-group mt-3">
+                    
 
                         <label class="control-label">Incoming Account</label>
                         <select class="form-control" name="exp_acc">
@@ -429,7 +431,7 @@
                            @endforeach
 
                         </select>
-                    </div>
+                    </div> --}}
                     
 
                     {{-- Hello Test End --}}
@@ -2467,7 +2469,7 @@
                             }
                         });
                     }
-                });//End
+                });//End Voucher
                 $("#repaymentDate").datetimepicker({
                     format: 'YYYY-MM-DD'
                 });

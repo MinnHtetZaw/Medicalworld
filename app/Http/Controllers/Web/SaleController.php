@@ -7,25 +7,26 @@ use App\Item;
 use DateTime;
 use App\Order;
 use App\Voucher;
-use App\OrderVoucher;
 use App\Category;
 use App\Customer;
 use App\Discount;
 use App\Employee;
 use Carbon\Carbon;
+use App\Accounting;
 use App\Itemadjust;
 use App\Stockcount;
 use App\SubCategory;
 use App\CountingUnit;
 use App\DiscountMain;
+use App\OrderVoucher;
 use App\SalesCustomer;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
 use App\SaleCustomerCreditlist;
 use Illuminate\Support\Facades\DB;
+use App\Exports\SalesHistoryExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Excel;
-use App\Exports\SalesHistoryExport;
 
 class SaleController extends Controller
 {
@@ -89,8 +90,14 @@ class SaleController extends Controller
 
 
         $salescustomers = SalesCustomer::all();
+        $cash_account = Accounting::where('subheading_id',7)->get();
+        $bank_account = Accounting::where('subheading_id',19)->get();
+        // $financial_incoming_account = App\FinancialIncoming::get();
+        $inc_account =  Accounting::where('id',30)->first();
+        
         // dd($salescustomers);
-        return view('Sale.sale_page',compact('voucher_code','items','categories','customers','employees','today_date','sub_categories','salescustomers','counting_units','vou_date'));
+        return view('Sale.sale_page',compact('voucher_code','items','categories','customers','employees','today_date','sub_categories','salescustomers',
+        'counting_units','vou_date','cash_account','bank_account','inc_account'));
     }//End method
 
     protected function getVucherPage(Request $request){
