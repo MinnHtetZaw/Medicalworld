@@ -91,7 +91,7 @@ class SaleController extends Controller
         $salescustomers = SalesCustomer::all();
         // dd($salescustomers);
         return view('Sale.sale_page',compact('voucher_code','items','categories','customers','employees','today_date','sub_categories','salescustomers','counting_units','vou_date'));
-    }
+    }//End method
 
     protected function getVucherPage(Request $request){
         // dd($request->item);

@@ -424,7 +424,9 @@ Route::group(['middleware' => ['UserAuth']], function () {
 
        Route::get('financial_expense', [FinancialExpenseController::class,'expense'])->name('financial_expense');
        Route::post('store_financial_expense', [FinancialExpenseController::class,'financial_store_expense'])->name('store_financial_expense');
-       Route::post('financial_ajax_convert',[FinancialExpenseController::class,'financial_store_expense'])->name('ajax_convert');
+       Route::get('financial_ajax_convert',[FinancialExpenseController::class,'ajax_convert'])->name('ajax_convert');
+       Route::get('get_exchange_rate',[FinancialExpenseController::class,'get_exchange_rate']);
+ 
        Route::post('ajax_code_search', [FinancialExpenseController::class,'ajax_code_search'])->name('ajax_code_search');
        Route::post('ajax_filter_date', [FinancialExpenseController::class,'ajax_filter_date'])->name('ajax_filter_date');
        Route::get('expense_delete/{id}',[FinancialExpenseController::class,'expenseDelete'])->name('financial_expense_delete');

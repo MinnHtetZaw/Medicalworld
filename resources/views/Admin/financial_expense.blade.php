@@ -40,9 +40,6 @@
                 
                     <span class="float-right"><button type="button" data-toggle="modal" data-target="#add_expenses" class="btn btn-primary" onclick="hide_bank_acc()"><i class="fas fa-plus"></i> Add Expense</button> </span>
            
-
-             
-
           </div>
 
           <div class="row" id="trial_balance">
@@ -169,6 +166,10 @@
                     <div class="modal-body">
 
                         <form action="{{route('store_financial_expense')}}" method="POST">
+                            {{-- @php
+                                $currency = App\Currency::get();
+                            @endphp
+                            <input type="hidden" id="{{$currency->id}}"> --}}
 
                             @csrf
                             <div class="row offset-md-5">
@@ -229,21 +230,44 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label">Amount</label>
+                                                <label class="control-label">Iitial Amount</label>
 
-                                                <input type="number" class="form-control" name="amount" id="convert_amount" value="0">
+                                                <input type="number" class="form-control" name="initial_value" id="convert_amount" value="0">
 
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label">Currency</label>
+                                                <label class="control-label">Initial Currency</label>
 
-                                                <select name="currency" id="" class="form-control mt-1" onchange="convert(this.value)">
+                                                <select name="initial_currency" id="initial_currency" class="form-control mt-1">
 
                                                     <option value="">Choose Currency</option>
                                                     @foreach ($currency as $curr)
                                                         <option value="{{$curr->id}}">{{$curr->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Final Amount</label>
+
+                                                <input type="number" class="form-control" name="final_amount" id="final_value" value="0">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Final Currency</label>
+
+                                                <select name="final_currency" id="" class="form-control mt-1" onchange="convert(this.value)">
+
+                                                    <option value="">Choose Currency</option>
+                                                    @foreach ($currency as $curr)
+                                                        <option value="{{$curr->id}}"  > <p id="convert-mmk-to-usd-button"> {{$curr->name}}</p></option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -289,29 +313,14 @@
 
 function convert(val){
 
-    var isChecked = $('#bank:checked').val()?true:false;
-    if(isChecked){
-        // alert("bank");
-        var bk_ch = $('#bank_acc').val();
-        // alert(bk_ch);
-    }
-    var isCheck = $('#cash:checked').val()?true:false;
-    if(isCheck){
-        var bk_ch = $('#cash_acc').val();
-        // alert(bk_ch);
-    }
+
     $.ajax({
-           type:'POST',
+           type:'GET',
            url:'/financial_ajax_convert',
            dataType:'json',
            data:{ "_token": "{{ csrf_token() }}",
-           "curr":val,
-            "bk_ch" : bk_ch,
             },
            success:function(data){
-            // alert(val);
-            if(data.convert.currency_id != val){
-                if(data.convert.currency_id == 4 || val == 4){
                 swal({
                         title: "Are You Sure Convert Currency?",
                         icon: 'warning',
@@ -320,83 +329,78 @@ function convert(val){
                     .then((isConfirm) => {
 
                     if (isConfirm) {
-                        // alert('hello');
+                       var initial_curr = $('#initial_currency').val(); 
                        var amt =  $('#convert_amount').val();
-                       if(val == 4 && data.convert.currency_id == 5){
+
+                       console.log(initial_curr,'af',amt,'ata',val);
+                       if(val == 4 && initial_curr == 5){
                            var con_amt = amt * data.usd_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 6){
+                       else if(val == 4 && initial_curr == 6){
                         var con_amt = amt * data.euro_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 9){
+                       else if(val == 4 && initial_curr == 9){
                         var con_amt = amt * data.sgp_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 10){
+                       else if(val == 4 && initial_curr == 10){
                         var con_amt = amt * data.jpn_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 11){
+                       else if(val == 4 && initial_curr == 11){
                         var con_amt = amt * data.chn_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 12){
+                       else if(val == 4 && initial_curr == 12){
                         var con_amt = amt * data.idn_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 13){
+                       else if(val == 4 && initial_curr == 13){
                         var con_amt = amt * data.mls_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 14){
+                       else if(val == 4 && initial_curr == 14){
                         var con_amt = amt * data.thai_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 5 && data.convert.currency_id == 4){
+                       else if(val == 5 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.usd_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                        
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 6 && data.convert.currency_id == 4){
+                       else if(val == 6 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.euro_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 9 && data.convert.currency_id == 4){
+                       else if(val == 9 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.sgp_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 10 && data.convert.currency_id == 4){
+                       else if(val == 10 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.jpn_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 11 && data.convert.currency_id == 4){
+                       else if(val == 11 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.chn_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 12 && data.convert.currency_id == 4){
+                       else if(val == 12 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.idn_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 13 && data.convert.currency_id == 4){
+                       else if(val == 13 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.mls_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 14 && data.convert.currency_id == 4){
+                       else if(val == 14 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.thai_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
                     }
                 })
-            }
-            else{
-                swal({
-                        title: "You Can't Convert This Currency?",
-                        icon: 'warning',
-                        buttons: ["No", "Yes"]
-                    })
-            }
-            }
+         
            }
     });
 }
@@ -738,5 +742,37 @@ function show_project(){
 
            })
         }
+
+        //For Expense list initial and fianal amount
+    //     $(document).ready(function() {
+    //     $('#convert-mmk-to-usd-button').on('click', function() {
+    //         let initialValueMMK = parseFloat($('#initial_value').val());
+    //         // console.log(initialValueMMK);
+
+    //         // Fetch exchange rate via AJAX
+    //         $.ajax({
+    //             url: '/get_exchange_rate',
+    //             method: 'GET',
+    //             dataType: 'json',
+    //             success: function(data) {
+    //                 let exchangeRateUSD = parseFloat(data.exchange_rate);
+    //                 let finalValueUSD = initialValueMMK / exchangeRateUSD;
+    //                 $('#final_value').val(finalValueUSD.toFixed(2));
+
+    //                 // Store the final amount in the currencies table
+    //                 $.ajax({
+    //                     url: '/store-final-amount',
+    //                     method: 'POST',
+    //                     data: {
+    //                         final_amount: finalValueUSD
+    //                     },
+    //                     success: function(response) {
+    //                         console.log(response.message);
+    //                     }
+    //                 });
+    //             }
+    //         });
+    //     });
+    // });
 
 </script>

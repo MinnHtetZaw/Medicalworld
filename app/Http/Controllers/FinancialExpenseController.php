@@ -32,9 +32,41 @@ class FinancialExpenseController extends Controller
        return view('Admin.financial_expense',compact('currency','bank_account','expense_tran','bank_cash_tran','exp_account','cash_account'));
    }//End method
 
+         protected function get_exchange_rate(){
+
+        $conversionRate = Currency::
+        all();
+        return $conversionRate;
+         }
+
    //Store Financial Expense
    protected function financial_store_expense(Request $request)
    {
+    // // return $request;
+    //     $initialValue = $request->initial_amount;
+    //     $initialCurrency = $request->initial_currency;
+    //     $finalCurrency = $request->final_currency;
+    //     // return $initialCurrency;
+
+    //     $conversionRate = Currency::where('id', $initialCurrency)
+    //     ->value('exchange_rate');
+    //     return $conversionRate;
+
+    //     if (!$conversionRate) {
+    //         // Handle case where conversion rate is not found
+    //         // You can redirect back with an error message or handle it as needed.
+    //     }
+
+    //     // Calculate converted value
+    //     $convertedValue = $initialValue * $conversionRate;
+
+    //     return view('currency-converter', [
+    //         'initial_value' => $initialValue,
+    //         'initial_currency' => $initialCurrency,
+    //         'final_currency' => $finalCurrency,
+    //         'convertedValue' => $convertedValue,
+    //     ]);
+    // ////
 
       $exp = FinancialExpense::create([
 
@@ -229,9 +261,12 @@ class FinancialExpenseController extends Controller
    }//End Method
 
    //Ajax Convert
-   public function ajax_convert(Request $request){
-    $bk_ch_acc = $request->bk_ch;
-    $convert = Accounting::find($bk_ch_acc);
+   public function ajax_convert(){
+
+    // $bk_ch_acc = $request->bk_ch;
+
+    // $convert = Accounting::find($bk_ch_acc);
+
     $usd_rate = Currency::find(5);
     $euro_rate = Currency::find(6);
     $sgp_rate = Currency::find(9);
@@ -240,8 +275,10 @@ class FinancialExpenseController extends Controller
     $idn_rate = Currency::find(12);
     $mls_rate = Currency::find(13);
     $thai_rate = Currency::find(14);
+
+
     return response()->json([
-        'convert' => $convert,
+        // 'convert' => $convert,
         'usd_rate' => $usd_rate,
         'sgp_rate' => $sgp_rate,
         'jpn_rate' => $jpn_rate,

@@ -369,6 +369,71 @@
 
                         </div>
                     </div>
+                    {{-- <div class="">Hello Testing</div> --}}
+                    <div class="float">
+                        <div class="form-check form-check-inline">
+
+                            <input class="form-check-input" type="radio" name="account" id="bank" value="1" onclick="show_bank_acc()">
+    
+                            <label class="form-check-label text-success" for="bank">Bank</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+    
+    
+                            <input class="form-check-input" type="radio" name="account" id="cash" value="2" onclick="show_cash_acc()">
+    
+                            <label class="form-check-label text-success" for="cash">Cash</label>
+                        </div>
+                        
+                          
+                            <span class="float-right"><button type="button" data-toggle="modal" data-target="#add_expenses" class="btn btn-primary" onclick="hide_bank_acc()">Hide</button > </span>
+                   
+                 
+    
+
+                    </div>
+                @php
+                    $cash_account = App\Accounting::where('subheading_id',7)->get();
+                    $bank_account = App\Accounting::where('subheading_id',19)->get();
+                    // $financial_incoming_account = App\FinancialIncoming::get();
+                    $inc_account =  App\Accounting::where('subheading_id',6)->get()
+                    
+                @endphp
+                <div class="form-group mt-3" id="bankkk">
+                    <label class="control-label">Bank Account</label>
+                    <select class="form-control" name="bank_acc" id="bank_acc" class="bk">
+                        <option value="">Select Bank Account</option>
+                       @foreach ($bank_account as $acc)
+
+                        <option value="{{$acc->id}}">{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                       @endforeach
+                    </select>
+                </div>
+                    <div class="form-group mt-3" id="cashhh">
+                        <label class="control-label">Cash Account</label>
+                        <select class="form-control" name="cash_acc" id="cash_acc">
+                            <option value="">Select Cash Account</option>
+                           @foreach ($cash_account as $acc)
+
+                            <option value="{{$acc->id}}">{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                           @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group mt-3">
+
+                        <label class="control-label">Incoming Account</label>
+                        <select class="form-control" name="exp_acc">
+                            <option value="">Select Amount</option>
+                           @foreach ($inc_account as $acc)
+                            <option value="{{$acc->id}}">{{$acc->account_name}}</option>
+                           @endforeach
+
+                        </select>
+                    </div>
+                    
+
+                    {{-- Hello Test End --}}
+                    
                 </div>
                 <div class="card pl-2 pr-4 py-3" style="border-radius: 0px;margin-top:-9px">
                     <div class="row mb-2">
@@ -2402,7 +2467,7 @@
                             }
                         });
                     }
-                });
+                });//End
                 $("#repaymentDate").datetimepicker({
                     format: 'YYYY-MM-DD'
                 });
@@ -3001,6 +3066,34 @@
                     return typeof value === 'string' && !value.trim()
                     || typeof value === 'undefined' || typeof value === null;
                 }
+                function show_bank_acc(){
+    // alert('hello');
+                     $('#cashhh').hide();
+              $('#bankkk').show();
+
+                      }
+    function show_cash_acc(){
+    // alert('hello');
+    $('#bankkk').hide();
+    $('#cashhh').show();
+}
+
+    function hide_bank_acc(){
+    // alert('hello');
+    $('#bankkk').hide();
+    $('#cashhh').hide();
+    $('#proj').hide(); 
+        }
+        function show_project(){
+        // alert('hello');
+        $('#proj').show();
+    }
+    function hide_project(){
+        // alert('hello');
+        $('#proj').hide();
+    }
+
+
             </script>
 
 @endsection
