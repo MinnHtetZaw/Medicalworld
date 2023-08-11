@@ -83,6 +83,23 @@
                                     </div>
                                 </div>
                             </div>
+                              <div class="row">
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="name">Nature</label>
+                                        <select class="custom-select border-info form-control" name="nature">
+
+                                            <option hidden>Choose Nature</option>
+
+                                                <option value='1'>Debit</option>
+                                                <option value='2'>Credit</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"></div>
+
+                              </div>
                             <div class="form-actions">
                                 <div class="row">
                                     <div class="col-md-6">

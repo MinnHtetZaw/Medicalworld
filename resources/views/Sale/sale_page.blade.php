@@ -370,7 +370,7 @@
                         </div>
                     </div>
                     {{-- <div class="">Hello Testing</div> --}}
-                    <div class="float">
+                    <div class="float mt-3">
                         <div class="form-check form-check-inline">
 
                             <input class="form-check-input" type="radio" name="account" id="bank" value="1" onclick="show_bank_acc()">

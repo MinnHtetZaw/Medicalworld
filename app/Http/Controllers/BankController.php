@@ -29,6 +29,7 @@ class BankController extends Controller
         $acc = Accounting::create([
             'account_code' =>$request->acc_code,
             'account_name' => $request->acc_name,
+            "nature"=>$request->nature,
             'subheading_id' =>19,
             'balance' => $request->current_balance,
             'currency_id'=>4

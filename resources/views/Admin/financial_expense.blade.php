@@ -332,7 +332,7 @@ function convert(val){
                        var initial_curr = $('#initial_currency').val(); 
                        var amt =  $('#convert_amount').val();
 
-                       console.log(initial_curr,'af',amt,'ata',val);
+                    //    console.log(initial_curr,'af',amt,'ata',val);
                        if(val == 4 && initial_curr == 5){
                            var con_amt = amt * data.usd_rate.exchange_rate;
                            $('#final_value').val(con_amt);
