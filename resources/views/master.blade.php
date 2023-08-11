@@ -105,7 +105,7 @@
                         <!-- ============================================================== -->
                         @php
                             $date = new DateTime('Asia/Yangon');
-                            
+
                             $current_Date = $date->format('Y-m-d');
                         @endphp
 
@@ -545,7 +545,7 @@
                                                     Account Type
                                                 </p>
                                             </a>
-                                        </li> 
+                                        </li>
                                         <li class="nav-item">
                                             <a href="{{ route('headingList') }}" class="nav-link">
                                                 {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
@@ -571,13 +571,13 @@
                                         </p>
                                     </a>
                                 </li>
-                               
-                                
+
+
                                     </ul>
                                 </li>
 
 
-                                
+
                                 {{--  --}}
 
                                 <li class="nav-item">
@@ -596,7 +596,7 @@
                                         </p>
                                     </a>
                                 </li>
-                                
+
                                 <li class="nav-item">
                                     <a href="{{ route('financial_bank_list') }}" class="nav-link">
                                         {{-- <i class="nav-icon fas fa-money-check-alt"></i> --}}
@@ -651,6 +651,9 @@
                             </ul>
                         </li>
 
+                        <a href="{{route('setting')}}">
+                            Setting
+                        </a>
 
                         {{-- financial accounting end --}}
 

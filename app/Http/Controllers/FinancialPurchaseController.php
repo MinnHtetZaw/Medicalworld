@@ -18,18 +18,22 @@ class FinancialPurchaseController extends Controller
     protected function getPurchaseHistory(Request $request){
 
         $purchase_lists = FinancialPurchase::all();
-        $subheading = SubHeading::where('heading_id',7)->pluck('id');
-    
-        $exp_account = Accounting::wherein('subheading_id',$subheading)->get();
-    
+        // $subheading = SubHeading::where('heading_id',7)->pluck('id');
+
+        // $exp_account = Accounting::wherein('subheading_id',$subheading)->get();
+
+        $exp_account = Accounting::whereHas('subheading.heading.accountingtype',function ($query){
+            $query->where('accounting_type_id',5);
+       })->get();
+
         // $expense_tran = Transaction::where('expense_flag',1)->get();
          $bank_account = Accounting::where('subheading_id',19)->get();
          $cash_account = Accounting::where('subheading_id',7)->get();
-    
+
          $bank_cash_tran = FinancialTransactions::get();
-    
+
          $currency = Currency::all();
-    
+
         return view('Admin.financial_purchase_lists', compact('bank_cash_tran','purchase_lists','currency','bank_account','exp_account','cash_account'));
     }//End method
 
@@ -43,7 +47,7 @@ class FinancialPurchaseController extends Controller
             'remark' => $request->remark,
             'date' => $request->date,
         ]);
-    
+
         $tran1 = FinancialTransactions::create([
             'account_id' =>$request->exp_acc ,
             'type' => 1,
@@ -56,9 +60,9 @@ class FinancialPurchaseController extends Controller
             'currency_id' => $request->currency,
             'all_flag'  =>4,
             'expense_id'=> $exp->id
-    
+
          ]);
-    
+
         if($request->bank_acc == null){
             $amt = Accounting::find($request->cash_acc);
     //   return $amt;
@@ -121,21 +125,21 @@ class FinancialPurchaseController extends Controller
             else{
                 $con_amt = $request->amount;
             }
-    
-    
+
+
             $bc_acc = $request->cash_acc;
             $acc_cash = Accounting::find($bc_acc);
             $acc_cash->balance -= $con_amt;
             $acc_cash->save();
-    
+
             $exp_cash = Accounting::find($request->exp_acc);
             $exp_cash->balance += $request->amount;
             $exp_cash->save();
-    
+
         }
         else if($request->cash_acc == null){
             $amt = Accounting::find($request->bank_acc);
-    
+
             $usd_rate = Currency::find(5);
             $euro_rate = Currency::find(6);
             $sgp_rate = Currency::find(9);
@@ -144,7 +148,7 @@ class FinancialPurchaseController extends Controller
             $idn_rate = Currency::find(12);
             $mls_rate = Currency::find(13);
             $thai_rate = Currency::find(14);
-    
+
             if($amt->currency_id == 4 && $request->currency == 5){
                 $con_amt = $request->amount * $usd_rate->exchange_rate;
             }
@@ -196,24 +200,24 @@ class FinancialPurchaseController extends Controller
             else{
                 $con_amt = $request->amount;
             }
-    
+
             $bc_acc = $request->bank_acc;
-    
+
             $acc_bank = Accounting::find($bc_acc);
             $acc_bank->balance -= $con_amt;
             $acc_bank->save();
-    
+
             $exp_bank = Accounting::find($request->exp_acc);
             $exp_bank->balance += $request->amount;
             $exp_bank->save();
-    
+
        $bank=Bank::where('account_id',$request->bank_acc)->first();
        $bank->balance -= $con_amt;
        $bank->save();
-    
-    
+
+
         }
-    
+
         $tran = FinancialTransactions::create([
             'account_id' => $bc_acc,
             'type' => 2,
@@ -229,9 +233,9 @@ class FinancialPurchaseController extends Controller
         ]);
         $tran1->related_transaction_id = $tran->id;
         $tran1->save();
-    
+
         alert('Added Transaction Successfully!!');
       return redirect()->back();
     }//End Method
-    
+
 }

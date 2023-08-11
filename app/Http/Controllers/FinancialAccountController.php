@@ -63,7 +63,7 @@ class FinancialAccountController extends Controller
     {
         $accounttypes = FinancialAccountingType::all();
 
-        $headings = HeadingType::all();
+        $headings = HeadingType::orderBy('accounting_type_id')->get();
 
 
         return view('Admin.heading_type',compact('headings','accounttypes'));
@@ -83,7 +83,7 @@ class FinancialAccountController extends Controller
 
         return back();
     }//End method
-    
+
     //Update HeadingType
     public function updateHeading(Request $request,$id)
     {
@@ -109,7 +109,7 @@ class FinancialAccountController extends Controller
     public function getSubHeading()
     {
         $accounttypes = FinancialAccountingType::all();
-        $subheadings = SubHeading::all();
+        $subheadings = SubHeading::orderBy('heading_id')->get();
         $headings = HeadingType::all();
 
         return view('Admin.sub_heading_list',compact('subheadings','headings','accounttypes'));
@@ -169,7 +169,7 @@ class FinancialAccountController extends Controller
      public function financial_subheading_delete($id){
         SubHeading::where('id',$id)->delete();
         return back();
-    
+
     }
 
 
@@ -227,7 +227,7 @@ class FinancialAccountController extends Controller
          $headings= HeadingType::all();
          $account_type = FinancialAccountingType::all();
          $currency  = Currency::all();
- 
+
          return view('Admin.account_list',compact('currency','account','account_type','subheadings','headings'));
     }//End Method
 
@@ -235,23 +235,24 @@ class FinancialAccountController extends Controller
     protected function incoming()
     {
         $incoming_tran = FinancialTransactions::where('incoming_flag',1)->get();
- 
+
         $bank_cash_tran = FinancialTransactions::where('incoming_flag',2)->get();
- 
+
          $cash_account = Accounting::where('subheading_id',7)->get();
          $bank_account = Accounting::where('subheading_id',19)->get();
- 
-         $inc_account = Accounting::where('subheading_id',6)->get();
- 
+
+         $inc_account = Accounting::whereHas('subheading.heading.accountingtype',function ($query){
+              $query->where('accounting_type_id',4);
+         })->get();
         $currency = Currency::all();
- 
+
         return view('Admin.financial_incoming',compact('currency','bank_account','cash_account','inc_account','incoming_tran','bank_cash_tran'));
     }//End Method
 
     //Store Incoming
     protected function store_incoming(Request $request){
         //  return $request;
-          
+
 
         $incoming = FinancialIncoming::create([
             'amount' => $request->amount,

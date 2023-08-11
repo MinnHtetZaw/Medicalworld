@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Bank;
 use App\From;
 use App\Item;
 use App\User;
@@ -15,11 +16,12 @@ use App\Category;
 use App\Customer;
 use App\Employee;
 use App\Purchase;
-use App\Supplier;
 
+use App\Supplier;
 use App\FactoryPo;
 use App\PayCredit;
 use Carbon\Carbon;
+use App\Accounting;
 use App\FixedAsset;
 use App\Stockcount;
 use App\BankAccount;
@@ -36,21 +38,24 @@ use App\OrderCustomer;
 use App\SalesCustomer;
 use App\PromotionPhoto;
 use App\FabricEntryItem;
+use App\FinancialMaster;
 use App\ShareholderList;
 use App\FactroyFabricDate;
+use App\FinancialIncoming;
 use App\SupplierPayCredit;
 use App\Capitaltransaction;
 use App\GeneralInformation;
 use App\SupplierCreditList;
 use App\Imports\ItemsImport;
 use Illuminate\Http\Request;
+use App\FinancialTransactions;
+
+
 use App\SaleCustomerCreditlist;
 use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\DB;
 use App\Exports\SaleCustomersExport;
 use App\Http\Controllers\Controller;
-
-
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExpenseHistoryExport;
@@ -74,6 +79,74 @@ class AdminController extends Controller {
 
 	   return view('Admin.admin_panel');
 	}
+
+    public function setting()
+    {
+            $data =  FinancialMaster::first();
+            $accounts = Accounting::all();
+
+            return view('Admin.financial_master_setting',compact('data','accounts'));
+    }
+
+    public function createSetting(Request $request)
+    {
+            $validator = Validator::make($request->all(),[
+                "year_from" => "required",
+                "year_to" => "required",
+                "sales_account" => "required",
+                "b2b_sale" => "required",
+                "purchase_acc" => "required",
+            ]);
+
+            if($validator->fails()){
+
+                alert()->error('အချက်အလက် များ မှားယွင်း နေပါသည်။');
+
+                return redirect()->back();
+            }
+
+            FinancialMaster::create([
+                'financial_year_from'=>$request->year_from,
+                'financial_year_to'=>$request->year_to,
+                'showroom_sales_account_id'=>$request->sales_account,
+                'b2b_sales_account_id'=>$request->b2b_sale,
+                'purchase_account_id'=>$request->purchase_acc
+            ]);
+
+            alert()->success('Successfully Created!');
+            return back();
+    }
+
+    public function updateSetting(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            "year_from" => "required",
+            "year_to" => "required",
+            "sales_account" => "required",
+            "b2b_sale" => "required",
+            "purchase_acc" => "required",
+        ]);
+
+        if($validator->fails()){
+
+            alert()->error('အချက်အလက် များ မှားယွင်း နေပါသည်။');
+
+            return redirect()->back();
+        }
+
+       $data = FinancialMaster::first();
+
+        $data->financial_year_from = $request->year_from;
+        $data->financial_year_to = $request->year_to;
+        $data->showroom_sales_account_id = $request->sales_account;
+        $data->b2b_sales_account_id = $request->b2b_sale;
+        $data->purchase_account_id = $request->purchase_acc;
+        $data->save();
+
+        alert()->success('Successfully Updated!');
+        return back();
+    }
+
 
     public function viewWebsiteUser() {
         $website_users = DB::table('website_user')->get();
@@ -3135,12 +3208,10 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
                 $customer = Customer::create([
                     'phone' => $request->phone,
                     'address' => $request->address,
-                    'allow_credit' => $request->allow_credit = "on"?1:0,
+                    'allow_credit' => $request->allow_credit == "on"?1:0,
                     'customer_level' => $request->level,
                     'user_id' => $user->id,
                 ]);
-
-
 
             alert()->success('Successfully Added');
 
@@ -3975,52 +4046,115 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
         $bank = BankAccount::whereNotIn('id',$oldBankID)->get();
 
         $transaction = Transaction::where('order_id',$id)->get();
+        $bank_account = Accounting::where('subheading_id',19)->get();
+        $cash_account = Accounting::where('subheading_id',7)->get();
 
-        return view('Admin.transaction_list', compact('orders','bank','transaction'));
+        return view('Admin.transaction_list', compact('orders','bank','transaction','bank_account','cash_account'));
     }
     protected function store_transaction_now(Request $request)
     {
 
-        // dd($time);
+
+
         $validator = Validator::make($request->all(), [
             'pay_date' => 'required',
-            //'pay_time' => 'required',
             'pay_amt' => 'required',
             'remark' => 'required',
         ]);
-
 
         if ($validator->fails()){
             alert()->error('Fill all the basic fields');
             return redirect()->back();
         }
-        //$time = date('h:i a', strtotime($request->pay_time));
-        // dd($request->all());
+
         $order = Order::find($request->ord_id);
         $order->advance_pay +=$request->pay_amt;
-        // dd($voucher->prepaid_amount);
 
-        // dd($voucher->total_charges);
         $order->collect_amount = $request->collect_amt;
         $order->last_payment_date = $request->pay_date;
         $order->save();
-        $transaction = Transaction::create([
-            'bank_acc_id' => $request->bank_info,
-            'tran_date' => $request->pay_date,
-            //'tran_time' => $time,
-            'remark' => $request->remark,
-            'pay_amount' => $request->pay_amt,
-            'order_id' => $request->ord_id,
-        ]);
-        // dd("done");
-        $bank = BankAccount::find($request->bank_info);
-        $bank->balance += $request->pay_amt;
-        $bank->save();
+
         if($order->payment_type == 1 && $order->est_price <= $order->advance_pay &&  $order->payment_clear_flag = 1)
         {
             $order->payment_clear_flag = 0;
             $order->save();
         }
+
+        $incoming = FinancialIncoming::create([
+            'amount' => $request->pay_amt,
+            'remark' => $request->remark,
+            'date' => $request->pay_date,
+        ]);
+
+
+        $FM = FinancialMaster::first();
+        $accounting = Accounting::find($FM->b2b_sales_account_id);
+        $accounting->balance += $request->pay_amt;
+        $accounting->save();
+
+        if($request->finance_bank_acc == null)
+        {
+            $bc_acc = $request->cash_acc;
+
+            $cash_account = Accounting::find($request->cash_acc);
+            $cash_account->balance += $request->pay_amt;
+            $cash_account->save();
+        }
+        else if($request->cash_acc == null)
+        {
+            $bc_acc = $request->finance_bank_acc;
+
+            $bank_account =  Accounting::find($request->finance_bank_acc);
+            $bank_account->balance += $request->pay_amt;
+            $bank_account->save();
+
+            $bank=Bank::where('account_id',$request->finance_bank_acc)->first();
+            $bank->balance += $request->pay_amt;
+            $bank->save();
+
+            $transaction = Transaction::create([
+                'bank_acc_id' => $bank->old_bank_id ?? null,
+                'tran_date' => $request->pay_date,
+                'remark' => $request->remark,
+                'pay_amount' => $request->pay_amt,
+                'order_id' => $request->ord_id,
+            ]);
+
+            $oldBank = BankAccount::find($bank->old_bank_id);
+            $oldBank->balance += $request->pay_amt;
+            $oldBank->save();
+
+        }
+
+           $tran1 = FinancialTransactions::create([
+           'account_id' => $accounting->id,
+           'type' => 2, // credit
+           'amount' => $request->pay_amt,
+           'remark' => $request->remark,
+           'date' => $request->pay_date,
+           'type_flag' =>4, // income credit type
+           'currency_id' =>$accounting->currency_id,
+           'all_flag'  =>3,
+           'incoming_flag' => 1,
+           'incoming_id'=> $incoming->id
+        ]);
+
+        $tran = FinancialTransactions::create([
+            'account_id' => $bc_acc,
+            'type' => 1,
+            'amount' => $request->pay_amt,
+            'remark' => $request->remark,
+            'date' => $request->pay_date,
+            'type_flag' =>3,
+            'incoming_flag' => 2,
+            'currency_id' => $accounting->currency_id,
+            'all_flag'  =>3,
+            'incoming_id'=> $incoming->id
+        ]);
+
+        $tran1->related_transaction_id = $tran->id;
+        $tran1->save();
+
         alert()->success("Successfully Stored Transaction!!");
         return back();
 

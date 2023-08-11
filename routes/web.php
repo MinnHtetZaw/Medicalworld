@@ -49,6 +49,11 @@ Route::get('orderdetail_list/{id}', 'Web\AdminController@viewOrderDetailList')->
 Route::get('item_detail/{id}', 'Web\AdminController@viewItemDetail')->name('item_detail');
 
 Route::group(['middleware' => ['UserAuth']], function () {
+
+    Route::get('setting','Web\AdminController@setting')->name('setting');
+    Route::post('setting/create','Web\AdminController@createSetting')->name('settingCreate');
+    Route::post('setting/update','Web\AdminController@updateSetting')->name('settingUpdate');
+
     Route::post('shopname/edit', 'Web\AdminController@shopnameEdit')->name('shopnameEdit');
 
     Route::get('ChangePassword-UI', 'Web\LoginController@getChangePasswordPage')->name('change_password_ui');
@@ -399,7 +404,7 @@ Route::group(['middleware' => ['UserAuth']], function () {
        Route::get('journal_entry_edit/{id}',[JournalEntryController::class,'editEntry'])->name('journal_entry_edit');
        Route::post('journal_entry_update/{entry}',[JournalEntryController::class,'updateEntry'])->name('journal_entry_update');
        Route::get('journal_entry_delete/{id}',[JournalEntryController::class,'journal_entry_delete'])->name('journal_entry_delete');
-       
+
 
        Route::get('currency',[CurrencyController::class,'currency'])->name('currency');
        Route::post('store_currency',[CurrencyController::class,'store_currency'] )->name('store_currency');
@@ -412,7 +417,7 @@ Route::group(['middleware' => ['UserAuth']], function () {
        Route::post('ajax_convert',  [FinancialAccountController::class,'ajax_convert'])->name('ajax_convert');
        Route::post('ajax_date_filter', [FinancialAccountController::class,'ajax_date_filter'] )->name('ajax_date_filter');
 
-      
+
        Route::get('financial_bank_list', [BankController::class,'financial_bank_list'])->name('financial_bank_list');
        Route::post('store_bank', [BankController::class,'store_bank'])->name('store_bank');
 
@@ -426,20 +431,20 @@ Route::group(['middleware' => ['UserAuth']], function () {
        Route::post('store_financial_expense', [FinancialExpenseController::class,'financial_store_expense'])->name('store_financial_expense');
        Route::get('financial_ajax_convert',[FinancialExpenseController::class,'ajax_convert'])->name('ajax_convert');
        Route::get('get_exchange_rate',[FinancialExpenseController::class,'get_exchange_rate']);
- 
+
        Route::post('ajax_code_search', [FinancialExpenseController::class,'ajax_code_search'])->name('ajax_code_search');
        Route::post('ajax_filter_date', [FinancialExpenseController::class,'ajax_filter_date'])->name('ajax_filter_date');
        Route::get('expense_delete/{id}',[FinancialExpenseController::class,'expenseDelete'])->name('financial_expense_delete');
        Route::get('journalEntry',[JournalEntryController::class,'getEntryList'])->name('journalEntry');
        Route::post('transaction_filter', [JournalEntryController::class,'ajaxTransactionFilter'])->name('transaction_filter');
-      
+
        Route::get('financial_tranfer_list',[TransferController::class,'TransferList'])->name('financialtransfer_list');
        Route::post('store_transfer',[TransferController::class,'storeTransfer'])->name('store_transfer');
 
 
 
-      
-    
+
+
 
 
 

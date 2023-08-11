@@ -50,8 +50,8 @@
 @endphp
 
 <input type="hidden" id="from_id" value="{{$from_id}}">
-   
-    
+
+
     <div class="row justify-content-center pl-4 mt-5"  style="font-weight: 500">
             <div class="col-md-8 text-left font14">
                 <div class="row mb-2">
@@ -127,13 +127,13 @@
                         Showroom:
                          {{$orders->showroom}}
                     </div>
-                    
+
                     <div class="col-md-6 btn-group">
-                        
+
                         <a href="{{route('order_details',$orders->id)}}" type="button" class="btn btn-sm btn-info w-30">Order Details</a>
-                         
-                    </div> 
-                    
+
+                    </div>
+
                 </div>
             </div>
     </div>
@@ -163,8 +163,8 @@
             </div>
         </div>
         <div class="col-md-6 mt-3" style="padding-left: 150px;">
-        
-            <button class="btn btn-info rounded" data-toggle="modal" data-target="#paid_vou">Pay</button>
+
+            <button class="btn btn-info rounded" data-toggle="modal" data-target="#paid_vou"  onclick="hide_bank_acc()">Pay</button>
             <!-- Begin Paid Modal -->
             <div class="modal fade"  id="paid_vou" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" style="border-radius:25px;" role="document">
@@ -197,21 +197,59 @@
                             <label class="font-weight-bold">Remark</label>
                             <textarea  cols="3" class="form-control border border-info" name="remark"></textarea>
                         </div>
-                        <div class="from-group">
-                            <label class="font-weight-bold">Bank Account</label>
-                            <select  class="form-control border border-info" name="bank_info">
-                                <option>Choose Bank Account</option>
-                                @foreach($bank as $acc)
-                                <option value="{{$acc->id}}">{{$acc->bank_name}}-{{$acc->account_number}}</option>
-                                @endforeach
+
+
+                        <div class="row mt-2">
+                            <div class="col-md-2">
+                            <div class="form-check form-check-inline">
+
+                                <input class="form-check-input" type="radio" name="account" id="bank" value="1" onclick="show_bank_acc()">
+
+                                <label class="form-check-label text-success" for="bank">Bank</label>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="form-check form-check-inline">
+
+
+                                <input class="form-check-input" type="radio" name="account" id="cash" value="2" onclick="show_cash_acc()">
+
+                                <label class="form-check-label text-success" for="cash">Cash</label>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-3" id="bankkk">
+                            <label class="control-label">Financial Bank Account</label>
+                            <select class="form-control" name="finance_bank_acc">
+                                <option value="">Select Bank Account</option>
+                               @foreach ($bank_account as $acc)
+
+                                <option value="{{$acc->id}}">{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                               @endforeach
                             </select>
                         </div>
+
+
+                        <div class="form-group mt-3" id="cashhh">
+                            <label class="control-label">Cash Account</label>
+                            <select class="form-control" name="cash_acc">
+                                <option value="">Select Cash Account</option>
+                               @foreach ($cash_account as $acc)
+
+                                <option value="{{$acc->id}}">{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                               @endforeach
+                            </select>
+                        </div>
+
+
+
                         <div class="from-group">
                             <label class="font-weight-bold">Collect Amount</label>
                             <input type="number" id="result" class="form-control border border-info" name="collect_amt" readonly>
                         </div>
                     </div>
-                    
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Pay</button>
@@ -224,7 +262,7 @@
             <!-- End Paid Modal -->
         </div>
     </div>
-    
+
     </div>
     <div class="card mt-1">
         <div class="card-body">
@@ -275,5 +313,24 @@ function collect_cal(value)
     var result = tot;
     $('#result').val(tot);
 }
+
+function show_bank_acc(){
+    // alert('hello');
+    $('#cashhh').hide();
+    $('#bankkk').show();
+
+}
+function show_cash_acc(){
+    // alert('hello');
+    $('#bankkk').hide();
+    $('#cashhh').show();
+}
+function hide_bank_acc(){
+    // alert('hello');
+    $('#bankkk').hide();
+    $('#cashhh').hide();
+
+}
+
 </script>
 @endsection

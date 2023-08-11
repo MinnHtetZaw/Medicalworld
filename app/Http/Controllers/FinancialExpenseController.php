@@ -23,15 +23,20 @@ class FinancialExpenseController extends Controller
         $bank_account = Accounting::where('subheading_id',19)->get();
         $cash_account = Accounting::where('subheading_id',7)->get();
 
-        $subheading = SubHeading::where('heading_id',7)->pluck('id');
+        // $subheading = SubHeading::where('heading_id',7)->pluck('id');
 
-        $exp_account = Accounting::wherein('subheading_id',$subheading)->get();
+        // $exp_account = Accounting::wherein('subheading_id',$subheading)->get();
+
+        $exp_account = Accounting::whereHas('subheading.heading.accountingtype',function ($query){
+            $query->where('accounting_type_id',5);
+       })->get();
 
         $currency = Currency::all();
 
        return view('Admin.financial_expense',compact('currency','bank_account','expense_tran','bank_cash_tran','exp_account','cash_account'));
    }//End method
 
+   
          protected function get_exchange_rate(){
 
         $conversionRate = Currency::

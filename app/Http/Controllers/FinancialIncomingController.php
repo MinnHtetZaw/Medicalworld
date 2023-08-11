@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Bank;
 use App\Currency;
 use App\Accounting;
 use App\FinancialIncoming;
