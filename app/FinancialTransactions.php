@@ -18,6 +18,7 @@ class FinancialTransactions extends Model
         'type',
         'purchase_id',
         'related_transaction_id',
+        'related_second_transaction_id',
         'type_flag',
         'expense_flag',
         'all_flag',

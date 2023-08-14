@@ -4121,10 +4121,12 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
                 'order_id' => $request->ord_id,
             ]);
 
+            if($bank->old_bank_id != null)
+            {
             $oldBank = BankAccount::find($bank->old_bank_id);
             $oldBank->balance += $request->pay_amt;
             $oldBank->save();
-
+            }
         }
 
            $tran1 = FinancialTransactions::create([
