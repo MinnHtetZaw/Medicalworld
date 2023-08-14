@@ -8,7 +8,6 @@ use App\SubHeading;
 use App\HeadingType;
 use App\JournalEntry;
 use Illuminate\Http\Request;
-use App\FinancialTransactions;
 
 class JournalEntryController extends Controller
 {
@@ -23,89 +22,6 @@ class JournalEntryController extends Controller
         // dd($entries->relatedEntry->toArray());
         return view("Admin.journalentrylist",compact('entries','account','subheadings','headings'));
     }//End method
-    //Filter by date
-    public function ajaxTransactionFilter(Request $request){
-
-
-        $from = $request->from;
-        $to = $request->to;
-
-        $date_filter = FinancialTransactions::whereBetween('date',[$from,$to])->with('accounting')->get();
-
-        return response()->json([
-            'date_filter' => $date_filter
-       ]);
-    }//End method
-
-    //Convert Rate
-
-    protected function convertRate($toAccount,$fromAccount,$amount)
-    {
-        $from = $fromAccount->currency_id;
-        $to = $toAccount->currency_id;
-
-        $usd_rate = Currency::find(5);
-        $euro_rate = Currency::find(6);
-        $sgp_rate = Currency::find(9);
-        $jpn_rate = Currency::find(10);
-        $chn_rate = Currency::find(11);
-        $idn_rate = Currency::find(12);
-        $mls_rate = Currency::find(13);
-        $thai_rate = Currency::find(14);
-
-        if($from == 4 && $to == 5){
-            $con_amt = $amount / $usd_rate->exchange_rate;
-        }
-        else if($from == 4 && $to == 6){
-            $con_amt = $amount / $euro_rate->exchange_rate;
-        }
-        else if($from == 4 && $to == 9){
-            $con_amt = $amount / $sgp_rate->exchange_rate;
-        }
-        else if($from == 4 && $to == 10){
-            $con_amt = $amount / $jpn_rate->exchange_rate;
-        }
-        else if($from == 4 && $to == 11){
-            $con_amt = $amount / $chn_rate->exchange_rate;
-        }
-        else if($from == 4 && $to == 12){
-            $con_amt = $amount / $idn_rate->exchange_rate;
-        }
-        else if($from == 4 && $to == 13){
-            $con_amt = $amount / $mls_rate->exchange_rate;
-        }
-        else if($from == 4 && $to == 14){
-            $con_amt = $amount / $thai_rate->exchange_rate;
-        }
-        else if($from == 5 && $to == 4){
-            $con_amt = $amount * $usd_rate->exchange_rate;
-        }
-        else if($from == 6 && $to == 4){
-            $con_amt = $amount * $euro_rate->exchange_rate;
-        }
-        else if($from == 9 && $to == 4){
-            $con_amt = $amount * $sgp_rate->exchange_rate;
-        }
-        else if($from == 10 && $to == 4){
-            $con_amt = $amount * $jpn_rate->exchange_rate;
-        }
-        else if($from == 11 && $to == 4){
-            $con_amt = $amount * $chn_rate->exchange_rate;
-        }
-        else if($from == 12 && $to == 4){
-            $con_amt = $amount * $idn_rate->exchange_rate;
-        }
-        else if($from == 13 && $to == 4){
-            $con_amt = $amount * $mls_rate->exchange_rate;
-        }
-        else if($from == 14 && $to == 4){
-            $con_amt = $amount * $thai_rate->exchange_rate;
-        }
-        else{
-            $con_amt = $amount;
-        }
-        return $con_amt;
-    }//End Method
 
     //Create Journey Entry
     public function storeEntry(Request $request)
@@ -149,7 +65,8 @@ class JournalEntryController extends Controller
             'type'=> $request->from_type,
             'amount'=>$request->amount,
             'entry_date'=>$request->date,
-            'remark'=>$request->remark
+            'remark'=>$request->remark,
+            'particular'=>$request->particular
         ]);
 
             JournalEntry::create([
@@ -158,7 +75,7 @@ class JournalEntryController extends Controller
                 'type'=>$request->to_type,
                 'entry_date'=>$request->date,
                 'remark'=>$request->remark,
-
+                'particular'=>$request->particular
             ]);
             alert()->success('Journal Entry Succeed');
             return back();
@@ -290,6 +207,7 @@ class JournalEntryController extends Controller
         $entry->amount = $request->amount;
         $entry->entry_date = $request->date;
         $entry->remark = $request->remark;
+        $entry->particular = $request->particular;
         $entry->save();
 
 
@@ -298,6 +216,7 @@ class JournalEntryController extends Controller
             $data->type = $request->to_type;
             $data->remark = $request->remark;
             $data->entry_date = $request->date;
+            $data->particular = $request->particular;
             $data->save();
 
 
@@ -308,11 +227,81 @@ class JournalEntryController extends Controller
 
     //Journal Delete\
     public function journal_entry_delete($id){
-        // $id = $request->id;
-        // return $id;
-        
+
         JournalEntry::where('id',$id)->delete();
         return back();
     }
+
+
+     //Convert Rate
+
+     protected function convertRate($toAccount,$fromAccount,$amount)
+     {
+         $from = $fromAccount->currency_id;
+         $to = $toAccount->currency_id;
+
+         $usd_rate = Currency::find(5);
+         $euro_rate = Currency::find(6);
+         $sgp_rate = Currency::find(9);
+         $jpn_rate = Currency::find(10);
+         $chn_rate = Currency::find(11);
+         $idn_rate = Currency::find(12);
+         $mls_rate = Currency::find(13);
+         $thai_rate = Currency::find(14);
+
+         if($from == 4 && $to == 5){
+             $con_amt = $amount / $usd_rate->exchange_rate;
+         }
+         else if($from == 4 && $to == 6){
+             $con_amt = $amount / $euro_rate->exchange_rate;
+         }
+         else if($from == 4 && $to == 9){
+             $con_amt = $amount / $sgp_rate->exchange_rate;
+         }
+         else if($from == 4 && $to == 10){
+             $con_amt = $amount / $jpn_rate->exchange_rate;
+         }
+         else if($from == 4 && $to == 11){
+             $con_amt = $amount / $chn_rate->exchange_rate;
+         }
+         else if($from == 4 && $to == 12){
+             $con_amt = $amount / $idn_rate->exchange_rate;
+         }
+         else if($from == 4 && $to == 13){
+             $con_amt = $amount / $mls_rate->exchange_rate;
+         }
+         else if($from == 4 && $to == 14){
+             $con_amt = $amount / $thai_rate->exchange_rate;
+         }
+         else if($from == 5 && $to == 4){
+             $con_amt = $amount * $usd_rate->exchange_rate;
+         }
+         else if($from == 6 && $to == 4){
+             $con_amt = $amount * $euro_rate->exchange_rate;
+         }
+         else if($from == 9 && $to == 4){
+             $con_amt = $amount * $sgp_rate->exchange_rate;
+         }
+         else if($from == 10 && $to == 4){
+             $con_amt = $amount * $jpn_rate->exchange_rate;
+         }
+         else if($from == 11 && $to == 4){
+             $con_amt = $amount * $chn_rate->exchange_rate;
+         }
+         else if($from == 12 && $to == 4){
+             $con_amt = $amount * $idn_rate->exchange_rate;
+         }
+         else if($from == 13 && $to == 4){
+             $con_amt = $amount * $mls_rate->exchange_rate;
+         }
+         else if($from == 14 && $to == 4){
+             $con_amt = $amount * $thai_rate->exchange_rate;
+         }
+         else{
+             $con_amt = $amount;
+         }
+         return $con_amt;
+     }//End Method
+
 
 }

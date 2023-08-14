@@ -49,7 +49,7 @@
 
             <div class="table-responsive" id="slimtest2">
 
-                <table class="table table-hover" >
+                <table class="table table-hover table-striped" >
 
 
                             <thead class="bg-info text-white text-center">
@@ -57,9 +57,9 @@
                                 <th>#</th>
                                 <th>Account</th>
                                 <th>Exp/Inc</th>
-                                <th>Type</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
                                 <th>Date</th>
-                                <th>Amount</th>
                                 <th>Remark</th>
 
                             </tr>
@@ -76,9 +76,15 @@
                             @elseif ($data->incoming_id != null)
                             <td style="font-size:15px; width:50px" class="border-0">Incoming</td>
                             @endif
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->type}}</td>
+                            @if ($data->type == 'Debit')
+                                <td style="font-size:15px; width:50px" class="border-0">{{$data->transactionFormat()}}</td>
+                                <td style="font-size:15px; width:50px" class="border-0">-</td>
+                            @elseif ($data->type == 'Credit')
+                                <td style="font-size:15px; width:50px" class="border-0">-</td>
+                                <td style="font-size:15px; width:50px" class="border-0">{{$data->transactionFormat()}}</td>
+                            @endif
+
                             <td style="font-size:15px; width:50px" class="border-0">{{$data->date}}</td>
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->amount}}</td>
                             <td style="font-size:15px; width:50px" class="border-0">{{$data->remark}}</td>
 
                             </tr>

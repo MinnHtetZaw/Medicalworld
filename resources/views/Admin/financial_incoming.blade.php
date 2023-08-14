@@ -58,9 +58,9 @@
                             <tr>
                                 <th>#</th>
                                 <th class="text-center">Account</th>
-                                <th class="text-center">Type</th>
                                 <th class="text-center">Date</th>
-                                <th class="text-center">Amount</th>
+                                <th class="text-center">Debit</th>
+                                <th class="text-center">Credit</th>
                                 <th class="text-center">Remark</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -70,63 +70,47 @@
                             <?php $i = 1; ?>
                             @foreach ($incoming_tran as $trans)
                             @if($trans->type_flag == 4)
-                            <tr>
-                            <td style="font-size:15px;" class="text-center">{{$i++}}</td>
-                            <td style="font-size:15px;" class="text-center">{{$trans->accounting->account_name}}-{{$trans->accounting->account_code}}</td>
-                            <td style="font-size:15px;" class="text-center">{{$trans->type}}</td>
-                            <td style="font-size:15px;" class="text-center">{{$trans->date}}</td>
-                            <td style="font-size:15px;" class="text-center">{{$trans->amount}}</td>
-                            <td style="font-size:15px;" class="text-center">{{$trans->remark}}</td>
-                            <td class="text-center">
-                                <a class="btn btn-primary btn-sm " data-toggle="collapse" href="#related{{$trans->id}}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Related</a>
-                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                            </td>
+                            <tr  class="text-center">
+                                <td style="font-size:15px;width:15%;" >{{$i++}}</td>
+                                <td style="font-size:15px;width:15%;">{{$trans->accounting->account_name}}-{{$trans->accounting->account_code}}</td>
+                                <td style="font-size:15px;width:15%;">{{$trans->date}}</td>
+                                <td style="font-size:15px;width:15%;">{{$trans->transactionFormat()}}</td>
+                                <td style="font-size:15px;width:15%;">-</td>
+                                <td style="font-size:15px;width:15%;">{{$trans->remark}}</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm " data-toggle="collapse" href="#related{{$trans->id}}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Related</a>
+                                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
                             </tr>
 
                             <tr>
-                                <td></td>
 
-                                <td colspan="6">
+
+                                <td colspan="9">
                                     <div class="collapse out container mr-5" id="related{{$trans->id}}">
-                                        <div class="row">
+
+
                                             <?php $j=1 ?>
                                             @foreach($bank_cash_tran as $transa)
                                             @if($trans->related_transaction_id == $transa->id)
                                             @if($transa->type_flag == 3)
-                                            <div class="col-md-2">
-                                                <label style="font-size:15px;" class="text-info">No</label>
-                                                <div style="font-size:15px;">{{$j++}}</div>
-
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label style="font-size:15px;" class="text-info">Account</label>
-
-                                                <div style="font-size:15px;">{{$transa->accounting->account_code}}-({{$transa->accounting->account_name}})</div>
-
-
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label style="font-size:15px;" class="text-info">Type</label>
-                                                <div style="font-size:15px;">{{$transa->type}}</div>
-
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label style="font-size:15px;" class="text-info">Date</label>
-
-                                                <div style="font-size:15px;">{{$transa->date}}</div>
-
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label style="font-size:15px;" class="text-info">Amount</label>
-
-                                                <div style="font-size:15px;">{{$transa->amount}}</div>
-
-                                            </div>
-
+                                            <table class="table table-responsive">
+                                                <tbody>
+                                                    <tr class="text-center">
+                                                        <td style="font-size:15px; width:15%;" >-</td>
+                                                        <td style="font-size:15px; width:15%;">{{$transa->accounting->account_name}}-{{$transa->accounting->account_code}}</td>
+                                                        <td style="font-size:15px; width:15%;">{{$transa->date}}</td>
+                                                        <td style="font-size:15px; width:15%;">-</td>
+                                                        <td style="font-size:15px; width:15%;">{{$transa->transactionFormat()}}</td>
+                                                        <td style="font-size:15px; width:15%;" class="text-center">{{$transa->remark}}</td>
+                                                        <td style="font-size:15px; width:15%;">-</td>
+                                                        </tr>
+                                                </tbody>
+                                            </table>
                                             @endif
                                             @endif
                                            @endforeach
-                                        </div>
+
                                     </div>
 
                                 <td>

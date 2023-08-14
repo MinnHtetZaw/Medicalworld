@@ -84,11 +84,10 @@
                                     </select>
 
                                 </div>
-
-
                             </div>
                         </div>
                       </div>
+
                       <div class="col-6">
                         <div class="row">
 
@@ -161,11 +160,11 @@
 
                                 </div>
 
+                              </div>
                         </div>
-                    </div>
                       </div>
 
-
+                    </div>
                       <div class="row mt-4">
                         <div class="col-md-6 offset-3">
                             <div class="form-group">
@@ -187,15 +186,16 @@
                             <label class="control-label">Remark</label>
                             <input type="text" class="form-control" name="remark" value="{{$entry->remark}}">
                         </div>
-
-
-                        <div class="row">
-                            <div class="mt-4 text-center">
-                                <button type="submit" class="btn btn-success">Update</button>
-                                <button type="button" class="btn btn-inverse btn-dismiss" data-dismiss="modal">Cancel</button>
-                            </div>
+                        <div class="form-group col-md-6 offset-3">
+                            <label class="control-label">Particular</label>
+                            <textarea rows="4" cols="50" class="form-control" name="particular">{{$entry->particular}} </textarea>
                         </div>
+
                     </div>
+
+                        <div class="mt-4 text-center">
+                            <button type="submit" class="btn btn-success">Update</button>
+                            <button type="button" class="btn btn-inverse btn-dismiss" data-dismiss="modal">Cancel</button>
 
                     </div>
 

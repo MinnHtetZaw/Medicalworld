@@ -183,7 +183,7 @@ class DeliveryController extends Controller
     public function storetestVoucher(Request $request)
     {
 
-    
+
         // return $request;
         $validator = Validator::make($request->all(), [
             'item' => 'required',
@@ -307,9 +307,9 @@ class DeliveryController extends Controller
 
         //--Transaction
 
-      
+
         $incoming = FinancialIncoming::create([
-            'amount' =>$total_amount,,
+            'amount' =>$total_amount,
             'remark' =>$remark,
              'date' => $voucher_date,
         ]);
@@ -320,7 +320,7 @@ class DeliveryController extends Controller
         $accounting->balance += $total_amount;
         $accounting->save();
         // return $accounting;
-        
+
         if($request->bank_acc == null)
         {
             $bc_acc = $request->cash_acc;
@@ -347,7 +347,7 @@ class DeliveryController extends Controller
                 // 'tran_date' => $request->pay_date,
                 'remark' => $request->remark,
                 'pay_amount' => $request-> $total_amount,,
-               
+
                 // 'order_id' => $request->ord_id,
             ]);
 
@@ -359,7 +359,7 @@ class DeliveryController extends Controller
         $tran1 = FinancialTransactions::create([
             'account_id' => $accounting->id,
             'type' => 2, // credit
-            
+
             'amount' => $total_amount,
             'remark' => $request->remark,
             // 'date' => $request->pay_date,
@@ -386,13 +386,13 @@ class DeliveryController extends Controller
         $tran1->related_transaction_id = $tran->id;
         $tran1->save();
 
-       
 
-       
-       
-        //End 
 
-       
+
+
+        //End
+
+
         $counting_units = CountingUnit::whereIn('item_id',$item_ids)->with('fabric')->with('colour')->get();
 
         return response()->json([
@@ -411,10 +411,10 @@ class DeliveryController extends Controller
             ]);
 
         };
-        
-       
 
-        
+
+
+
     }//End Method
     public function getItemA5(Request $request)
     {

@@ -11,7 +11,7 @@ class JournalEntry extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['from_account_id','to_account_id','type','amount','remark','entry_date','related_entry_id'];
+    protected $fillable = ['from_account_id','to_account_id','type','amount','remark','entry_date','related_entry_id','particular'];
 
     public function fromAccount():BelongsTo
     {

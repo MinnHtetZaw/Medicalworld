@@ -70,9 +70,10 @@
                                                             <tr >
                                                                 <th>No</th>
                                                                 <th>Account</th>
-                                                                <th>Type</th>
+                                                                <th>Debit</th>
+                                                                <th>Credit</th>
                                                                 <th>Date</th>
-                                                                <th>Amount</th>
+
                                                             </tr>
 
                                                         </thead>
@@ -84,9 +85,15 @@
                                                             <tr>
                                                                 <td>{{$j++}}</td>
                                                                 <td>{{$transa->accounting->account_code}}-({{$transa->accounting->account_name}})</td>
-                                                                <td>{{$transa->type}}</td>
+                                                                @if ($transa->type == 'Debit')
+                                                                    <td>{{$transa->transactionFormat()}}</td>
+                                                                    <td>-</td>
+                                                                @elseif ($transa->type == 'Credit')
+                                                                    <td>-</td>
+                                                                    <td>{{$transa->transactionFormat()}}</td>
+                                                                @endif
+
                                                                 <td>{{$transa->date}}</td>
-                                                                <td>{{$transa->amount}}</td>
                                                             </tr>
                                                             @endif
                                                             @endforeach
