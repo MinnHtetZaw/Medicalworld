@@ -405,7 +405,7 @@
                         <option value="">Select Bank Account</option>
                        @foreach ($bank_account as $acc)
 
-                        <option value="{{$acc->id}}">{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                        <option value="{{$acc->id}}" >{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
                        @endforeach
                     </select>
                 </div>
@@ -440,7 +440,7 @@
                 <div class="card pl-2 pr-4 py-3" style="border-radius: 0px;margin-top:-9px">
                     <div class="row mb-2">
                         <label class="control-label  col-5 text-black">စုစုပေါင်း </label>
-                        <input type="number" class="form-control col-7 h-75 text-black" id="gtot" value="0">
+                        <input type="number" name="total_amount" class="form-control col-7 h-75 text-black" id="gtot" value="0">
                     </div>
                     <div class="row mb-2">
                         <label class="control-label text-black col-5">Discount</label>
@@ -2380,13 +2380,12 @@
                     var mycart = localStorage.getItem('mycart');
 
                     var grand_total = localStorage.getItem('grandTotal');
-
                     var editvoucher = localStorage.getItem('editvoucher');
-
                     var item = mycart;
                     var grand = grand_total;
                     var discount = discount;
-
+                    var bank_acc = bank_acc;
+                    var cash_acc = cash_acc;
                     if(editvoucher != null){
                         var voucher_details = localStorage.getItem('voucher_details');
                         if (voucher_details != null) {
@@ -2405,6 +2404,9 @@
                     var remark = $('#remark_input').val();
 
                     var username = $('#userName').val();
+                    var bank_acc = $('#bank_acc').val();_
+                    var cash_acc = $('#cash_acc').val();
+
 
                     //var id = $('#salescustomer_list').children("option:selected").val();
                     var id = $('#select_cusid').val();
@@ -2433,9 +2435,11 @@
                                 "customer_phone": custphone,
                                 "cus_pay": cus_pay,
                                 "user_name": username,
+                                'bank_acc':bank_acc,
+                                'cash_acc':cash_acc,
                                 "customer_id": id,
                                 "remark" : remark,
-                                "editvoucher": editvoucher ?? 0
+                                "editvoucher": edeitvoucher ?? 0
                             },
                             success: function(data) {
                                 console.log('success');
@@ -2537,6 +2541,8 @@
                                 "cus_pay": cus_pay,
                                 "user_name": username,
                                 "customer_id" : id,
+                                'bank_acc':bank_acc,
+                                'cash_acc':cash_acc,
                                 "remark" : remark,
                                 "editvoucher": editvoucher ?? 0
                             },
@@ -3084,7 +3090,13 @@
     // alert('hello');
     $('#bankkk').hide();
     $('#cashhh').hide();
-    $('#proj').hide(); 
+    $('#proj').hide();
+    
+    $('#from_bank').hide();
+    $('#from_cash').hide();
+
+    $('#to_bank').hide();
+    $('#to_cash').hide(); 
         }
         function show_project(){
         // alert('hello');
@@ -3094,7 +3106,16 @@
         // alert('hello');
         $('#proj').hide();
     }
+//     function hide_bank_acc(){
 
+//             $('#defaultAcc_from').show()
+//             $('#defaultAcc_to').show()
+//                $('#from_bank').hide();
+//               $('#from_cash').hide();
+
+//                $('#to_bank').hide();
+//                $('#to_cash').hide();
+// }
 
             </script>
 

@@ -4054,6 +4054,7 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
     protected function store_transaction_now(Request $request)
     {
 
+        // return $request;
 
 
         $validator = Validator::make($request->all(), [
@@ -4141,11 +4142,11 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
 
         $tran = FinancialTransactions::create([
             'account_id' => $bc_acc,
-            'type' => 1,
+            'type' => 1, //  debit
             'amount' => $request->pay_amt,
             'remark' => $request->remark,
             'date' => $request->pay_date,
-            'type_flag' =>3,
+            'type_flag' =>3, // income debit type
             'incoming_flag' => 2,
             'currency_id' => $accounting->currency_id,
             'all_flag'  =>3,

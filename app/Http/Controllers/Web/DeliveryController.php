@@ -2,25 +2,33 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Bank;
 use App\From;
 use App\Item;
 use App\User;
 use DateTime;
 use App\Voucher;
 use App\Category;
+use App\Currency;
 use App\Customer;
 use App\Discount;
 use App\Employee;
+use App\Accounting;
 use App\Stockcount;
+use App\BankAccount;
 use App\Packagetype;
 use App\SubCategory;
+use App\Transaction;
 use App\Wayplanning;
 use App\CountingUnit;
 use App\DiscountMain;
 use App\SalesCustomer;
 use App\Deliveryreceive;
+use App\FinancialMaster;
 use Dotenv\Regex\Success;
+use App\FinancialIncoming;
 use Illuminate\Http\Request;
+use App\FinancialTransactions;
 use App\SaleCustomerCreditlist;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -174,6 +182,9 @@ class DeliveryController extends Controller
     }
     public function storetestVoucher(Request $request)
     {
+
+    
+        // return $request;
         $validator = Validator::make($request->all(), [
             'item' => 'required',
             'grand' => 'required',
@@ -292,6 +303,96 @@ class DeliveryController extends Controller
         foreach ($items as $item){
             array_push($item_ids,$item->id);
         }
+            // return $voucher;
+
+        //--Transaction
+
+      
+        $incoming = FinancialIncoming::create([
+            'amount' =>$total_amount,,
+            'remark' =>$remark,
+             'date' => $voucher_date,
+        ]);
+        // return $incoming;
+
+        $FM = FinancialMaster::first();
+        $accounting = Accounting::find($FM->showroom_sales_account_id );
+        $accounting->balance += $total_amount;
+        $accounting->save();
+        // return $accounting;
+        
+        if($request->bank_acc == null)
+        {
+            $bc_acc = $request->cash_acc;
+
+            $cash_account = Accounting::find($request->cash_acc);
+            $cash_account->balance += $total_amount;
+            $cash_account->save();
+        }
+        else if($request->cash_acc == null)
+        {
+            $bc_acc = $request->bank_acc;
+            // return $bc_acc;
+
+            $bank_account =  Accounting::find($request->bank_acc);
+            $bank_account->balance += $total_amount;
+            $bank_account->save();
+
+            $bank=Bank::where('account_id',$request->bank_acc)->first();
+            $bank->balance += $total_amount;
+            $bank->save();
+
+            $transaction = Transaction::create([
+                'bank_acc_id' => $bank->old_bank_id ?? null,
+                // 'tran_date' => $request->pay_date,
+                'remark' => $request->remark,
+                'pay_amount' => $request-> $total_amount,,
+               
+                // 'order_id' => $request->ord_id,
+            ]);
+
+            $oldBank = BankAccount::find($bank->old_bank_id);
+            $oldBank->balance += $total_amount;
+            $oldBank->save();
+
+        }
+        $tran1 = FinancialTransactions::create([
+            'account_id' => $accounting->id,
+            'type' => 2, // credit
+            
+            'amount' => $total_amount,
+            'remark' => $request->remark,
+            // 'date' => $request->pay_date,
+            'type_flag' =>4, // income credit type
+            // 'currency_id' =>$accounting->currency_id,
+            'all_flag'  =>3,
+            'incoming_flag' => 1,
+            'incoming_id'=> $incoming->id
+         ]);
+
+         $tran = FinancialTransactions::create([
+            'account_id' => $bc_acc,
+            'type' => 1, //  debit
+            'amount' =>$accounting->balance +=  $total_amount,,
+            'remark' => $request->remark,
+            // 'date' => $request->pay_date,
+            'type_flag' =>3, // income debit type
+            'incoming_flag' => 2,
+            // 'currency_id' => $accounting->currency_id,
+            'all_flag'  =>3,
+            'incoming_id'=> $incoming->id
+        ]);
+
+        $tran1->related_transaction_id = $tran->id;
+        $tran1->save();
+
+       
+
+       
+       
+        //End 
+
+       
         $counting_units = CountingUnit::whereIn('item_id',$item_ids)->with('fabric')->with('colour')->get();
 
         return response()->json([
@@ -299,6 +400,7 @@ class DeliveryController extends Controller
             'voucher'=>$voucher,
             'voucher_code' => $voucher_code,
             'counting_units' => $counting_units,
+            'tran1'=>$tran1
         ]);
 
         } catch (\Exception $e) {
@@ -308,8 +410,12 @@ class DeliveryController extends Controller
                 'message' => $e,
             ]);
 
-        }
-    }
+        };
+        
+       
+
+        
+    }//End Method
     public function getItemA5(Request $request)
     {
         // dd($request->items);
