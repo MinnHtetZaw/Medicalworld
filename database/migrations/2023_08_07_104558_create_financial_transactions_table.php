@@ -22,6 +22,7 @@ class CreateFinancialTransactionsTable extends Migration
             $table->integer('type')->default(0)->comment('1-debit, 2 - credit');
             $table->unsignedBigInteger('purchase_id')->nullable();
             $table->unsignedBigInteger('related_transaction_id')->nullable();
+            $table->unsignedBigInteger('related_second_transaction_id')->nullable();
             $table->integer('type_flag');
             $table->timestamps();
         });

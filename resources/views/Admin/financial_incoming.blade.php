@@ -88,14 +88,13 @@
 
                                 <td colspan="9">
                                     <div class="collapse out container mr-5" id="related{{$trans->id}}">
-
+                                        <table class="table table-responsive">
+                                            <tbody>
 
                                             <?php $j=1 ?>
                                             @foreach($bank_cash_tran as $transa)
-                                            @if($trans->related_transaction_id == $transa->id)
                                             @if($transa->type_flag == 3)
-                                            <table class="table table-responsive">
-                                                <tbody>
+                                            @if($trans->related_transaction_id == $transa->id || $trans->related_second_transaction_id == $transa->id )
                                                     <tr class="text-center">
                                                         <td style="font-size:15px; width:15%;" >-</td>
                                                         <td style="font-size:15px; width:15%;">{{$transa->accounting->account_name}}-{{$transa->accounting->account_code}}</td>
@@ -104,13 +103,14 @@
                                                         <td style="font-size:15px; width:15%;">{{$transa->transactionFormat()}}</td>
                                                         <td style="font-size:15px; width:15%;" class="text-center">{{$transa->remark}}</td>
                                                         <td style="font-size:15px; width:15%;">-</td>
-                                                        </tr>
-                                                </tbody>
-                                            </table>
+                                                    </tr>
+
                                             @endif
+
                                             @endif
                                            @endforeach
-
+                                        </tbody>
+                                    </table>
                                     </div>
 
                                 <td>

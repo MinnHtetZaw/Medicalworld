@@ -142,8 +142,6 @@ class DeliveryController extends Controller
       }
       $warehouses=From::where('id',$item_from)->orWhere('id',3)->orWhere('id',4)->orWhere('id',5)->get();
 
-
-
         $name= $request->session()->get('from');
 
         $froms=From::find($id);
@@ -178,12 +176,9 @@ class DeliveryController extends Controller
         // dd($today_date);
     	return view('Sale.sale_page',compact('voucher_code','salescustomers','adminpass','fItems','warehouses','items','categories','employees','today_date','sub_categories','customers'));
 
-
     }
     public function storetestVoucher(Request $request)
     {
-
-
         // return $request;
         $validator = Validator::make($request->all(), [
             'item' => 'required',
@@ -234,7 +229,7 @@ class DeliveryController extends Controller
         $total_quantity = $grand->total_qty;
 
         // dd($total_quantity);
-        $total_amount = $grand->sub_total;
+        $total_amount = $grand->sub_total + $request->second_payment;
 
         $discount_type = $grand->total_discount_type;
 
@@ -305,7 +300,6 @@ class DeliveryController extends Controller
             // return $voucher;
         //--Transaction
 
-
         $incoming = FinancialIncoming::create([
             'amount' =>$total_amount,
             'remark' =>$remark,
@@ -314,7 +308,7 @@ class DeliveryController extends Controller
         // return $incoming;
 
         $FM = FinancialMaster::first();
-        $accounting = Accounting::find($FM->showroom_sales_account_id );
+        $accounting = Accounting::find($FM->showroom_sales_account_id);
         $accounting->balance += $total_amount;
         $accounting->save();
         // return $accounting;
@@ -324,43 +318,40 @@ class DeliveryController extends Controller
             $bc_acc = $request->cash_acc;
 
             $cash_account = Accounting::find($request->cash_acc);
-            $cash_account->balance += $total_amount;
+            $cash_account->balance += $grand->sub_total;
             $cash_account->save();
         }
         else if($request->cash_acc == null)
         {
             $bc_acc = $request->bank_acc;
-            // return $bc_acc;
 
             $bank_account =  Accounting::find($request->bank_acc);
-            $bank_account->balance += $total_amount;
+            $bank_account->balance += $grand->sub_total;
             $bank_account->save();
 
             $bank=Bank::where('account_id',$request->bank_acc)->first();
-            $bank->balance += $total_amount;
+            $bank->balance += $grand->sub_total;
             $bank->save();
 
-            $transaction = Transaction::create([
-                'bank_acc_id' => $bank->old_bank_id ?? null,
-                // 'tran_date' => $request->pay_date,
-                'remark' => $request->remark,
-                'pay_amount' => $request-> $total_amount,,
 
-                // 'order_id' => $request->ord_id,
-            ]);
-            $oldBank = BankAccount::find($bank->old_bank_id);
-            $oldBank->balance += $total_amount;
-            $oldBank->save();
+
+            if($bank->old_bank_id != null)
+            {
+                $oldBank = BankAccount::find($bank->old_bank_id);
+                $oldBank->balance += $grand->sub_total;
+                $oldBank->save();
+            }
 
         }
         $tran1 = FinancialTransactions::create([
             'account_id' => $accounting->id,
             'type' => 2, // credit
-            'amount' => $total_amount,
-            'remark' => $request->remark,
-            // 'date' => $request->pay_date,
+
+            'amount' => $grand->sub_total,
+            'remark' => $remark,
+            'date' =>$voucher_date,
             'type_flag' =>4, // income credit type
-            // 'currency_id' =>$accounting->currency_id,
+            'currency_id' =>$accounting->currency_id,
             'all_flag'  =>3,
             'incoming_flag' => 1,
             'incoming_id'=> $incoming->id
@@ -369,12 +360,12 @@ class DeliveryController extends Controller
          $tran = FinancialTransactions::create([
             'account_id' => $bc_acc,
             'type' => 1, //  debit
-            'amount' =>$accounting->balance +=  $total_amount,,
-            'remark' => $request->remark,
-            // 'date' => $request->pay_date,
+            'amount' =>$grand->sub_total,
+            'remark' => $remark,
+            'date' => $voucher_date,
             'type_flag' =>3, // income debit type
             'incoming_flag' => 2,
-            // 'currency_id' => $accounting->currency_id,
+            'currency_id' => $accounting->currency_id,
             'all_flag'  =>3,
             'incoming_id'=> $incoming->id
         ]);
@@ -382,8 +373,53 @@ class DeliveryController extends Controller
         $tran1->related_transaction_id = $tran->id;
         $tran1->save();
 
-        //End
+        dd($request->payment_type);
+    if($request->payment_type == 2)
+    {
 
+        if($request->bank_acc_second == null)
+        {
+            $bc_acc_second = $request->cash_acc_second;
+
+            $cash_account_second = Accounting::find($request->cash_acc_second);
+            $cash_account_second->balance += $request->second_payment;
+            $cash_account_second->save();
+        }
+        else if($request->cash_acc_second == null )
+        {
+            $bc_acc_second = $request->bank_acc_second;
+
+            $bank_account_second =  Accounting::find($request->bank_acc_second);
+            $bank_account_second->balance += $request->second_payment;
+            $bank_account_second->save();
+
+            $bank_second=Bank::where('account_id',$request->bank_acc_second)->first();
+            $bank_second->balance += $request->second_payment;
+            $bank_second->save();
+
+            if($bank_second->old_bank_id != null)
+            {
+                $oldBank_second = BankAccount::find($bank_second->old_bank_id);
+                $oldBank_second->balance += $request->second_payment;
+                $oldBank_second->save();
+            }
+        }
+        $tran2 = FinancialTransactions::create([
+            'account_id' => $bc_acc_second,
+            'type' => 1, //  debit
+            'amount' =>$request->second_payment,
+            'remark' => $remark,
+            'date' => $voucher_date,
+            'type_flag' =>3, // income debit type
+            'incoming_flag' => 2,
+            'currency_id' => $accounting->currency_id,
+            'all_flag'  =>3,
+            'incoming_id'=> $incoming->id
+        ]);
+        $tran1->related_second_transaction_id = $tran2->id;
+        $tran1->save();
+    }
+        //End
 
         $counting_units = CountingUnit::whereIn('item_id',$item_ids)->with('fabric')->with('colour')->get();
 
