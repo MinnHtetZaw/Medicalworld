@@ -252,7 +252,9 @@
                                 <li><a href="{{route('subcategory_list')}}">@lang('lang.subcategory') @lang('lang.list')</a></li>
                                 <li><a href="{{route('item_list')}}">Sales Product @lang('lang.list')</a></li>
                                 <li><a href="{{route('factoryitem_list')}}">Factory Item @lang('lang.list')</a></li>
-                                 <li><a href="{{route('fabric_costing')}}">Fabric_Costing</a></li>
+                                 <li><a href="{{route('fabric_costing')}}">Fabric Costing</a></li>
+                                 <li><a href="{{route('cogs_caculator')}}">Cogs Caculator</a></li>
+
 {{--                                Specification List--}}
                                 <li>
                                     <a class="has-arrow " href="#" aria-expanded="false">

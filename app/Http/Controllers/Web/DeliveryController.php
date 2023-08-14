@@ -291,7 +291,6 @@ class DeliveryController extends Controller
         }else{
             $voucher_code =  "SVOU-" .date('y') . sprintf("%02s", (intval(date('m')) + 1)) .sprintf("%02s", 1);
         }
-
         $items = Item::where("category_id",1)->where("sub_category_id",2)->get();
         $item_ids=[];
         //$counting_units=[];
@@ -299,7 +298,6 @@ class DeliveryController extends Controller
             array_push($item_ids,$item->id);
         }
             // return $voucher;
-
         //--Transaction
 
         $incoming = FinancialIncoming::create([
@@ -335,16 +333,20 @@ class DeliveryController extends Controller
             $bank->balance += $grand->sub_total;
             $bank->save();
 
+
+
             if($bank->old_bank_id != null)
             {
                 $oldBank = BankAccount::find($bank->old_bank_id);
                 $oldBank->balance += $grand->sub_total;
                 $oldBank->save();
             }
+
         }
         $tran1 = FinancialTransactions::create([
             'account_id' => $accounting->id,
             'type' => 2, // credit
+
             'amount' => $grand->sub_total,
             'remark' => $remark,
             'date' =>$voucher_date,
@@ -370,7 +372,6 @@ class DeliveryController extends Controller
 
         $tran1->related_transaction_id = $tran->id;
         $tran1->save();
-
 
         dd($request->payment_type);
     if($request->payment_type == 2)

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\CogsController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\TransferController;
@@ -440,8 +441,10 @@ Route::group(['middleware' => ['UserAuth']], function () {
 
        Route::get('financial_tranfer_list',[TransferController::class,'TransferList'])->name('financialtransfer_list');
        Route::post('store_transfer',[TransferController::class,'storeTransfer'])->name('store_transfer');
+       Route::get('cogs/lists',[CogsController::class,'getCogs'])->name('cogs_caculator');
+       Route::post('cogs/create',[CogsController::class,'cogsCreate'])->name('create#cogs');
 
-
+     
 
 
 
