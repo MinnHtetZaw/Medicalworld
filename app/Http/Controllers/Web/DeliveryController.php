@@ -229,7 +229,7 @@ class DeliveryController extends Controller
         $total_quantity = $grand->total_qty;
 
         // dd($total_quantity);
-        $total_amount = $grand->sub_total + $request->second_payment;
+        $total_amount = $grand->sub_total ;
 
         $discount_type = $grand->total_discount_type;
 
@@ -318,7 +318,7 @@ class DeliveryController extends Controller
             $bc_acc = $request->cash_acc;
 
             $cash_account = Accounting::find($request->cash_acc);
-            $cash_account->balance += $grand->sub_total;
+            $cash_account->balance +=  $total_amount;
             $cash_account->save();
         }
         else if($request->cash_acc == null)
@@ -326,11 +326,11 @@ class DeliveryController extends Controller
             $bc_acc = $request->bank_acc;
 
             $bank_account =  Accounting::find($request->bank_acc);
-            $bank_account->balance += $grand->sub_total;
+            $bank_account->balance += $total_amount;
             $bank_account->save();
 
             $bank=Bank::where('account_id',$request->bank_acc)->first();
-            $bank->balance += $grand->sub_total;
+            $bank->balance += $total_amount;
             $bank->save();
 
 
@@ -338,7 +338,7 @@ class DeliveryController extends Controller
             if($bank->old_bank_id != null)
             {
                 $oldBank = BankAccount::find($bank->old_bank_id);
-                $oldBank->balance += $grand->sub_total;
+                $oldBank->balance +=  $total_amount;
                 $oldBank->save();
             }
 
@@ -346,8 +346,7 @@ class DeliveryController extends Controller
         $tran1 = FinancialTransactions::create([
             'account_id' => $accounting->id,
             'type' => 2, // credit
-
-            'amount' => $grand->sub_total,
+            'amount' => $total_amount,
             'remark' => $remark,
             'date' =>$voucher_date,
             'type_flag' =>4, // income credit type
@@ -360,7 +359,7 @@ class DeliveryController extends Controller
          $tran = FinancialTransactions::create([
             'account_id' => $bc_acc,
             'type' => 1, //  debit
-            'amount' =>$grand->sub_total,
+            'amount' => $total_amount - $request->second_payment,
             'remark' => $remark,
             'date' => $voucher_date,
             'type_flag' =>3, // income debit type
@@ -373,21 +372,20 @@ class DeliveryController extends Controller
         $tran1->related_transaction_id = $tran->id;
         $tran1->save();
 
-        dd($request->payment_type);
+
     if($request->payment_type == 2)
     {
 
-        if($request->bank_acc_second == null)
-        {
-            $bc_acc_second = $request->cash_acc_second;
+        try {
+            if($request->bank_acc_second == null)
+            {
 
-            $cash_account_second = Accounting::find($request->cash_acc_second);
-            $cash_account_second->balance += $request->second_payment;
-            $cash_account_second->save();
-        }
-        else if($request->cash_acc_second == null )
-        {
-            $bc_acc_second = $request->bank_acc_second;
+                $cash_account_second = Accounting::find($request->cash_acc_second);
+                $cash_account_second->balance += $request->second_payment;
+                $cash_account_second->save();
+            }
+            else if($request->cash_acc_second == null )
+             {
 
             $bank_account_second =  Accounting::find($request->bank_acc_second);
             $bank_account_second->balance += $request->second_payment;
@@ -403,9 +401,11 @@ class DeliveryController extends Controller
                 $oldBank_second->balance += $request->second_payment;
                 $oldBank_second->save();
             }
-        }
+             }
+
+
         $tran2 = FinancialTransactions::create([
-            'account_id' => $bc_acc_second,
+            'account_id' => $request->cash_acc_second == null ? $request->bank_acc_second :$request->cash_acc_second ,
             'type' => 1, //  debit
             'amount' =>$request->second_payment,
             'remark' => $remark,
@@ -418,6 +418,12 @@ class DeliveryController extends Controller
         ]);
         $tran1->related_second_transaction_id = $tran2->id;
         $tran1->save();
+        }
+        catch(\Exception $e)
+        {
+            return $e;
+      }
+
     }
         //End
 
