@@ -14,11 +14,42 @@ class CogsController extends Controller
         $sale_items = Item::get();
         return view ('Admin.cogs_lists',compact('cogs','sale_items'));
     }//End method
+
+    //Create Section
     public function cogsCreate(Request $request){
-        //  return $request;
-        // $validated = $request->validated();
-        // return $validated;
-        $data =[
+      
+       $data= $this->reqData($request);
+        $cogs = Cogs::create($data);
+        return redirect()->route('cogs_caculator');
+        
+    }//End Method
+//Update Section
+        public function cogsUpdate(Request $request){
+            $cogsId = $request->id;
+            $data= $this->reqData($request);
+            // return $cogsId;
+            $cogs = Cogs::where('id',$cogsId)->update($data);
+            return redirect()->route('cogs_caculator');
+        }//End method
+
+        //Delete Section
+        public function cogsDelete($id){
+            // return $id;
+            $cogs = Cogs::find($id);
+            if($cogs){
+                $cogs->delete_status =0;
+              
+                  
+                    if($cogs->save()){
+                        return redirect()->back();
+                    };
+    
+            }
+        }
+
+    private function reqData(Request $request){
+        return(
+            $data =[
             'sale_product_id'=>$request->sale_product_id,
             'fabric_cost'=>$request->fabric_cost,
             'labor_cost'=>$request->labor_cost,
@@ -27,9 +58,6 @@ class CogsController extends Controller
             'quantity'=>$request->quantity,
 
 
-        ];
-        $cogs = Cogs::create($data);
-        return redirect()->route('cogs_caculator');
-        
+            ]);
     }
 }

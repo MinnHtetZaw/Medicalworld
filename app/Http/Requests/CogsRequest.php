@@ -26,12 +26,12 @@ class CogsRequest extends FormRequest
     public function rules()
     {
         return [
-            'sale_product_id ' => 'required',
-            'fabric_cost' => 'required',
-            'labor_cost'=>"required",
-            'transportation_cost ' => 'required',
-            'other_overhead_cost ' => 'required',
-            'quantity'=>"required",
+            'sale_product_id' => 'required',
+            'fabric_cost' => 'required|integer',
+            'labor_cost'=>"required|integer",
+            'transportation_cost ' => 'required|integer',
+            'other_overhead_cost ' => 'required|integer',
+            'quantity'=>"required|integer",
            
            
         ];
