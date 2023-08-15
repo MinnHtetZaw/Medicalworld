@@ -194,24 +194,48 @@
                                 </select>
                             </div>
 
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">Amount</label>
+                                        <label class="control-label">Iitial Amount</label>
 
-                                        <input type="number" class="form-control" name="amount" id="convert_amount" value="0">
+                                        <input type="number" class="form-control" name="initial_amount" id="convert_amount" value="0">
 
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">Currency</label>
+                                        <label class="control-label">Initial Currency</label>
 
-                                        <select name="currency" id="" class="form-control mt-1" onchange="convert(this.value)">
+                                        <select name="initial_currency_id" id="initial_currency" class="form-control mt-1">
 
                                             <option value="">Choose Currency</option>
                                             @foreach ($currency as $curr)
                                                 <option value="{{$curr->id}}">{{$curr->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Final Amount</label>
+
+                                        <input type="number" class="form-control" name="final_amount" id="final_value" value="0">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Final Currency</label>
+
+                                        <select name="final_currency_id" id="" class="form-control mt-1" onchange="convert(this.value)">
+
+                                            <option value="">Choose Currency</option>
+                                            @foreach ($currency as $curr)
+                                                <option value="{{$curr->id}}"  > <p id="convert-mmk-to-usd-button"> {{$curr->name}}</p></option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -253,29 +277,14 @@
 
 function convert(val){
 
-var isChecked = $('#bank:checked').val()?true:false;
-if(isChecked){
 
-    var bk_ch = $('#bank_acc').val();
-
-}
-var isCheck = $('#cash:checked').val()?true:false;
-if(isCheck){
-    var bk_ch = $('#cash_acc').val();
-
-}
 $.ajax({
-       type:'POST',
-       url:'/ajax_convert',
+       type:'GET',
+       url:'/financial_ajax_convert',
        dataType:'json',
        data:{ "_token": "{{ csrf_token() }}",
-       "curr":val,
-        "bk_ch" : bk_ch,
         },
        success:function(data){
-
-        if(data.convert.currency_id != val){
-          if(data.convert.currency_id == 4 || val == 4){
             swal({
                     title: "Are You Sure Convert Currency?",
                     icon: 'warning',
@@ -284,83 +293,78 @@ $.ajax({
                 .then((isConfirm) => {
 
                 if (isConfirm) {
-
+                   var initial_curr = $('#initial_currency').val();
                    var amt =  $('#convert_amount').val();
-                   if(val == 4 && data.convert.currency_id == 5){
-                           var con_amt = amt * data.usd_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 4 && data.convert.currency_id == 6){
-                        var con_amt = amt * data.euro_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 4 && data.convert.currency_id == 9){
-                        var con_amt = amt * data.sgp_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 4 && data.convert.currency_id == 10){
-                        var con_amt = amt * data.jpn_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 4 && data.convert.currency_id == 11){
-                        var con_amt = amt * data.chn_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 4 && data.convert.currency_id == 12){
-                        var con_amt = amt * data.idn_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 4 && data.convert.currency_id == 13){
-                        var con_amt = amt * data.mls_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 4 && data.convert.currency_id == 14){
-                        var con_amt = amt * data.thai_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 5 && data.convert.currency_id == 4){
-                        var con_amt = parseInt(amt / data.usd_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 6 && data.convert.currency_id == 4){
-                        var con_amt = parseInt(amt / data.euro_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 9 && data.convert.currency_id == 4){
-                        var con_amt = parseInt(amt / data.sgp_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 10 && data.convert.currency_id == 4){
-                        var con_amt = parseInt(amt / data.jpn_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 11 && data.convert.currency_id == 4){
-                        var con_amt = parseInt(amt / data.chn_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 12 && data.convert.currency_id == 4){
-                        var con_amt = parseInt(amt / data.idn_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 13 && data.convert.currency_id == 4){
-                        var con_amt = parseInt(amt / data.mls_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
-                       }
-                       else if(val == 14 && data.convert.currency_id == 4){
-                        var con_amt = parseInt(amt / data.thai_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
-                       }
+
+                //    console.log(initial_curr,'af',amt,'ata',val);
+                   if(val == 4 && initial_curr == 5){
+                       var con_amt = amt * data.usd_rate.exchange_rate;
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 4 && initial_curr == 6){
+                    var con_amt = amt * data.euro_rate.exchange_rate;
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 4 && initial_curr == 9){
+                    var con_amt = amt * data.sgp_rate.exchange_rate;
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 4 && initial_curr == 10){
+                    var con_amt = amt * data.jpn_rate.exchange_rate;
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 4 && initial_curr == 11){
+                    var con_amt = amt * data.chn_rate.exchange_rate;
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 4 && initial_curr == 12){
+                    var con_amt = amt * data.idn_rate.exchange_rate;
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 4 && initial_curr == 13){
+                    var con_amt = amt * data.mls_rate.exchange_rate;
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 4 && initial_curr == 14){
+                    var con_amt = amt * data.thai_rate.exchange_rate;
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 5 && initial_curr == 4){
+                    var con_amt = parseInt(amt / data.usd_rate.exchange_rate);
+
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 6 && initial_curr == 4){
+                    var con_amt = parseInt(amt / data.euro_rate.exchange_rate);
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 9 && initial_curr == 4){
+                    var con_amt = parseInt(amt / data.sgp_rate.exchange_rate);
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 10 && initial_curr == 4){
+                    var con_amt = parseInt(amt / data.jpn_rate.exchange_rate);
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 11 && initial_curr == 4){
+                    var con_amt = parseInt(amt / data.chn_rate.exchange_rate);
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 12 && initial_curr == 4){
+                    var con_amt = parseInt(amt / data.idn_rate.exchange_rate);
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 13 && initial_curr == 4){
+                    var con_amt = parseInt(amt / data.mls_rate.exchange_rate);
+                       $('#final_value').val(con_amt);
+                   }
+                   else if(val == 14 && initial_curr == 4){
+                    var con_amt = parseInt(amt / data.thai_rate.exchange_rate);
+                       $('#final_value').val(con_amt);
+                   }
                 }
             })
-          }
-        else{
-            swal({
-                    title: "You Can't Convert This Currency?",
-                    icon: 'warning',
-                    buttons: ["No", "Yes"]
-                })
-        }
-        }
+
        }
 });
 }

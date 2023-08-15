@@ -68,11 +68,9 @@
                                 </th>
                                 <th class="text-center"><a class="btn btn-primary btn-sm " data-toggle="collapse" href="#related{{$list->id}}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Related</a></th>
                                     <th> <button type="button" data-toggle="modal" data-target="#add_expenses{{$list->id}}" class="btn btn-primary" onclick="hide_bank_acc()"><i class="fas fa-plus"></i> Add Expense</button>
-                                        <tr>
-
-
+                                        <tr >
                                             <td colspan="9">
-                                                <div class="collapse" id="related{{$list->id}}">
+                                                <div class="collapse offset-2" id="related{{$list->id}}">
                                                     <table class="table" style="background-color:blanchedalmond">
                                                         <thead>
                                                             <tr >

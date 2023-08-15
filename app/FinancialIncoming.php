@@ -10,6 +10,12 @@ class FinancialIncoming extends Model
     use HasFactory;
     protected $fillable = [
 
-        'type','date','remark','amount'
+        'date',
+        'remark',
+        'amount',
+        'initial_currency_id',
+        'final_currency_id',
+        'initial_amount',
+        'final_amount'
     ];
 }

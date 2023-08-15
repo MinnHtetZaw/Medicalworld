@@ -15,8 +15,10 @@ class CreateFinancialIncomingsTable extends Migration
     {
         Schema::create('financial_incomings', function (Blueprint $table) {
             $table->id();
-            $table->integer('type');
-
+            $table->integer('initial_currency_id');
+            $table->integer('final_currency_id');
+            $table->bigInteger('initial_amount');
+            $table->bigInteger('final_amount');
             $table->string('date')->nullable();
             $table->string('remark');
             $table->integer('amount');
