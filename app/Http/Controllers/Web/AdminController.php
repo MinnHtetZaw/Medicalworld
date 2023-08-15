@@ -13,10 +13,11 @@ use App\Income;
 use App\Expense;
 use App\Voucher;
 use App\Category;
+use App\Currency;
 use App\Customer;
 use App\Employee;
-use App\Purchase;
 
+use App\Purchase;
 use App\Supplier;
 use App\FactoryPo;
 use App\PayCredit;
@@ -48,9 +49,9 @@ use App\GeneralInformation;
 use App\SupplierCreditList;
 use App\Imports\ItemsImport;
 use Illuminate\Http\Request;
+
+
 use App\FinancialTransactions;
-
-
 use App\SaleCustomerCreditlist;
 use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\DB;
@@ -3317,7 +3318,19 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
 
         $purchase_lists = Purchase::all();
 
-        return view('Purchase.purchase_lists', compact('purchase_lists'));
+         $exp_account = Accounting::whereHas('subheading.heading.accountingtype',function ($query){
+            $query->where('accounting_type_id',5);
+       })->get();
+
+        // $expense_tran = Transaction::where('expense_flag',1)->get();
+         $bank_account = Accounting::where('subheading_id',19)->get();
+         $cash_account = Accounting::where('subheading_id',7)->get();
+
+         $bank_cash_tran = FinancialTransactions::get();
+
+         $currency = Currency::all();
+
+        return view('Purchase.purchase_lists', compact('purchase_lists','currency','bank_account','exp_account','cash_account','bank_cash_tran'));
     }
 
     protected function createPurchaseHistory(){
