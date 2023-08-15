@@ -43,7 +43,6 @@ class CogsController extends Controller
                     if($cogs->save()){
                         return redirect()->back();
                     };
-    
             }
         }
 
@@ -56,8 +55,6 @@ class CogsController extends Controller
             'transportation_cost'=>$request->transportation_cost,
             'other_overhead_cost'=>$request->other_overhead_cost,
             'quantity'=>$request->quantity,
-
-
             ]);
     }
 }
