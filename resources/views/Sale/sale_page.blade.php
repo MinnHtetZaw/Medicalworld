@@ -1002,12 +1002,16 @@
                     $('#Bank_cash_div').show();
                     $('#partial_bank_cash_div').hide();
                     $('#second_time_Partial').hide();
+                    $('#bank_acc_second').val(null)
+                    $('#cash_acc_second').val(null)
                 }
 
                 function Partial_show()
                 {
+                    $('#Bank_cash_div').show();
                     $('#Payment_radio_value').val(2);
                     $('#partial_bank_cash_div').show();
+
                 }
                 function qrSearch() {
                     if ($("#search_wif_typing").hasClass("d-block")) {
