@@ -38,9 +38,14 @@
                               <td>{{$cc->transportation_cost}}</td>
                               <td>{{$cc->other_overhead_cost}}</td>
                               <td>{{$cc->quantity}}</td>
-                              <td> ${{number_format( {$cc->fabric_cost + $cc->labor_cost + $cc->transportation_cost +$cc->other_overhead_cost} / $cc->quantity,0,'',',') }} </td>
                               <td>
-                                  <a href="" class="btn btn-sm btn-warning" data-toggle="modal" data-target=" ">Update</a>
+                                  ${{($cc->fabric_cost+$cc->labor_cost+$cc->transportation_cost+$cc->other_overhead_cost) / $cc->quantity}}
+                              </td>
+                              <td>
+                               
+                                  <a href="" class="btn btn-sm btn-warning" data-toggle="modal" data-target=" #update_cogs{{$cc->id}}">Update</a>
+                                  <a href="{{route('cogs#delete',$cc->id)}} " class="btn btn-danger" title="Delete Data" id="delete"><i class="fa fa-trash"></i> </a>
+
                               </td>
                           </tr>
                       @endforeach
@@ -103,33 +108,59 @@
     </div>
 </div>
 
-{{-- @foreach () --}}
-<div class="modal fade" id="update_currency" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+@foreach ($cogs as $cc)
+<div class="modal fade" id="update_cogs{{$cc->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <div class="modal-header bg-info">
-            <h5 class="modal-title" id="exampleModalLabel">Update Currency</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Update Cogs</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form action="#" method="post">
+        <form action="{{route('cogs#update')}}" method="post">
             @csrf
         <div class="modal-body">
-
+            <label for="name">Select Sale Product</label>
             <div class="form-group">
-                <label for="name">Exchange Rate</label>
-                <input type="text" class="form-control border border-info" name="rate" value="">
+                <input type="hidden" name="id"  value ="{{$cc->id}}">
+               
+                <select class="form-control" name="sale_product_id" id="">
+                    @foreach ($sale_items as $sale_item )
+                    <option value="{{$sale_item->id}}"  {{$sale_item->id == $cc->sale_product_id  ? 'selected':''}}>{{$sale_item->item_name}} </option>
+                    @endforeach
+                   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="name">Fabric Cost</label>
+                <input type="number" class="form-control border border-info" name="fabric_cost" value="{{$cc->fabric_cost}}">
+            </div>
+            <div class="form-group">
+                <label for="name">Labour Cost</label>
+                <input type="number" class="form-control border border-info" name="labor_cost" placeholder="eg. USD" value="{{$cc->labor_cost}}">
+            </div>
+            <div class="form-group">
+                <label for="name"> Transportation Cost</label>
+                <input type="number" class="form-control border border-info" name="transportation_cost" value="{{$cc->transportation_cost}}">
+            </div>
+            <div class="form-group">
+                <label for="name"> Other Overhead Cost</label>
+                <input type="number" class="form-control border border-info" name="other_overhead_cost" value="{{$cc->other_overhead_cost}}">
+            </div>
+            <div class="form-group">
+                <label for="name">Quantity </label>
+                <input type="number" class="form-control border border-info" name="quantity" value="{{$cc->quantity}}">
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Set</button>
         </div>
         </form>
         </div>
     </div>
 </div>
-{{-- @endforeach --}}
+@endforeach
 
 @endsection

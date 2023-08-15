@@ -443,8 +443,10 @@ Route::group(['middleware' => ['UserAuth']], function () {
        Route::post('store_transfer',[TransferController::class,'storeTransfer'])->name('store_transfer');
        Route::get('cogs/lists',[CogsController::class,'getCogs'])->name('cogs_caculator');
        Route::post('cogs/create',[CogsController::class,'cogsCreate'])->name('create#cogs');
+       Route::post('cogs/update',[CogsController::class,'cogsUpdate'])->name('cogs#update');
+       Route::get('cogs/delete/{id}',[CogsController::class,'cogsDelete'])->name('cogs#delete');
 
-     
+      
 
 
 
