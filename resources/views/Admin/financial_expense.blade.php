@@ -557,22 +557,14 @@ function hide_bank_acc(){
 
 
 function show_project(){
-        // alert('hello');
+
         $('#proj').show();
     }
     function hide_project(){
-        // alert('hello');
+
         $('#proj').hide();
     }
 
-
-
-    //     $('.dropify').dropify();
-
-    // $('#mdate').bootstrapMaterialDatePicker({ weekStart: 0, time: false });
-
-    // $('#mdate').prop("disabled",true);
-    // $('#period').prop("disabled",true);
 
     function showPeriod(value){
 
@@ -722,36 +714,6 @@ function show_project(){
            })
         }
 
-        //For Expense list initial and fianal amount
-    //     $(document).ready(function() {
-    //     $('#convert-mmk-to-usd-button').on('click', function() {
-    //         let initialValueMMK = parseFloat($('#initial_value').val());
-    //         // console.log(initialValueMMK);
 
-    //         // Fetch exchange rate via AJAX
-    //         $.ajax({
-    //             url: '/get_exchange_rate',
-    //             method: 'GET',
-    //             dataType: 'json',
-    //             success: function(data) {
-    //                 let exchangeRateUSD = parseFloat(data.exchange_rate);
-    //                 let finalValueUSD = initialValueMMK / exchangeRateUSD;
-    //                 $('#final_value').val(finalValueUSD.toFixed(2));
-
-    //                 // Store the final amount in the currencies table
-    //                 $.ajax({
-    //                     url: '/store-final-amount',
-    //                     method: 'POST',
-    //                     data: {
-    //                         final_amount: finalValueUSD
-    //                     },
-    //                     success: function(response) {
-    //                         console.log(response.message);
-    //                     }
-    //                 });
-    //             }
-    //         });
-    //     });
-    // });
 
 </script>

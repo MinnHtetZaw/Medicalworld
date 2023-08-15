@@ -10,10 +10,14 @@ class FinancialExpense extends Model
     use HasFactory;
      //
      protected $fillable = [
-        'purchase_id','date','remark','amount',
-        'initial_currency_id','final_currency_id','initial_amount','final_amount'
-
-       
+        'purchase_id',
+        'date',
+        'remark',
+        'amount',
+        'initial_currency_id',
+        'final_currency_id',
+        'initial_amount',
+        'final_amount'
 ];
 
 public function purchase()
