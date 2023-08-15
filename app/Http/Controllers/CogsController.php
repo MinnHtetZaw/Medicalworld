@@ -20,6 +20,7 @@ class CogsController extends Controller
       
        $data= $this->reqData($request);
         $cogs = Cogs::create($data);
+       
         return redirect()->route('cogs_caculator');
         
     }//End Method
