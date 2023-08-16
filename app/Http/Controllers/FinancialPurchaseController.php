@@ -55,7 +55,7 @@ class FinancialPurchaseController extends Controller
 
        $FM = FinancialMaster::first();
        $accounting = Accounting::find($FM->purchase_account_id);
-       $accounting->balance += $request->initial_amount;
+       $accounting->balance += $request->final_amount;
        $accounting->save();
 
         $tran1 = FinancialTransactions::create([
@@ -103,7 +103,7 @@ class FinancialPurchaseController extends Controller
         }
 
         $tran = FinancialTransactions::create([
-            'account_id' => $bc_acc,
+            'account_id' => $request->cash_acc == null ? $request->bank_acc : $request->cash_acc,
             'type' => 2,
             'amount' => $request->final_amount,
             'remark' => $request->remark,

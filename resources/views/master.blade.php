@@ -380,7 +380,7 @@
                         @if (session()->get('user')->role == 'Owner' ||
                                 session()->get('user')->role == 'Factory' ||
                                 session()->get('user')->role == 'Finance' ||
-                                sesssion()->get('user')->name == 'POE')
+                                session()->get('user')->name == 'POE')
                             <li>
                                 <a class="has-arrow " href="#" aria-expanded="false">
                                     <i class="mdi mdi-cart" style="font-size: 18px"></i>
@@ -512,6 +512,9 @@
 
                         {{-- financial accounting --}}
 
+                        @if (session()->get('user')->role == 'Finance' ||
+                             session()->get('user')->role == 'Owner')
+
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link" id="trasnfer_data">
                                 <i class="nav-icon far fa-address-card"></i>
@@ -637,7 +640,7 @@
                         <a href="{{route('setting')}}">
                             Setting
                         </a>
-
+                        @endif
                         {{-- financial accounting end --}}
 
 

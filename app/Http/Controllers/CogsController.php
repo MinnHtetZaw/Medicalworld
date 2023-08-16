@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Cogs;
 use App\Item;
+use App\CountingUnit;
 use Illuminate\Http\Request;
 use App\Http\Requests\CogsRequest;
 
 class CogsController extends Controller
 {
     public function getCogs(){
+        // $count_units =CountUnits::where()
         $cogs = Cogs::where('delete_status',1)->get();
         $sale_items = Item::get();
         return view ('Admin.cogs_lists',compact('cogs','sale_items'));
@@ -45,6 +47,12 @@ class CogsController extends Controller
                         return redirect()->back();
                     };
             }
+        }//End method
+
+        public function countUnitGet($sale_product_id){
+            $data = CountingUnit::where('item_id',$sale_product_id)->get();
+            return back();
+            
         }
 
     private function reqData(Request $request){

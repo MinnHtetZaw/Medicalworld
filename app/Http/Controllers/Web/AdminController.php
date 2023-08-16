@@ -4094,17 +4094,23 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
             $order->save();
         }
 
-        $incoming = FinancialIncoming::create([
-            'amount' => $request->pay_amt,
-            'remark' => $request->remark,
-            'date' => $request->pay_date,
-        ]);
+
 
 
         $FM = FinancialMaster::first();
         $accounting = Accounting::find($FM->b2b_sales_account_id);
         $accounting->balance += $request->pay_amt;
         $accounting->save();
+
+        $incoming = FinancialIncoming::create([
+            "initial_currency_id"=>$accounting->currency_id,
+            'final_currency_id'=>$accounting->currency_id,
+            'initial_amount'=>$request->pay_amt,
+            'final_amount'=>$request->pay_amt,
+            'amount' => $request->pay_amt,
+            'remark' => $request->remark,
+            'date' => $request->pay_date,
+        ]);
 
         if($request->finance_bank_acc == null)
         {

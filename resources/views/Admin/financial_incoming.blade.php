@@ -74,8 +74,8 @@
                                 <td style="font-size:15px;width:15%;" >{{$i++}}</td>
                                 <td style="font-size:15px;width:15%;">{{$trans->accounting->account_name}}-{{$trans->accounting->account_code}}</td>
                                 <td style="font-size:15px;width:15%;">{{$trans->date}}</td>
-                                <td style="font-size:15px;width:15%;">{{$trans->transactionFormat()}}</td>
                                 <td style="font-size:15px;width:15%;">-</td>
+                                <td style="font-size:15px;width:15%;">{{$trans->transactionFormat()}}</td>
                                 <td style="font-size:15px;width:15%;">{{$trans->remark}}</td>
                                 <td>
                                     <a class="btn btn-primary btn-sm " data-toggle="collapse" href="#related{{$trans->id}}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Related</a>
@@ -99,8 +99,8 @@
                                                         <td style="font-size:15px; width:15%;" >-</td>
                                                         <td style="font-size:15px; width:15%;">{{$transa->accounting->account_name}}-{{$transa->accounting->account_code}}</td>
                                                         <td style="font-size:15px; width:15%;">{{$transa->date}}</td>
-                                                        <td style="font-size:15px; width:15%;">-</td>
                                                         <td style="font-size:15px; width:15%;">{{$transa->transactionFormat()}}</td>
+                                                        <td style="font-size:15px; width:15%;">-</td>
                                                         <td style="font-size:15px; width:15%;" class="text-center">{{$transa->remark}}</td>
                                                         <td style="font-size:15px; width:15%;">-</td>
                                                     </tr>
