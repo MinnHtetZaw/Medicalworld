@@ -177,7 +177,7 @@
             // console.log(sale_product_id);
             if (sale_product_id) {
                 $.ajax({
-                    url: "{{ url('/countUnit-get/ajax') }}/"+sale_product_id,
+                    url: "{{ url('/countUnit-get/ajax')}}/"+sale_product_id,
                     type: "GET",
                     dataType:"json",
                     success:function(data){
