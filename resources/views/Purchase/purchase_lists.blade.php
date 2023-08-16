@@ -67,7 +67,7 @@
                                     </a>
                                 </th>
                                 <th class="text-center"><a class="btn btn-primary btn-sm " data-toggle="collapse" href="#related{{$list->id}}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Related</a></th>
-                                    <th> <button type="button" data-toggle="modal" data-target="#add_expenses{{$list->id}}" class="btn btn-primary" onclick="hide_bank_acc()"><i class="fas fa-plus"></i> Add Expense</button>
+                                    <th> <button type="button" data-toggle="modal" data-target="#add_expenses{{$list->id}}" class="btn btn-primary" onclick="hide_bank_acc({{$list->id}})"><i class="fas fa-plus"></i> Add Expense</button>
                                         <tr >
                                             <td colspan="9">
                                                 <div class="collapse offset-2" id="related{{$list->id}}">
@@ -134,18 +134,18 @@
                                                     <div class="col-md-2">
                                                     <div class="form-check form-check-inline">
 
-                                                        <input class="form-check-input" type="radio" name="account" id="bank" value="1" onclick="show_bank_acc({{$list->id}})">
+                                                        <input class="form-check-input" type="radio" name="account" id="bank{{$list->id}}" value="1" onclick="show_bank_acc({{$list->id}})">
 
-                                                        <label class="form-check-label text-success" for="bank">Bank</label>
+                                                        <label class="form-check-label text-success" for="bank{{$list->id}}">Bank</label>
                                                       </div>
                                                     </div>
                                                     <div class="col-md-2">
                                                       <div class="form-check form-check-inline">
 
 
-                                                        <input class="form-check-input" type="radio" name="account" id="cash" value="2" onclick="show_cash_acc({{$list->id}})">
+                                                        <input class="form-check-input" type="radio" name="account" id="cash{{$list->id}}" value="2" onclick="show_cash_acc({{$list->id}})">
 
-                                                        <label class="form-check-label text-success" for="cash">Cash</label>
+                                                        <label class="form-check-label text-success" for="cash{{$list->id}}">Cash</label>
                                                     </div>
                                                     </div>
                                                 </div>
@@ -283,10 +283,10 @@ function show_cash_acc(id){
     $('#cashhh'+id).show();
 }
 
-function hide_bank_acc(){
+function hide_bank_acc(id){
     // alert('hello');
-    $('#bankkk').hide();
-    $('#cashhh').hide();
+    $('#bankkk'+id).hide();
+    $('#cashhh'+id).hide();
     $('#proj').hide();
 }
 
