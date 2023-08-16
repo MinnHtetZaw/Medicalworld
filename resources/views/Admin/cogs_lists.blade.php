@@ -71,7 +71,7 @@
             <label for="name">Select Sale Product</label>
             <div class="form-group">
                
-                <select class="form-control" name="sale_product_id" id="cogs_id" >
+                <select class="form-control" name="sale_product_id" id="sale_product_id" >
                     {{-- onchange="changeCountUnit()" --}}
                     @foreach ($sale_items as $sale_item )
                     <option value="{{$sale_item->id}}">{{$sale_item->item_name}} </option>
