@@ -285,7 +285,8 @@
                         @if (session()->get('user')->role == 'Owner' ||
                                 session()->get('user')->role == 'Stock' ||
                                 session()->get('user')->role == 'Sales_Inventory' ||
-                                session()->get('user')->name == 'ATDK')
+                                session()->get('user')->name == 'ATDK' ||
+				session()->get('user')->name == 'Store-HHW')
                             <li>
                                 <a class="has-arrow " href="#" aria-expanded="false">
                                     <i class="mdi mdi-cart" style="font-size: 18px"></i>
@@ -346,7 +347,7 @@
                         </li>
 			@endif
 
-                        @if (session()->get('user')->name == 'POE')
+                      {{--  @if (session()->get('user')->name == 'POE')
                             <li>
                                 <a class="has-arrow " href="#" aria-expanded="false">
                                     <i class="mdi mdi-cart" style="font-size: 18px"></i>
@@ -358,7 +359,7 @@
                                     <li><a href="{{ route('newcreate_itemrequest') }}">Creat Factory PO</a></li>
 				</ul>
 				</li>
-			@endif
+			@endif  --}}
 
                         @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Sales" || session()->get('user')->role == "Sales_Inventory" || session()->get('user')->role == "Finance")
                         <li>
@@ -390,7 +391,8 @@
 
                         @if (session()->get('user')->role == 'Owner' ||
                                 session()->get('user')->role == 'Factory' ||
-                                session()->get('user')->role == 'Finance')
+                                session()->get('user')->role == 'Finance' ||
+				session()->get('user')->name == 'POE')
                             <li>
                                 <a class="has-arrow " href="#" aria-expanded="false">
                                     <i class="mdi mdi-cart" style="font-size: 18px"></i>
