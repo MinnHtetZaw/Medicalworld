@@ -71,10 +71,19 @@
             <label for="name">Select Sale Product</label>
             <div class="form-group">
                
-                <select class="form-control" name="sale_product_id" id="">
+                <select class="form-control" name="sale_product_id" id="cogs_id" >
+                    {{-- onchange="changeCountUnit()" --}}
                     @foreach ($sale_items as $sale_item )
                     <option value="{{$sale_item->id}}">{{$sale_item->item_name}} </option>
                     @endforeach
+                   
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="hidden" name="id"  value ="{{$cc->id}}">
+               
+                <select class="form-control" name="count_unit_id" id="count_unit_id">
+                    
                    
                 </select>
             </div>
@@ -107,7 +116,7 @@
         </div>
     </div>
 </div>
-
+{{-- Update Section --}}
 @foreach ($cogs as $cc)
 <div class="modal fade" id="update_cogs{{$cc->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -122,16 +131,14 @@
             @csrf
         <div class="modal-body">
             <label for="name">Select Sale Product</label>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <input type="hidden" name="id"  value ="{{$cc->id}}">
                
                 <select class="form-control" name="sale_product_id" id="">
-                    @foreach ($sale_items as $sale_item )
-                    <option value="{{$sale_item->id}}"  {{$sale_item->id == $cc->sale_product_id  ? 'selected':''}}>{{$sale_item->item_name}} </option>
-                    @endforeach
+                    
                    
                 </select>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <label for="name">Fabric Cost</label>
                 <input type="number" class="form-control border border-info" name="fabric_cost" value="{{$cc->fabric_cost}}">
@@ -161,6 +168,76 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+
+//    Show  Data
+   $(document).ready(function(){
+        $('select[name="sale_product_id"]').on('change',function(){
+            var sale_product_id = $(this).val();
+            // console.log(sale_product_id);
+            if (sale_product_id) {
+                $.ajax({
+                    url: "{{ url('/countUnit-get/ajax') }}/"+sale_product_id,
+                    type: "GET",
+                    dataType:"json",
+                    success:function(data){
+                        $('select[name="count_unit_id"]').html('');
+                        var d =$('select[name="count_unit_id"]').empty();
+                        $.each(data, function(key, value){
+                            $('select[name="count_unit_id"]').append('<option value="'+ value.id + '">' + value.unit_name + '</option>');
+                        });
+                    },
+                });
+            } else {
+                alert('danger');
+            }
+        });
+    });
+
+
+
+// function changeCountUnit() {
+
+// $('#count_unit_id').show();
+// var val = $('#count_unit_id').val();
+
+// $.ajax({
+//     type: 'POST',
+//     url: '/countUnit-get/ajax',
+//     dataType: 'json',
+//     data: {
+//         "_token": "{{ csrf_token() }}",
+//         "count_unit_id": val,
+//     },
+
+//     success: function(data) {
+
+//         if (data.length > 0) {
+//             $('#count_unit_id').append($('<option>').text('Choose'));
+//             $.each(data, function(i, value) {
+//                 $('#count_unit_id').append($('<option>').text(value.unit_name).attr('value', value.id));
+//             });
+//         } else {
+//             $('#count_unit_id').append($('<option>').text('No Data'));
+//         }
+//     },
+
+//     error: function(status) {
+//         swal({
+//             title: "Something Wrong!",
+//             text: "Error True",
+//             icon: "error",
+//         });
+//     }
+
+// });
+
+// };
+
+    
+</script>
+
+
 @endforeach
 
 @endsection

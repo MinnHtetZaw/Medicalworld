@@ -445,6 +445,7 @@ Route::group(['middleware' => ['UserAuth']], function () {
        Route::post('cogs/create',[CogsController::class,'cogsCreate'])->name('create#cogs');
        Route::post('cogs/update',[CogsController::class,'cogsUpdate'])->name('cogs#update');
        Route::get('cogs/delete/{id}',[CogsController::class,'cogsDelete'])->name('cogs#delete');
+       Route::get('countUnit-get/ajax/{sale_product_id}',[CogsController::class,'countUnitGet'])->name('countUnit-get/ajax');
 
       
 
