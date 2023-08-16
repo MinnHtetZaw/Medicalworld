@@ -7,25 +7,27 @@ use App\Item;
 use DateTime;
 use App\Order;
 use App\Voucher;
-use App\OrderVoucher;
 use App\Category;
 use App\Customer;
 use App\Discount;
 use App\Employee;
 use Carbon\Carbon;
+use App\Accounting;
 use App\Itemadjust;
 use App\Stockcount;
 use App\SubCategory;
 use App\CountingUnit;
 use App\DiscountMain;
+use App\OrderVoucher;
 use App\SalesCustomer;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
+use App\FinancialTransactions;
 use App\SaleCustomerCreditlist;
 use Illuminate\Support\Facades\DB;
+use App\Exports\SalesHistoryExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Excel;
-use App\Exports\SalesHistoryExport;
 
 class SaleController extends Controller
 {
@@ -44,6 +46,10 @@ class SaleController extends Controller
     }
 
     protected function getSalePage(Request $request){
+
+        $incoming_tran = FinancialTransactions::where('incoming_flag',1)->get();
+        // return $incoming_tran;
+
         $role= $request->session()->get('user')->role;
         if($role=='Sale_Person'){
             $item_from= $request->session()->get('user')->from_id;
@@ -77,7 +83,6 @@ class SaleController extends Controller
         $vou_date = $date->format('d M Y');
 
 
-
         $last_voucher = Voucher::count();
         if($last_voucher != null){
             $voucher_code =  "SVOU-" .date('y') . sprintf("%02s", (intval(date('m')))) . sprintf("%02s", ($last_voucher - 916));
@@ -85,13 +90,14 @@ class SaleController extends Controller
         }else{
             $voucher_code =  "SVOU-" .date('y') . sprintf("%02s", (intval(date('m')))) .sprintf("%02s", 1);
         }
-        //$voucher_count = count(Voucher::all());
-
 
         $salescustomers = SalesCustomer::all();
-        // dd($salescustomers);
-        return view('Sale.sale_page',compact('voucher_code','items','categories','customers','employees','today_date','sub_categories','salescustomers','counting_units','vou_date'));
-    }
+        $cash_account = Accounting::where('subheading_id',7)->get();
+        $bank_account = Accounting::where('subheading_id',19)->get();
+
+        return view('Sale.sale_page',compact('voucher_code','items','categories','customers','employees','today_date','sub_categories','salescustomers',
+        'counting_units','vou_date','cash_account','bank_account','incoming_tran'));
+    }//End method
 
     protected function getVucherPage(Request $request){
         // dd($request->item);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Bank;
+use App\Currency;
 use App\Transfer;
 use App\Accounting;
 use App\TransferTransaction;
@@ -105,6 +106,73 @@ class TransferController extends Controller
                 return back();
 
     }//End method
+    protected function convertRate($toAccount,$fromAccount,$amount)
+    {
+        $from = $fromAccount->currency_id;
+        $to = $toAccount->currency_id;
+
+        $usd_rate = Currency::find(5);
+        $euro_rate = Currency::find(6);
+        $sgp_rate = Currency::find(9);
+        $jpn_rate = Currency::find(10);
+        $chn_rate = Currency::find(11);
+        $idn_rate = Currency::find(12);
+        $mls_rate = Currency::find(13);
+        $thai_rate = Currency::find(14);
+
+        if($from == 4 && $to == 5){
+            $con_amt = $amount / $usd_rate->exchange_rate;
+        }
+        else if($from == 4 && $to == 6){
+            $con_amt = $amount / $euro_rate->exchange_rate;
+        }
+        else if($from == 4 && $to == 9){
+            $con_amt = $amount / $sgp_rate->exchange_rate;
+        }
+        else if($from == 4 && $to == 10){
+            $con_amt = $amount / $jpn_rate->exchange_rate;
+        }
+        else if($from == 4 && $to == 11){
+            $con_amt = $amount / $chn_rate->exchange_rate;
+        }
+        else if($from == 4 && $to == 12){
+            $con_amt = $amount / $idn_rate->exchange_rate;
+        }
+        else if($from == 4 && $to == 13){
+            $con_amt = $amount / $mls_rate->exchange_rate;
+        }
+        else if($from == 4 && $to == 14){
+            $con_amt = $amount / $thai_rate->exchange_rate;
+        }
+        else if($from == 5 && $to == 4){
+            $con_amt = $amount * $usd_rate->exchange_rate;
+        }
+        else if($from == 6 && $to == 4){
+            $con_amt = $amount * $euro_rate->exchange_rate;
+        }
+        else if($from == 9 && $to == 4){
+            $con_amt = $amount * $sgp_rate->exchange_rate;
+        }
+        else if($from == 10 && $to == 4){
+            $con_amt = $amount * $jpn_rate->exchange_rate;
+        }
+        else if($from == 11 && $to == 4){
+            $con_amt = $amount * $chn_rate->exchange_rate;
+        }
+        else if($from == 12 && $to == 4){
+            $con_amt = $amount * $idn_rate->exchange_rate;
+        }
+        else if($from == 13 && $to == 4){
+            $con_amt = $amount * $mls_rate->exchange_rate;
+        }
+        else if($from == 14 && $to == 4){
+            $con_amt = $amount * $thai_rate->exchange_rate;
+        }
+        else{
+            $con_amt = $amount;
+        }
+        return $con_amt;
+    }
 
 
 }

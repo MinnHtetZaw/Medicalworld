@@ -12,7 +12,7 @@ class Bank extends Model
      protected $fillable = [
 
         'account_id','account_code','account_name','opeing_date','account_holder_name','balance','bank_name','bank_address','bank_contact',
-        'currency_id'
+        'currency_id','old_bank_id'
     ];
 
     public function accounting(){
@@ -22,5 +22,10 @@ class Bank extends Model
 
     public function currency(){
         return $this->belongsTo('App\Currency','currency_id');
+    }
+
+    public function oldBank()
+    {
+        return $this->belongsTo(BankAccount::class,'old_bank_id');
     }
 }

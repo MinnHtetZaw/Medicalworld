@@ -58,6 +58,7 @@
                                 <th>Credit/Debit</th>
                                 <th>Amount</th>
                                 <th>Remark</th>
+                                <th>Particular</th>
                                 <th class="col-2">Action</th>
 
                             </tr>
@@ -73,6 +74,7 @@
                                 <td style="font-size:15px; width:50px" class="border-0">{{$data->type}}</td>
                                 <td style="font-size:15px; width:50px" class="border-0">{{$data->amount}}</td>
                                 <td style="font-size:15px; width:50px" class="border-0">{{$data->remark}}</td>
+                                <td style="font-size:15px; width:50px" class="border-0">{{$data->particular}}</td>
                                 <td style="font-size:15px; width:50px" class="border-0">
                                     <button class="btn btn-primary btn-sm"  data-toggle="collapse" data-target="#related_entry{{$data->id}}" >
                                         <i class="fa fa-caret-down" aria-hidden="true"></i>
@@ -89,10 +91,10 @@
                                         <a href="{{route('journal_entry_delete',$data->id)}}">
                                             <button class="btn btn-danger btn-sm">
                                                 <i class="fa fa-trash-o" aria-hidden="true">
-                                                    
+
                                                 </i>
                                                 Delete
-    
+
                                             </button>
                                             </a>
 
@@ -107,22 +109,26 @@
                             <tr>
                                 <td colspan="9">
                                     <div class="collapse" id="related_entry{{$data->id}}">
-                                        <table class="table table-borderless col-8 offset-2">
-                                            <thead  class="text-center fst-italic">
+                                        <table class="table table-borderless mr-3">
+                                            <thead class="text-center fst-italic">
                                                 <tr>
                                                     <th>Date</th>
+                                                    
                                                     <th>To Account</th>
                                                     <th>Credit/Debit</th>
                                                     <th>Remark</th>
+                                                    <th>Particular</th>
 
                                                 </tr>
                                             </thead>
                                            <tbody>
                                                 <tr  class="text-center fst-italic">
-                                                    <td>{{$data->relatedEntry->entry_date}}</td>
-                                                    <td>{{$data->relatedEntry->toAccount->account_code}}-{{$data->relatedEntry->toAccount->account_name}}</td>
-                                                    <td>{{$data->relatedEntry->type}}</td>
-                                                    <td>{{$data->relatedEntry->remark}}</td>
+                                                    <td style="font-size:15px; width:50px" class="border-0">{{$data->relatedEntry->entry_date}}</td>
+                                                    <td style="font-size:15px; width:50px" class="border-0">{{$data->relatedEntry->toAccount->account_code}}-{{$data->relatedEntry->toAccount->account_name}}</td>
+                                                    <td style="font-size:15px; width:50px" class="border-0">{{$data->relatedEntry->type}}</td>
+                                                    <td style="font-size:15px; width:50px" class="border-0">{{$data->relatedEntry->remark}}</td>
+                                                    <td style="font-size:15px; width:50px" class="border-0">{{$data->relatedEntry->particular}}</td>
+
                                                 </tr>
                                            </tbody>
                                         </table>
@@ -283,6 +289,10 @@
                             <div class="form-group">
                                 <label class="control-label">Remark</label>
                                 <input type="text" class="form-control" name="remark">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Particular</label>
+                                <textarea rows="4" cols="50" class="form-control" name="particular"> </textarea>
                             </div>
 
 

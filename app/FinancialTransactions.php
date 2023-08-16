@@ -18,13 +18,15 @@ class FinancialTransactions extends Model
         'type',
         'purchase_id',
         'related_transaction_id',
+        'related_second_transaction_id',
         'type_flag',
         'expense_flag',
         'all_flag',
         'currency_id',
         'expense_id',
         'incoming_flag',
-        'incoming_id'
+        'incoming_id',
+
     ];
     public function accounting(){
 		return $this->belongsTo('App\Accounting','account_id');
@@ -56,5 +58,10 @@ class FinancialTransactions extends Model
                 return "has";
                 break;
         }
+    }
+
+    public function transactionFormat()
+    {
+        return $this->amount."-".$this->currency->name;
     }
 }

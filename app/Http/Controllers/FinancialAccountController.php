@@ -6,6 +6,7 @@ use App\Bank;
 use App\Currency;
 use App\Accounting;
 use App\SubHeading;
+use App\BankAccount;
 use App\HeadingType;
 use App\Transaction;
 use App\FinancialIncoming;
@@ -63,7 +64,7 @@ class FinancialAccountController extends Controller
     {
         $accounttypes = FinancialAccountingType::all();
 
-        $headings = HeadingType::all();
+        $headings = HeadingType::orderBy('accounting_type_id')->get();
 
 
         return view('Admin.heading_type',compact('headings','accounttypes'));
@@ -83,7 +84,7 @@ class FinancialAccountController extends Controller
 
         return back();
     }//End method
-    
+
     //Update HeadingType
     public function updateHeading(Request $request,$id)
     {
@@ -109,7 +110,7 @@ class FinancialAccountController extends Controller
     public function getSubHeading()
     {
         $accounttypes = FinancialAccountingType::all();
-        $subheadings = SubHeading::all();
+        $subheadings = SubHeading::orderBy('heading_id')->get();
         $headings = HeadingType::all();
 
         return view('Admin.sub_heading_list',compact('subheadings','headings','accounttypes'));
@@ -169,7 +170,7 @@ class FinancialAccountController extends Controller
      public function financial_subheading_delete($id){
         SubHeading::where('id',$id)->delete();
         return back();
-    
+
     }
 
 
@@ -227,7 +228,7 @@ class FinancialAccountController extends Controller
          $headings= HeadingType::all();
          $account_type = FinancialAccountingType::all();
          $currency  = Currency::all();
- 
+
          return view('Admin.account_list',compact('currency','account','account_type','subheadings','headings'));
     }//End Method
 
@@ -235,26 +236,32 @@ class FinancialAccountController extends Controller
     protected function incoming()
     {
         $incoming_tran = FinancialTransactions::where('incoming_flag',1)->get();
- 
+
         $bank_cash_tran = FinancialTransactions::where('incoming_flag',2)->get();
- 
+
          $cash_account = Accounting::where('subheading_id',7)->get();
          $bank_account = Accounting::where('subheading_id',19)->get();
- 
-         $inc_account = Accounting::where('subheading_id',6)->get();
- 
+
+         $inc_account = Accounting::whereHas('subheading.heading.accountingtype',function ($query){
+              $query->where('accounting_type_id',4);
+         })->get();
         $currency = Currency::all();
- 
+
         return view('Admin.financial_incoming',compact('currency','bank_account','cash_account','inc_account','incoming_tran','bank_cash_tran'));
     }//End Method
 
     //Store Incoming
     protected function store_incoming(Request $request){
         //  return $request;
-          
+
 
         $incoming = FinancialIncoming::create([
-            'amount' => $request->amount,
+
+            "initial_currency_id"=>$request->initial_currency_id,
+            'final_currency_id'=>$request->final_currency_id,
+            'initial_amount'=>$request->initial_amount,
+            'final_amount'=>$request->final_amount,
+            'amount' => $request->final_amount,
             'remark' => $request->remark,
             'date' => $request->date,
         ]);
@@ -262,173 +269,61 @@ class FinancialAccountController extends Controller
         $tran1 = FinancialTransactions::create([
             'account_id' =>$request->incoming_acc,
             'type' => 2, // credit
-            'amount' => $request->amount,
+            'amount' => $request->final_amount,
             'remark' => $request->remark,
             'date' => $request->date,
             'type_flag' =>4, // income credit type
-            'currency_id' => $request->currency,
+            'currency_id' => $request->final_currency_id,
             'all_flag' =>3,
             'incoming_flag'=>1,
             'incoming_id'=>$incoming->id
         ]);
-        if($request->bank_acc == null){
-            $amt = Accounting::find( $request->cash_acc);
 
-            $usd_rate = Currency::find(5);
-            $euro_rate = Currency::find(6);
-            $sgp_rate = Currency::find(9);
-            $jpn_rate = Currency::find(10);
-            $chn_rate = Currency::find(11);
-            $idn_rate = Currency::find(12);
-            $mls_rate = Currency::find(13);
-            $thai_rate = Currency::find(14);
-            if($amt->currency_id == 4 && $request->currency == 5){
-                $con_amt = $request->amount * $usd_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 6){
-                $con_amt = $request->amount * $euro_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 9){
-                $con_amt = $request->amount * $sgp_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 10){
-                $con_amt = $request->amount * $jpn_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 11){
-                $con_amt = $request->amount * $chn_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 12){
-                $con_amt = $request->amount * $idn_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 13){
-                $con_amt = $request->amount * $mls_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 14){
-                $con_amt = $request->amount * $thai_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 5 && $request->currency == 4){
-                $con_amt = $request->amount / $usd_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 6 && $request->currency == 4){
-                $con_amt = $request->amount / $euro_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 9 && $request->currency == 4){
-                $con_amt = $request->amount / $sgp_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 10 && $request->currency == 4){
-                $con_amt = $request->amount / $jpn_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 11 && $request->currency == 4){
-                $con_amt = $request->amount / $chn_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 12 && $request->currency == 4){
-                $con_amt = $request->amount / $idn_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 13 && $request->currency == 4){
-                $con_amt = $request->amount / $mls_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 14 && $request->currency == 4){
-                $con_amt = $request->amount / $thai_rate->exchange_rate;
-            }
-            else{
-                $con_amt = $request->amount;
-            }
+        if($request->bank_acc == null){
+
             $bc_acc = $request->cash_acc;
 
             $acc_cash = Accounting::find($bc_acc);
-            $acc_cash->balance += $con_amt;
+            $acc_cash->balance += $request->final_amount;
             $acc_cash->save();
 
             $incoming_cash = Accounting::find($request->incoming_acc);
-            $incoming_cash->balance -= $request->amount;
+            $incoming_cash->balance -= $request->final_amount;
             $incoming_cash->save();
         }
         else if($request->cash_acc == null){
-            $amt = Accounting::find($request->bank_acc);
-            $usd_rate = Currency::find(5);
-            $euro_rate = Currency::find(6);
-            $sgp_rate = Currency::find(9);
-            $jpn_rate = Currency::find(10);
-            $chn_rate = Currency::find(11);
-            $idn_rate = Currency::find(12);
-            $mls_rate = Currency::find(13);
-            $thai_rate = Currency::find(14);
-
-            if($amt->currency_id == 4 && $request->currency == 5){
-                $con_amt = $request->amount * $usd_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 6){
-                $con_amt = $request->amount * $euro_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 9){
-                $con_amt = $request->amount * $sgp_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 10){
-                $con_amt = $request->amount * $jpn_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 11){
-                $con_amt = $request->amount * $chn_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 12){
-                $con_amt = $request->amount * $idn_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 13){
-                $con_amt = $request->amount * $mls_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 4 && $request->currency == 14){
-                $con_amt = $request->amount * $thai_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 5 && $request->currency == 4){
-                $con_amt = $request->amount / $usd_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 6 && $request->currency == 4){
-                $con_amt = $request->amount / $euro_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 9 && $request->currency == 4){
-                $con_amt = $request->amount / $sgp_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 10 && $request->currency == 4){
-                $con_amt = $request->amount / $jpn_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 11 && $request->currency == 4){
-                $con_amt = $request->amount / $chn_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 12 && $request->currency == 4){
-                $con_amt = $request->amount / $idn_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 13 && $request->currency == 4){
-                $con_amt = $request->amount / $mls_rate->exchange_rate;
-            }
-            else if($amt->currency_id == 14 && $request->currency == 4){
-                $con_amt = $request->amount / $thai_rate->exchange_rate;
-            }
-            else{
-                $con_amt = $request->amount;
-            }
 
             $bc_acc = $request->bank_acc;
 
             $bank = Bank::where('account_id',$bc_acc)->first();
-            $bank->balance +=  $con_amt;
+            $bank->balance +=  $request->final_amount;
             $bank->save();
 
+            if($bank->old_bank_id != null)
+            {
+                $oldBank = BankAccount::find($bank->old_bank_id);
+                $oldBank->balance +=  $request->final_amount;
+                $oldBank->save();
+            }
+
             $acc_bank = Accounting::find($bc_acc);
-            $acc_bank->balance += $con_amt;
+            $acc_bank->balance += $request->final_amount;
             $acc_bank->save();
 
             $incoming_bank = Accounting::find($request->incoming_acc);
-            $incoming_bank->balance -= $request->amount;
+            $incoming_bank->balance -= $request->final_amount;
             $incoming_bank->save();
+
         }
         $tran = FinancialTransactions::create([
             'account_id' => $bc_acc,
             'type' => 1,
-            'amount' => $con_amt,
+            'amount' => $request->final_amount,
             'remark' => $request->remark,
             'date' => $request->date,
             'type_flag' =>3,
             'incoming_flag' => 2,
-            'currency_id' => $request->currency,
+            'currency_id' => $request->final_currency_id,
             'all_flag' =>3,
             'incoming_id'=>$incoming->id
         ]);

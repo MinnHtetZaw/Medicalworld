@@ -23,6 +23,9 @@ class CreateBanksTable extends Migration
             $table->string('bank_name')->nullable();
             $table->string('bank_address')->nullable();
             $table->string('bank_contact')->nullable();
+            $table->unsignedInteger('currency_id')->nullable();
+            $table->string('account_code')->nullable();
+            $table->unsignedInteger('old_bank_id')->nullable();
             $table->timestamps();
         });
     }

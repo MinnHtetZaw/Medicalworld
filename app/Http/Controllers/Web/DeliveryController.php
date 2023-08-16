@@ -2,25 +2,33 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Bank;
 use App\From;
 use App\Item;
 use App\User;
 use DateTime;
 use App\Voucher;
 use App\Category;
+use App\Currency;
 use App\Customer;
 use App\Discount;
 use App\Employee;
+use App\Accounting;
 use App\Stockcount;
+use App\BankAccount;
 use App\Packagetype;
 use App\SubCategory;
+use App\Transaction;
 use App\Wayplanning;
 use App\CountingUnit;
 use App\DiscountMain;
 use App\SalesCustomer;
 use App\Deliveryreceive;
+use App\FinancialMaster;
 use Dotenv\Regex\Success;
+use App\FinancialIncoming;
 use Illuminate\Http\Request;
+use App\FinancialTransactions;
 use App\SaleCustomerCreditlist;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -134,8 +142,6 @@ class DeliveryController extends Controller
       }
       $warehouses=From::where('id',$item_from)->orWhere('id',3)->orWhere('id',4)->orWhere('id',5)->get();
 
-
-
         $name= $request->session()->get('from');
 
         $froms=From::find($id);
@@ -170,10 +176,10 @@ class DeliveryController extends Controller
         // dd($today_date);
     	return view('Sale.sale_page',compact('voucher_code','salescustomers','adminpass','fItems','warehouses','items','categories','employees','today_date','sub_categories','customers'));
 
-
     }
     public function storetestVoucher(Request $request)
     {
+        // return $request;
         $validator = Validator::make($request->all(), [
             'item' => 'required',
             'grand' => 'required',
@@ -223,7 +229,7 @@ class DeliveryController extends Controller
         $total_quantity = $grand->total_qty;
 
         // dd($total_quantity);
-        $total_amount = $grand->sub_total;
+        $total_amount = $grand->sub_total ;
 
         $discount_type = $grand->total_discount_type;
 
@@ -285,13 +291,148 @@ class DeliveryController extends Controller
         }else{
             $voucher_code =  "SVOU-" .date('y') . sprintf("%02s", (intval(date('m')) + 1)) .sprintf("%02s", 1);
         }
-
         $items = Item::where("category_id",1)->where("sub_category_id",2)->get();
         $item_ids=[];
         //$counting_units=[];
         foreach ($items as $item){
             array_push($item_ids,$item->id);
         }
+            // return $voucher;
+        //--Transaction
+
+
+        // return $incoming;
+
+        $FM = FinancialMaster::first();
+        $accounting = Accounting::find($FM->showroom_sales_account_id);
+        $accounting->balance += $total_amount;
+        $accounting->save();
+        // return $accounting;
+
+        $incoming = FinancialIncoming::create([
+            "initial_currency_id"=>$accounting->currency_id,
+            'final_currency_id'=>$accounting->currency_id,
+            'initial_amount'=>$total_amount,
+            'final_amount'=>$total_amount,
+            'amount' =>$total_amount,
+            'remark' =>$remark,
+             'date' => $voucher_date,
+        ]);
+
+        if($request->bank_acc == null)
+        {
+            $bc_acc = $request->cash_acc;
+
+            $cash_account = Accounting::find($request->cash_acc);
+            $cash_account->balance +=  $total_amount;
+            $cash_account->save();
+        }
+        else if($request->cash_acc == null)
+        {
+            $bc_acc = $request->bank_acc;
+
+            $bank_account =  Accounting::find($request->bank_acc);
+            $bank_account->balance += $total_amount;
+            $bank_account->save();
+
+            $bank=Bank::where('account_id',$request->bank_acc)->first();
+            $bank->balance += $total_amount;
+            $bank->save();
+
+            if($bank->old_bank_id != null)
+            {
+                $oldBank = BankAccount::find($bank->old_bank_id);
+                $oldBank->balance +=  $total_amount;
+                $oldBank->save();
+            }
+
+        }
+        $tran1 = FinancialTransactions::create([
+            'account_id' => $accounting->id,
+            'type' => 2, // credit
+            'amount' => $total_amount,
+            'remark' => $remark,
+            'date' =>$voucher_date,
+            'type_flag' =>4, // income credit type
+            'currency_id' =>$accounting->currency_id,
+            'all_flag'  =>3,
+            'incoming_flag' => 1,
+            'incoming_id'=> $incoming->id
+         ]);
+
+
+            $tran = FinancialTransactions::create([
+                'account_id' => $request->cash_acc == null ? $request->bank_acc : $request->cash_acc,
+                'type' => 1, //  debit
+                'amount' => $total_amount - $request->second_payment,
+                'remark' => $remark,
+                'date' => $voucher_date,
+                'type_flag' =>3, // income debit type
+                'incoming_flag' => 2,
+                'currency_id' => $accounting->currency_id,
+                'all_flag'  =>3,
+                'incoming_id'=> $incoming->id
+            ]);
+
+
+        $tran1->related_transaction_id = $tran->id;
+        $tran1->save();
+
+
+    if($request->payment_type == 2)
+    {
+
+        try {
+            if($request->bank_acc_second == null)
+            {
+
+                $cash_account_second = Accounting::find($request->cash_acc_second);
+                $cash_account_second->balance += $request->second_payment;
+                $cash_account_second->save();
+            }
+            else if($request->cash_acc_second == null )
+             {
+
+            $bank_account_second =  Accounting::find($request->bank_acc_second);
+            $bank_account_second->balance += $request->second_payment;
+            $bank_account_second->save();
+
+            $bank_second=Bank::where('account_id',$request->bank_acc_second)->first();
+            $bank_second->balance += $request->second_payment;
+            $bank_second->save();
+
+            if($bank_second->old_bank_id != null)
+            {
+                $oldBank_second = BankAccount::find($bank_second->old_bank_id);
+                $oldBank_second->balance += $request->second_payment;
+                $oldBank_second->save();
+            }
+             }
+
+
+        $tran2 = FinancialTransactions::create([
+            'account_id' => $request->cash_acc_second == null ? $request->bank_acc_second :$request->cash_acc_second ,
+            'type' => 1, //  debit
+            'amount' =>$request->second_payment,
+            'remark' => $remark,
+            'date' => $voucher_date,
+            'type_flag' =>3, // income debit type
+            'incoming_flag' => 2,
+            'currency_id' => $accounting->currency_id,
+            'all_flag'  =>3,
+            'incoming_id'=> $incoming->id
+        ]);
+        $tran1->related_second_transaction_id = $tran2->id;
+        $tran1->save();
+        }
+        catch(\Exception $e)
+        {
+            return $e;
+      }
+
+    }
+        //End
+
         $counting_units = CountingUnit::whereIn('item_id',$item_ids)->with('fabric')->with('colour')->get();
 
         return response()->json([
@@ -299,6 +440,7 @@ class DeliveryController extends Controller
             'voucher'=>$voucher,
             'voucher_code' => $voucher_code,
             'counting_units' => $counting_units,
+            'tran1'=>$tran1
         ]);
 
         } catch (\Exception $e) {
@@ -308,8 +450,12 @@ class DeliveryController extends Controller
                 'message' => $e,
             ]);
 
-        }
-    }
+        };
+
+
+
+
+    }//End Method
     public function getItemA5(Request $request)
     {
         // dd($request->items);

@@ -105,7 +105,7 @@
                         <!-- ============================================================== -->
                         @php
                             $date = new DateTime('Asia/Yangon');
-                            
+
                             $current_Date = $date->format('Y-m-d');
                         @endphp
 
@@ -252,7 +252,9 @@
                                 <li><a href="{{route('subcategory_list')}}">@lang('lang.subcategory') @lang('lang.list')</a></li>
                                 <li><a href="{{route('item_list')}}">Sales Product @lang('lang.list')</a></li>
                                 <li><a href="{{route('factoryitem_list')}}">Factory Item @lang('lang.list')</a></li>
-                                 <li><a href="{{route('fabric_costing')}}">Fabric_Costing</a></li>
+                                 <li><a href="{{route('fabric_costing')}}">Fabric Costing</a></li>
+                                 <li><a href="{{route('cogs_caculator')}}">Cogs Caculator</a></li>
+
 {{--                                Specification List--}}
                                 <li>
                                     <a class="has-arrow " href="#" aria-expanded="false">
@@ -346,20 +348,6 @@
                             </ul>
                         </li>
 			@endif
-
-                      {{--  @if (session()->get('user')->name == 'POE')
-                            <li>
-                                <a class="has-arrow " href="#" aria-expanded="false">
-                                    <i class="mdi mdi-cart" style="font-size: 18px"></i>
-                                    <span class="hide-menu">
-                                        Factory <i class="fas fa-angle-down"></i>
-                                    </span>
-                                </a>
-                                <ul aria-expanded="false" class="collapse">
-                                    <li><a href="{{ route('newcreate_itemrequest') }}">Creat Factory PO</a></li>
-				</ul>
-				</li>
-			@endif  --}}
 
                         @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Sales" || session()->get('user')->role == "Sales_Inventory" || session()->get('user')->role == "Finance")
                         <li>
@@ -524,6 +512,9 @@
 
                         {{-- financial accounting --}}
 
+                        @if (session()->get('user')->role == 'Finance' ||
+                             session()->get('user')->role == 'Owner')
+
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link" id="trasnfer_data">
                                 <i class="nav-icon far fa-address-card"></i>
@@ -547,7 +538,7 @@
                                                     Account Type
                                                 </p>
                                             </a>
-                                        </li> 
+                                        </li>
                                         <li class="nav-item">
                                             <a href="{{ route('headingList') }}" class="nav-link">
                                                 {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
@@ -573,13 +564,13 @@
                                         </p>
                                     </a>
                                 </li>
-                               
-                                
+
+
                                     </ul>
                                 </li>
 
 
-                                
+
                                 {{--  --}}
 
                                 <li class="nav-item">
@@ -591,15 +582,6 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('incoming') }}" class="nav-link">
-                                        {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
-                                        <p>
-                                            Financial Income Lists
-                                        </p>
-                                    </a>
-                                </li>
-                                
-                                <li class="nav-item">
                                     <a href="{{ route('financial_bank_list') }}" class="nav-link">
                                         {{-- <i class="nav-icon fas fa-money-check-alt"></i> --}}
                                         <p>
@@ -608,19 +590,10 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-
-                                    <a href="{{ route('financial_purchase_list') }}" class="nav-link">
-                                        {{-- <i class="nav-icon fas fa-circle"></i> --}}
+                                    <a href="{{ route('incoming') }}" class="nav-link">
+                                        {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
                                         <p>
-                                            Purchase List
-                                        </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('financial_transaction') }}" class="nav-link">
-                                        {{-- <i class="nav-icon far fa-address-card"></i> --}}
-                                        <p>
-                                            Transaction List
+                                            Financial Income Lists
                                         </p>
                                     </a>
                                 </li>
@@ -632,6 +605,17 @@
                                         </p>
                                     </a>
                                 </li>
+
+
+                                <li class="nav-item ">
+                                    <a href="{{ route('financial_transaction') }}" class="nav-link">
+                                        {{-- <i class="nav-icon far fa-address-card"></i> --}}
+                                        <p>
+                                            Transaction List
+                                        </p>
+                                    </a>
+                                </li>
+
                                 <li class="nav-item">
                                     <a href="{{ route('journalEntry') }}" class="nav-link">
                                         {{-- <i class="nav-icon far fa-address-card"></i> --}}
@@ -653,7 +637,10 @@
                             </ul>
                         </li>
 
-
+                        <a href="{{route('setting')}}">
+                            Setting
+                        </a>
+                        @endif
                         {{-- financial accounting end --}}
 
 

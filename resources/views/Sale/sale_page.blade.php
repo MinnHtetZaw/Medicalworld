@@ -1,4 +1,4 @@
-@extends('master')
+ @extends('master')
 
 @section('title', 'Sale Page')
 
@@ -140,7 +140,7 @@
                                 </thead>
                                 <tbody id="sale">
                                 <tr class="text-center">
-                                    {{--                                        Discount Modal--}}
+                                    {{--    Discount Modal--}}
                                     <div class="modal fade" id="itemDiscount" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
@@ -369,11 +369,112 @@
 
                         </div>
                     </div>
+
+                    <input id="Payment_radio_value"  value="" hidden>
+                    <div class="mt-3">
+                        <div class="form-check form-check-inline">
+
+                            <input class="form-check-input" type="radio" name="payment_type" id="fullPayment" value="1" onclick="show_bank_cash_div()">
+
+                            <label class="form-check-label text-success"  for="fullPayment">Full</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+
+                            <input class="form-check-input" type="radio" name="payment_type" id="partialPayment"  value="2" onclick="Partial_show()">
+
+                            <label class="form-check-label text-success" for="partialPayment">Partial</label>
+                        </div>
+
+                    </div>
+
+
+                    <div class="mt-3" id="Bank_cash_div">
+                        <div class="form-check form-check-inline">
+
+                            <input class="form-check-input" type="radio" name="account" id="bank" value="1" onclick="show_bank_acc()">
+
+                            <label class="form-check-label text-success" for="bank">Bank</label>
+                          </div>
+                        <div class="form-check form-check-inline">
+
+                            <input class="form-check-input" type="radio" name="account" id="cash" value="2" onclick="show_cash_acc()">
+
+                            <label class="form-check-label text-success" for="cash">Cash</label>
+                        </div>
+                    </div>
+
+
+
+                <div class="form-group mt-3" id="bankkk">
+                    <label class="control-label">Bank Account</label>
+                    <select class="form-control" name="bank_acc" id="bank_acc" class="bk">
+                        <option value="">Select Bank Account</option>
+                       @foreach ($bank_account as $acc)
+
+                        <option value="{{$acc->id}}" >{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                       @endforeach
+                    </select>
+                </div>
+                    <div class="form-group mt-3" id="cashhh">
+                        <label class="control-label">Cash Account</label>
+                        <select class="form-control" name="cash_acc" id="cash_acc">
+                            <option value="">Select Cash Account</option>
+                           @foreach ($cash_account as $acc)
+
+                            <option value="{{$acc->id}}">{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                           @endforeach
+                        </select>
+                    </div>
+
+                    <hr>
+                    <div class="mt-3" id="partial_bank_cash_div">
+
+                        <label class="form-check-label text-success">Seconde Time</label>
+
+                        <div class="form-check form-check-inline">
+
+                            <input class="form-check-input" type="radio" name="Partialaccount" id="bank_second" value="1" onclick="show_bank_acc_second()">
+
+                            <label class="form-check-label text-success" for="bank_second">Bank</label>
+                          </div>
+                        <div class="form-check form-check-inline">
+
+                            <input class="form-check-input" type="radio" name="Partialaccount" id="cash_second" value="2" onclick="show_cash_acc_second()">
+
+                            <label class="form-check-label text-success" for="cash_second">Cash</label>
+                        </div>
+                         </div>
+
+                    <div id="second_time_Partial">
+                        <div class="form-group mt-3" id="bankkk_second">
+                            <label class="control-label">Bank Account</label>
+                            <select class="form-control" name="bank_acc_second" id="bank_acc_second">
+                                <option hidden>Select Bank Account</option>
+                               @foreach ($bank_account as $acc)
+
+                                <option value={{$acc->id}} >{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                               @endforeach
+                            </select>
+                        </div>
+                            <div class="form-group mt-3" id="cashhh_second">
+                                <label class="control-label">Cash Account</label>
+                                <select class="form-control" name="cash_acc_second" id="cash_acc_second">
+                                    <option hidden>Select Cash Account</option>
+                                   @foreach ($cash_account as $acc)
+
+                                    <option value={{$acc->id}}>{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                                   @endforeach
+                                </select>
+                            </div>
+
+                            <input type="number" class="form-control" value="0" name="second_payment" id="second_payment" placeholder="Second Payment">
+                    </div>
+
                 </div>
                 <div class="card pl-2 pr-4 py-3" style="border-radius: 0px;margin-top:-9px">
                     <div class="row mb-2">
                         <label class="control-label  col-5 text-black">စုစုပေါင်း </label>
-                        <input type="number" class="form-control col-7 h-75 text-black" id="gtot" value="0">
+                        <input type="number" name="total_amount" class="form-control col-7 h-75 text-black" id="gtot" value="0">
                     </div>
                     <div class="row mb-2">
                         <label class="control-label text-black col-5">Discount</label>
@@ -840,6 +941,11 @@
                     $('#a5_last').hide();
                     $('#a5_middle').hide();
 
+                    $('#cashhh').hide();
+                    $('#bankkk').hide();
+                    $('#Bank_cash_div').hide();
+                    $('#second_time_Partial').hide();
+                    $('#partial_bank_cash_div').hide();
                     //     var mycart = localStorage.getItem('mycart');
                     //     setInterval(() => {
                     //     $.ajax({
@@ -891,6 +997,22 @@
                     clearLocalstorage(0);
                 }
 
+                function show_bank_cash_div(){
+                    $('#Payment_radio_value').val(1);
+                    $('#Bank_cash_div').show();
+                    $('#partial_bank_cash_div').hide();
+                    $('#second_time_Partial').hide();
+                    $('#bank_acc_second').val(null)
+                    $('#cash_acc_second').val(null)
+                }
+
+                function Partial_show()
+                {
+                    $('#Bank_cash_div').show();
+                    $('#Payment_radio_value').val(2);
+                    $('#partial_bank_cash_div').show();
+
+                }
                 function qrSearch() {
                     if ($("#search_wif_typing").hasClass("d-block")) {
                         $("#search_wif_typing").removeClass("d-block");
@@ -2186,18 +2308,24 @@
 
                 function getCreditAmount(pay_amount) {
 
+
+                    var Payment_radio_value = $('#Payment_radio_value').val()
                     var total_charges = parseInt($('#with_dis_total').val());
+                    var second_payment = parseInt($('#second_payment').val());
 
                     var has_credit = parseInt($('#credit').val());
                     var previous_credit = $('#previous_credit').val();
-                    // alert(total_charges);alert
+
+
                     if (pay_amount > total_charges) {
                         var credit_amt = 0;
                         $('#current_change').val(parseInt(pay_amount) - parseInt(total_charges));
                     } else {
-                        var credit_amt = parseInt(total_charges) - parseInt(pay_amount);
+
+                        var credit_amt = parseInt(total_charges) - (parseInt(pay_amount)+second_payment) ;
                         var hascre = parseInt(previous_credit) + parseInt(credit_amt);
                     }
+
                     $('#pay').text(pay_amount);
                     $('#changes').text(credit_amt);
                     $("#credit").val(hascre);
@@ -2313,9 +2441,7 @@
                     var mycart = localStorage.getItem('mycart');
 
                     var grand_total = localStorage.getItem('grandTotal');
-
                     var editvoucher = localStorage.getItem('editvoucher');
-
                     var item = mycart;
                     var grand = grand_total;
                     var discount = discount;
@@ -2339,6 +2465,23 @@
 
                     var username = $('#userName').val();
 
+                    var fullPaymetType = $('#Payment_radio_value').val();
+
+                if(fullPaymetType == 1){
+                    var bank_acc = $('#bank_acc').val();
+                    var cash_acc = $('#cash_acc').val();
+                    var bank_acc_second = null;
+                    var cash_acc_second = null;
+                    var second_payment = null;
+                }
+                else if(fullPaymetType == 2){
+
+                    var bank_acc = $('#bank_acc').val();
+                    var cash_acc = $('#cash_acc').val();
+                    var bank_acc_second = $('#bank_acc_second').val();
+                    var cash_acc_second = $('#cash_acc_second').val();
+                    var second_payment = $('#second_payment').val()
+                }
                     //var id = $('#salescustomer_list').children("option:selected").val();
                     var id = $('#select_cusid').val();
 
@@ -2366,6 +2509,12 @@
                                 "customer_phone": custphone,
                                 "cus_pay": cus_pay,
                                 "user_name": username,
+                                "bank_acc":bank_acc,
+                                "cash_acc":cash_acc,
+                                "bank_acc_second":bank_acc_second,
+                                "cash_acc_second":cash_acc_second,
+                                "second_payment": second_payment,
+                                "payment_type":fullPaymetType,
                                 "customer_id": id,
                                 "remark" : remark,
                                 "editvoucher": editvoucher ?? 0
@@ -2402,7 +2551,7 @@
                             }
                         });
                     }
-                });
+                });//End Voucher
                 $("#repaymentDate").datetimepicker({
                     format: 'YYYY-MM-DD'
                 });
@@ -2470,6 +2619,8 @@
                                 "cus_pay": cus_pay,
                                 "user_name": username,
                                 "customer_id" : id,
+                                'bank_acc':bank_acc,
+                                'cash_acc':cash_acc,
                                 "remark" : remark,
                                 "editvoucher": editvoucher ?? 0
                             },
@@ -3001,6 +3152,61 @@
                     return typeof value === 'string' && !value.trim()
                     || typeof value === 'undefined' || typeof value === null;
                 }
+                function show_bank_acc(){
+    // alert('hello');
+                     $('#cashhh').hide();
+              $('#bankkk').show();
+
+                      }
+    function show_cash_acc(){
+    // alert('hello');
+    $('#bankkk').hide();
+    $('#cashhh').show();
+}
+
+    function show_bank_acc_second(){
+        $('#second_time_Partial').show();
+        $('#bankkk_second').show();
+         $('#cashhh_second').hide();
+    }
+
+    function show_cash_acc_second(){
+        $('#second_time_Partial').show();
+        $('#bankkk_second').hide();
+         $('#cashhh_second').show();
+    }
+
+    function hide_bank_acc(){
+    // alert('hello');
+    $('#bankkk').hide();
+    $('#cashhh').hide();
+    $('#proj').hide();
+
+    $('#from_bank').hide();
+    $('#from_cash').hide();
+
+    $('#to_bank').hide();
+    $('#to_cash').hide();
+        }
+        function show_project(){
+        // alert('hello');
+        $('#proj').show();
+    }
+    function hide_project(){
+        // alert('hello');
+        $('#proj').hide();
+    }
+//     function hide_bank_acc(){
+
+//             $('#defaultAcc_from').show()
+//             $('#defaultAcc_to').show()
+//                $('#from_bank').hide();
+//               $('#from_cash').hide();
+
+//                $('#to_bank').hide();
+//                $('#to_cash').hide();
+// }
+
             </script>
 
 @endsection

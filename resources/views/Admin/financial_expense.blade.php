@@ -37,11 +37,8 @@
             <div class="col-12">
           <div class="row justify-content-between">
            <label for="name">Expense Transaction List</label>
-                
-                    <span class="float-right"><button type="button" data-toggle="modal" data-target="#add_expenses" class="btn btn-primary" onclick="hide_bank_acc()"><i class="fas fa-plus"></i> Add Expense</button> </span>
-           
 
-             
+                    <span class="float-right"><button type="button" data-toggle="modal" data-target="#add_expenses" class="btn btn-primary" onclick="hide_bank_acc()"><i class="fas fa-plus"></i> Add Expense</button> </span>
 
           </div>
 
@@ -65,10 +62,9 @@
                             <tr>
                                 <th>#</th>
                                 <th class="text-center">Account</th>
-                                <th class="text-center">Type</th>
                                 <th class="text-center">Date</th>
-                                <th class="text-center">Amount</th>
-                                {{-- <th class="text-center">Voucher No</th> --}}
+                                <th class="text-center">Debit</th>
+                                <th class="text-center">Credit</th>
                                 <th class="text-center">Remark</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -77,69 +73,49 @@
                             <?php $i = 1; ?>
                             @foreach ($expense_tran as $trans)
                             @if($trans->type_flag == 1)
-                            <tr>
-                            <td style="font-size:15px;" class="text-center">{{$i++}}</td>
-                            <td style="font-size:15px;" class="text-center">{{$trans->accounting->account_name}}-{{$trans->accounting->account_code}}</td>
+                            <tr class="text-center">
+                            <td style="font-size:15px;width:15%;" >{{$i++}}</td>
+                            <td style="font-size:15px;width:15%;" >{{$trans->accounting->account_name}}-{{$trans->accounting->account_code}}</td>
+                            <td style="font-size:15px;width:15%;" >{{$trans->date}}</td>
+                            <td style="font-size:15px;width:15%;" >{{$trans->amount}}-{{$trans->currency->name}}</td>
+                            <td style="font-size:15px;width:15%;" >-</td>
 
-                            <td style="font-size:15px;" class="text-center">{{$trans->type}}</td>
 
-
-
-                            <td style="font-size:15px;" class="text-center">{{$trans->date}}</td>
-                            <td style="font-size:15px;" class="text-center">{{$trans->amount}}</td>
                             {{-- <td style="font-size:15px;" class="text-center">{{$trans->voucher_id}}</td> --}}
-                            <td style="font-size:15px;" class="text-center">{{$trans->remark}}</td>
-                            <td class="text-center col-2">
+                            <td style="font-size:15px;width:15%;" >{{$trans->remark}}</td>
+                            <td class="col-2">
                                 <a class="btn btn-primary btn-sm " data-toggle="collapse" href="#related{{$trans->id}}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Related</a>
                                 <a href="{{route('financial_expense_delete',$trans->id)}}" class="btn btn-danger btn-sm">Delete</a>
                             </td>
                             </tr>
 
                             <tr>
-                                <td></td>
 
-                                <td colspan="6">
+                                <td colspan="9">
                                     <div class="collapse out container mr-5" id="related{{$trans->id}}">
-                                        <div class="row">
+
                                             <?php $j=1 ?>
                                             @foreach($bank_cash_tran as $transa)
                                             @if($trans->related_transaction_id == $transa->id)
                                             @if($transa->type_flag == 2)
-                                            <div class="col-md-2">
-                                                <label style="font-size:15px;" class="text-info">No</label>
-                                                <div style="font-size:15px;">{{$j++}}</div>
 
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label style="font-size:15px;" class="text-info">Account</label>
-
-                                                <div style="font-size:15px;">{{$transa->accounting->account_code}}-({{$transa->accounting->account_name}})</div>
-
-
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label style="font-size:15px;" class="text-info">Type</label>
-                                                    <div style="font-size:15px;">{{$transa->type}}</div>
-
-
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label style="font-size:15px;" class="text-info">Date</label>
-
-                                                <div style="font-size:15px;">{{$transa->date}}</div>
-
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label style="font-size:15px;" class="text-info">Amount</label>
-
-                                                <div style="font-size:15px;">{{$transa->amount}}</div>
-
-                                            </div>
-
+                                            <table class="table table-responsive">
+                                                <tbody>
+                                                    <tr class="text-center">
+                                                        <td style="font-size:15px; width:15%;" >-</td>
+                                                        <td style="font-size:15px; width:15%;">{{$transa->accounting->account_name}}-{{$transa->accounting->account_code}}</td>
+                                                        <td style="font-size:15px; width:15%;">{{$transa->date}}</td>
+                                                        <td style="font-size:15px; width:15%;">-</td>
+                                                        <td style="font-size:15px; width:15%;">{{$transa->transactionFormat()}}</td>
+                                                        <td style="font-size:15px; width:15%;" class="text-center">{{$transa->remark}}</td>
+                                                        <td style="font-size:15px; width:15%;">-</td>
+                                                        </tr>
+                                                </tbody>
+                                            </table>
                                             @endif
                                             @endif
                                            @endforeach
-                                        </div>
+
                                     </div>
 
                                 <td>
@@ -169,6 +145,10 @@
                     <div class="modal-body">
 
                         <form action="{{route('store_financial_expense')}}" method="POST">
+                            {{-- @php
+                                $currency = App\Currency::get();
+                            @endphp
+                            <input type="hidden" id="{{$currency->id}}"> --}}
 
                             @csrf
                             <div class="row offset-md-5">
@@ -229,21 +209,44 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label">Amount</label>
+                                                <label class="control-label">Iitial Amount</label>
 
-                                                <input type="number" class="form-control" name="amount" id="convert_amount" value="0">
+                                                <input type="number" class="form-control" name="initial_amount" id="convert_amount" value="0">
 
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label">Currency</label>
+                                                <label class="control-label">Initial Currency</label>
 
-                                                <select name="currency" id="" class="form-control mt-1" onchange="convert(this.value)">
+                                                <select name="initial_currency_id" id="initial_currency" class="form-control mt-1">
 
                                                     <option value="">Choose Currency</option>
                                                     @foreach ($currency as $curr)
                                                         <option value="{{$curr->id}}">{{$curr->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Final Amount</label>
+
+                                                <input type="number" class="form-control" name="final_amount" id="final_value" value="0">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Final Currency</label>
+
+                                                <select name="final_currency_id" id="" class="form-control mt-1" onchange="convert(this.value)">
+
+                                                    <option value="">Choose Currency</option>
+                                                    @foreach ($currency as $curr)
+                                                        <option value="{{$curr->id}}"  > <p id="convert-mmk-to-usd-button"> {{$curr->name}}</p></option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -289,29 +292,14 @@
 
 function convert(val){
 
-    var isChecked = $('#bank:checked').val()?true:false;
-    if(isChecked){
-        // alert("bank");
-        var bk_ch = $('#bank_acc').val();
-        // alert(bk_ch);
-    }
-    var isCheck = $('#cash:checked').val()?true:false;
-    if(isCheck){
-        var bk_ch = $('#cash_acc').val();
-        // alert(bk_ch);
-    }
+
     $.ajax({
-           type:'POST',
+           type:'GET',
            url:'/financial_ajax_convert',
            dataType:'json',
            data:{ "_token": "{{ csrf_token() }}",
-           "curr":val,
-            "bk_ch" : bk_ch,
             },
            success:function(data){
-            // alert(val);
-            if(data.convert.currency_id != val){
-                if(data.convert.currency_id == 4 || val == 4){
                 swal({
                         title: "Are You Sure Convert Currency?",
                         icon: 'warning',
@@ -320,83 +308,78 @@ function convert(val){
                     .then((isConfirm) => {
 
                     if (isConfirm) {
-                        // alert('hello');
+                       var initial_curr = $('#initial_currency').val();
                        var amt =  $('#convert_amount').val();
-                       if(val == 4 && data.convert.currency_id == 5){
+
+                    //    console.log(initial_curr,'af',amt,'ata',val);
+                       if(val == 4 && initial_curr == 5){
                            var con_amt = amt * data.usd_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 6){
+                       else if(val == 4 && initial_curr == 6){
                         var con_amt = amt * data.euro_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 9){
+                       else if(val == 4 && initial_curr == 9){
                         var con_amt = amt * data.sgp_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 10){
+                       else if(val == 4 && initial_curr == 10){
                         var con_amt = amt * data.jpn_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 11){
+                       else if(val == 4 && initial_curr == 11){
                         var con_amt = amt * data.chn_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 12){
+                       else if(val == 4 && initial_curr == 12){
                         var con_amt = amt * data.idn_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 13){
+                       else if(val == 4 && initial_curr == 13){
                         var con_amt = amt * data.mls_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 4 && data.convert.currency_id == 14){
+                       else if(val == 4 && initial_curr == 14){
                         var con_amt = amt * data.thai_rate.exchange_rate;
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 5 && data.convert.currency_id == 4){
+                       else if(val == 5 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.usd_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 6 && data.convert.currency_id == 4){
+                       else if(val == 6 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.euro_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 9 && data.convert.currency_id == 4){
+                       else if(val == 9 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.sgp_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 10 && data.convert.currency_id == 4){
+                       else if(val == 10 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.jpn_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 11 && data.convert.currency_id == 4){
+                       else if(val == 11 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.chn_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 12 && data.convert.currency_id == 4){
+                       else if(val == 12 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.idn_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 13 && data.convert.currency_id == 4){
+                       else if(val == 13 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.mls_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
-                       else if(val == 14 && data.convert.currency_id == 4){
+                       else if(val == 14 && initial_curr == 4){
                         var con_amt = parseInt(amt / data.thai_rate.exchange_rate);
-                           $('#convert_amount').val(con_amt);
+                           $('#final_value').val(con_amt);
                        }
                     }
                 })
-            }
-            else{
-                swal({
-                        title: "You Can't Convert This Currency?",
-                        icon: 'warning',
-                        buttons: ["No", "Yes"]
-                    })
-            }
-            }
+
            }
     });
 }
@@ -574,22 +557,14 @@ function hide_bank_acc(){
 
 
 function show_project(){
-        // alert('hello');
+
         $('#proj').show();
     }
     function hide_project(){
-        // alert('hello');
+
         $('#proj').hide();
     }
 
-
-
-    //     $('.dropify').dropify();
-
-    // $('#mdate').bootstrapMaterialDatePicker({ weekStart: 0, time: false });
-
-    // $('#mdate').prop("disabled",true);
-    // $('#period').prop("disabled",true);
 
     function showPeriod(value){
 
@@ -738,5 +713,7 @@ function show_project(){
 
            })
         }
+
+
 
 </script>

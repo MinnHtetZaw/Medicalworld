@@ -22,6 +22,7 @@ class CreateJournalEntriesTable extends Migration
             $table->date('entry_date')->nullable();
             $table->unsignedInteger('related_entry_id')->nullable();
             $table->string('remark')->nullable();
+            $table->string('particular')->nullable();
             $table->timestamps();
         });
     }
