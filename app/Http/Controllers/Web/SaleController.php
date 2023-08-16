@@ -83,7 +83,6 @@ class SaleController extends Controller
         $vou_date = $date->format('d M Y');
 
 
-
         $last_voucher = Voucher::count();
         if($last_voucher != null){
             $voucher_code =  "SVOU-" .date('y') . sprintf("%02s", (intval(date('m')))) . sprintf("%02s", ($last_voucher - 916));
