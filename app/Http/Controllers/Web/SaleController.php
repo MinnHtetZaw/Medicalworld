@@ -49,7 +49,7 @@ class SaleController extends Controller
 
         $incoming_tran = FinancialTransactions::where('incoming_flag',1)->get();
         // return $incoming_tran;
-        
+
         $role= $request->session()->get('user')->role;
         if($role=='Sale_Person'){
             $item_from= $request->session()->get('user')->from_id;
@@ -83,7 +83,6 @@ class SaleController extends Controller
         $vou_date = $date->format('d M Y');
 
 
-
         $last_voucher = Voucher::count();
         if($last_voucher != null){
             $voucher_code =  "SVOU-" .date('y') . sprintf("%02s", (intval(date('m')))) . sprintf("%02s", ($last_voucher - 916));
@@ -91,18 +90,13 @@ class SaleController extends Controller
         }else{
             $voucher_code =  "SVOU-" .date('y') . sprintf("%02s", (intval(date('m')))) .sprintf("%02s", 1);
         }
-        //$voucher_count = count(Voucher::all());
-
 
         $salescustomers = SalesCustomer::all();
         $cash_account = Accounting::where('subheading_id',7)->get();
         $bank_account = Accounting::where('subheading_id',19)->get();
-        // $financial_incoming_account = App\FinancialIncoming::get();
-        $inc_account =  Accounting::where('id',30)->first();
-        
-        // dd($salescustomers);
+
         return view('Sale.sale_page',compact('voucher_code','items','categories','customers','employees','today_date','sub_categories','salescustomers',
-        'counting_units','vou_date','cash_account','bank_account','inc_account','incoming_tran'));
+        'counting_units','vou_date','cash_account','bank_account','incoming_tran'));
     }//End method
 
     protected function getVucherPage(Request $request){

@@ -300,11 +300,7 @@ class DeliveryController extends Controller
             // return $voucher;
         //--Transaction
 
-        $incoming = FinancialIncoming::create([
-            'amount' =>$total_amount,
-            'remark' =>$remark,
-             'date' => $voucher_date,
-        ]);
+
         // return $incoming;
 
         $FM = FinancialMaster::first();
@@ -312,6 +308,16 @@ class DeliveryController extends Controller
         $accounting->balance += $total_amount;
         $accounting->save();
         // return $accounting;
+
+        $incoming = FinancialIncoming::create([
+            "initial_currency_id"=>$accounting->currency_id,
+            'final_currency_id'=>$accounting->currency_id,
+            'initial_amount'=>$total_amount,
+            'final_amount'=>$total_amount,
+            'amount' =>$total_amount,
+            'remark' =>$remark,
+             'date' => $voucher_date,
+        ]);
 
         if($request->bank_acc == null)
         {
@@ -332,8 +338,6 @@ class DeliveryController extends Controller
             $bank=Bank::where('account_id',$request->bank_acc)->first();
             $bank->balance += $total_amount;
             $bank->save();
-
-
 
             if($bank->old_bank_id != null)
             {
@@ -356,18 +360,20 @@ class DeliveryController extends Controller
             'incoming_id'=> $incoming->id
          ]);
 
-         $tran = FinancialTransactions::create([
-            'account_id' => $bc_acc,
-            'type' => 1, //  debit
-            'amount' => $total_amount - $request->second_payment,
-            'remark' => $remark,
-            'date' => $voucher_date,
-            'type_flag' =>3, // income debit type
-            'incoming_flag' => 2,
-            'currency_id' => $accounting->currency_id,
-            'all_flag'  =>3,
-            'incoming_id'=> $incoming->id
-        ]);
+
+            $tran = FinancialTransactions::create([
+                'account_id' => $request->cash_acc == null ? $request->bank_acc : $request->cash_acc,
+                'type' => 1, //  debit
+                'amount' => $total_amount - $request->second_payment,
+                'remark' => $remark,
+                'date' => $voucher_date,
+                'type_flag' =>3, // income debit type
+                'incoming_flag' => 2,
+                'currency_id' => $accounting->currency_id,
+                'all_flag'  =>3,
+                'incoming_id'=> $incoming->id
+            ]);
+
 
         $tran1->related_transaction_id = $tran->id;
         $tran1->save();
