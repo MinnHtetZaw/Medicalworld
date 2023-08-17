@@ -2,6 +2,8 @@
 @section('title','Cogs List')
 @section('link','Cogs List')
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <div class="row mt-4">
         <div class="col-12">
           <div class="card">
@@ -21,6 +23,9 @@
                       <th>Labor Cost</th>
                       <th>Transportation Cost</th>
                       <th>Overhead Cost</th>
+                      <th>Accessory Cost</th>
+                      <th> Packaging Cost</th>
+                      <th> Fabric Qty</th>
                       <th>Quantity</th>
                       <th>Cost Per Unit</th>
                       <th>Action</th>
@@ -37,10 +42,15 @@
                               <td>{{$cc->labor_cost}}</td>
                               <td>{{$cc->transportation_cost}}</td>
                               <td>{{$cc->other_overhead_cost}}</td>
+                             
+                              <td>{{$cc->accessory_cost}}</td>
+                              <td>{{$cc->packaging_cost}}</td>
+                              <td>{{$cc->fabric_qty}}</td>  
                               <td>{{$cc->quantity}}</td>
+                              
                               <td>
-                                  ${{($cc->fabric_cost+$cc->labor_cost+$cc->transportation_cost+$cc->other_overhead_cost) / $cc->quantity}}
-                              </td>
+                                ${{ number_format(($cc->fabric_cost + $cc->labor_cost + $cc->transportation_cost + $cc->other_overhead_cost + $cc->accessory_cost + $cc->packaging_cost) / $cc->quantity, 2) }}
+                            </td>
                               <td>
                                
                                   <a href="" class="btn btn-sm btn-warning" data-toggle="modal" data-target=" #update_cogs{{$cc->id}}">Update</a>
@@ -65,50 +75,79 @@
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
+
+        {{-- Create section --}}
         <form action="{{route('create#cogs')}} " method="post">
             @csrf
         <div class="modal-body">
             <label for="name">Select Sale Product</label>
             <div class="form-group">
                
-                <select class="form-control" name="sale_product_id" id="cogs_id" >
-                    {{-- onchange="changeCountUnit()" --}}
+                <select class="form-control" name="sale_product_id" id="sale_product_id" onchange="filterCountingUnit(this.value)" >
+                    <option hidden>Select -One-</option>
+
                     @foreach ($sale_items as $sale_item )
                     <option value="{{$sale_item->id}}">{{$sale_item->item_name}} </option>
                     @endforeach
                    
                 </select>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="counting_unit_div">
                 <input type="hidden" name="id"  value ="{{$cc->id}}">
-               
-                <select class="form-control" name="count_unit_id" id="count_unit_id">
+                <label for="name">Select Counting Unit </label>
+
+                <select class="form-control counting_unit_multiple" style="width: 100%"  name="count_unit_id[]" multiple="multiple">
                     
                    
                 </select>
             </div>
             <div class="form-group">
                 <label for="name">Fabric Cost</label>
-                <input type="number" class="form-control border border-info" name="fabric_cost">
+                <input type="number" class="form-control border border-info" name="fabric_cost" id="fabricCost" onchange="calculateCost()">
+            </div>
+            <div class="form-group">
+                <label for="name"> Fabric Quantity</label>
+                <input type="number" class="form-control border border-info" name="fabric_qty" >
             </div>
             <div class="form-group">
                 <label for="name">Labour Cost</label>
-                <input type="number" class="form-control border border-info" name="labor_cost" placeholder="eg. USD">
+                <input type="number" class="form-control border border-info" name="labor_cost" placeholder="eg. USD" id="labourCost" onchange="calculateCost()">
             </div>
             <div class="form-group">
                 <label for="name"> Transportation Cost</label>
-                <input type="number" class="form-control border border-info" name="transportation_cost">
+                <input type="number" class="form-control border border-info" name="transportation_cost" id="transportationCost" onchange="calculateCost()">
             </div>
             <div class="form-group">
                 <label for="name"> Other Overhead Cost</label>
-                <input type="number" class="form-control border border-info" name="other_overhead_cost">
+                <input type="number" class="form-control border border-info" name="other_overhead_cost" id="overheadCost" onchange="calculateCost()">
             </div>
             <div class="form-group">
+                <label for="name"> Accessory Cost</label>
+                <input type="number" class="form-control border border-info" name="accessory_cost" id="accessoryCost" onchange="calculateCost()">
+            </div>
+            <div class="form-group">
+                <label for="name"> Packaging Cost</label>
+                <input type="number" class="form-control border border-info" name="packaging_cost" id="packagingCost" onchange="calculateCost()">
+            </div>
+            
+            <div class="form-group">
                 <label for="name">Quantity </label>
-                <input type="number" class="form-control border border-info" name="quantity">
+                <input type="number" class="form-control border border-info" name="quantity" id="quantity" onchange="calculateCost()">
+            </div>
+            <div class="form-group">
+                <label for="name">Selling Price </label>
+                <input type="number" class="form-control border border-info" name="selling_price" value="{{$cc->selling_price}}">
+            </div>
+            <div class="">
+                {{-- <input type="text" id="result"  name="costPerUnit" disabled> --}}
+                <button disabled  id="result">
+                </button>
+
+                <input hidden type="text" id="cost_per_unit" name="cost_per_unit">
             </div>
         </div>
         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="calculateButton" onmouseover="showCost()">Check Cost Per Unit</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary">Set</button>
         </div>
@@ -130,37 +169,87 @@
         <form action="{{route('cogs#update')}}" method="post">
             @csrf
         <div class="modal-body">
-            <label for="name">Select Sale Product</label>
+            <div class="form-group">
+               <label for="name">Select Sale Product</label>
+                <select class="form-control" name="sale_product_id" id="sale_product_id" 
+                value="{{$cc->saleitem['item_name']}}"
+                onchange="filterCountingUnitUp(this.value)" >
+                
+                    @foreach ($sale_items as $sale_item )
+                    <option value="{{$sale_item->id}}" {{$sale_item->id == $cc->sale_product_id ? 'selected':''}}>{{$sale_item->item_name}} </option>
+                    @endforeach
+                   
+                </select>
+            </div>
             {{-- <div class="form-group">
                 <input type="hidden" name="id"  value ="{{$cc->id}}">
-               
-                <select class="form-control" name="sale_product_id" id="">
+                <label for="name">Select Counting Unit </label>
+
+                <select class="form-control count_unit_id"  name="count_unit_id" id="count_unit_id" multiple="multiple">
                     
                    
                 </select>
             </div> --}}
+            <div class="form-group" id="counting_unit_div">
+                <input type="hidden" name="id"  value ="{{$cc->id}}">
+                <label for="name">Select Counting Unit </label>
+
+                <select class="form-control counting_unit_multiple" style="width: 100%"  name="count_unit_id[]" multiple="multiple" >
+                    
+                   
+                </select>
+            </div>
+         
             <div class="form-group">
                 <label for="name">Fabric Cost</label>
-                <input type="number" class="form-control border border-info" name="fabric_cost" value="{{$cc->fabric_cost}}">
+                <input type="number" class="form-control border border-info" name="fabric_cost" value="{{$cc->fabric_cost}}" id="fabricCostUp" onchange="calculateCostUp()">
+            </div>
+            <div class="form-group">
+                <label for="name"> Fabric Quantity</label>
+                <input type="number" class="form-control border border-info" value="{{$cc->fabric_qty}}" name="fabric_qty">
             </div>
             <div class="form-group">
                 <label for="name">Labour Cost</label>
-                <input type="number" class="form-control border border-info" name="labor_cost" placeholder="eg. USD" value="{{$cc->labor_cost}}">
+                <input type="number" class="form-control border border-info" name="labor_cost" placeholder="eg. USD" value="{{$cc->labor_cost}}" id="labourCostUp" onchange="calculateCostUp()">
             </div>
             <div class="form-group">
                 <label for="name"> Transportation Cost</label>
-                <input type="number" class="form-control border border-info" name="transportation_cost" value="{{$cc->transportation_cost}}">
+                <input type="number" class="form-control border border-info" name="transportation_cost" value="{{$cc->transportation_cost}}" id="transportationCostUp" onchange="calculateCostUp()">
             </div>
             <div class="form-group">
                 <label for="name"> Other Overhead Cost</label>
-                <input type="number" class="form-control border border-info" name="other_overhead_cost" value="{{$cc->other_overhead_cost}}">
+                <input type="number" class="form-control border border-info" name="other_overhead_cost" value="{{$cc->other_overhead_cost}}" id="overheadCostUp" onchange="calculateCostUp()">
             </div>
             <div class="form-group">
+                <label for="name"> Accessory Cost</label>
+                <input type="number" class="form-control border border-info" value="{{$cc->accessory_cost}}" name="accessory_cost" id="accessoryCostUp" onchange="calculateCostUp()">
+            </div>
+            <div class="form-group">
+                <label for="name"> Packaging Cost</label>
+                <input type="number" class="form-control border border-info" value="{{$cc->packaging_cost}}" name="packaging_cost" id="packagingCostUp" onchange="calculateCostUp()">
+            </div>
+            
+            <div class="form-group">
                 <label for="name">Quantity </label>
-                <input type="number" class="form-control border border-info" name="quantity" value="{{$cc->quantity}}">
+                <input type="number" class="form-control border border-info" name="quantity" value="{{$cc->quantity}}" id="quantityUp" onchange="calculateCostUp()">
+            </div>
+            <div class="form-group">
+                <label for="name">Selling Price </label>
+                <input type="number" class="form-control border border-info" name="selling_price" value="{{$cc->selling_price}}">
+            </div>
+            {{-- <div class="">
+                <button disabled id="resultUp">
+                </button>
+            </div> --}}
+            <div class="">
+                <button disabled  id="resultUp">
+                </button>
+
+                <input hidden type="text" id="cost_per_unit_up" name="cost_per_unit">
             </div>
         </div>
         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"  onmouseover="showCostUp()" id="calculateButtonUp" >Check Cost Per Unit</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary">Set</button>
         </div>
@@ -168,76 +257,155 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
 
-//    Show  Data
-   $(document).ready(function(){
-        $('select[name="sale_product_id"]').on('change',function(){
-            var sale_product_id = $(this).val();
-            // console.log(sale_product_id);
-            if (sale_product_id) {
-                $.ajax({
-                    url: "{{ url('/countUnit-get/ajax')}}/"+sale_product_id,
-                    type: "GET",
-                    dataType:"json",
-                    success:function(data){
-                        $('select[name="count_unit_id"]').html('');
-                        var d =$('select[name="count_unit_id"]').empty();
-                        $.each(data, function(key, value){
-                            $('select[name="count_unit_id"]').append('<option value="'+ value.id + '">' + value.unit_name + '</option>');
-                        });
-                    },
-                });
-            } else {
-                alert('danger');
-            }
-        });
-    });
-
-
-
-// function changeCountUnit() {
-
-// $('#count_unit_id').show();
-// var val = $('#count_unit_id').val();
-
-// $.ajax({
-//     type: 'POST',
-//     url: '/countUnit-get/ajax',
-//     dataType: 'json',
-//     data: {
-//         "_token": "{{ csrf_token() }}",
-//         "count_unit_id": val,
-//     },
-
-//     success: function(data) {
-
-//         if (data.length > 0) {
-//             $('#count_unit_id').append($('<option>').text('Choose'));
-//             $.each(data, function(i, value) {
-//                 $('#count_unit_id').append($('<option>').text(value.unit_name).attr('value', value.id));
-//             });
-//         } else {
-//             $('#count_unit_id').append($('<option>').text('No Data'));
-//         }
-//     },
-
-//     error: function(status) {
-//         swal({
-//             title: "Something Wrong!",
-//             text: "Error True",
-//             icon: "error",
-//         });
-//     }
-
-// });
-
-// };
-
-    
-</script>
 
 
 @endforeach
 
 @endsection
+
+@section('js')
+
+<script type="text/javascript">
+
+    //    Show  Data
+    
+    $(document).ready(function() {
+                   $('.counting_unit_multiple').select2({
+                    width: 'resolve'
+                   });
+                    $('#counting_unit_div').hide();
+               });   
+
+           function filterCountingUnit(value){
+                
+                if (sale_product_id != null || undefined || 0) {
+                    $.ajax({
+                        url: '{{ route('cogs#CountingUnitAjax') }}',
+                        type: 'POST',
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "sale_product_id": value
+                        },
+                        success:function(data){
+                            console.log(data);
+                            $('#counting_unit_div').show();
+
+                            // $('select[name="count_unit_id[]"]').html('');
+                            // var d =$('select[name="count_unit_id[]"]');
+                            var d =$('.counting_unit_multiple');
+
+                            $.each(data, function(key, value){
+                                d.append('<option value="'+ value.id + '">' + value.unit_name + '</option>');
+                            });
+                        },
+                    });
+                } else {
+                    alert('danger');
+                }
+            };//Filter count unit end
+
+            //Filtr for update data unit count
+            function filterCountingUnitUp(value){
+                
+                if (sale_product_id != null || undefined || 0) {
+                    $.ajax({
+                        url: '{{ route('cogs#CountingUnitAjax') }}',
+                        type: 'POST',
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "sale_product_id": value
+                        },
+                        success:function(data){
+                            console.log(data);
+                            $('#counting_unit_div').show();
+
+                            // $('select[name="count_unit_id[]"]').html('');
+                            // var d =$('select[name="count_unit_id[]"]');
+                            var d =$('.counting_unit_multiple');
+
+                            $.each(data, function(key, value){
+                                d.append('<option value="'+ value.id + '">' + value.unit_name + '</option>');
+                            });
+                        },
+                    });
+                } else {
+                    alert('danger');
+                }
+            };//Filter count unit end
+
+
+
+              $('#result').hide();
+           //Caculation create
+          
+               function calculateCost() {
+        var fabricCost = parseFloat($("#fabricCost").val());
+        var accessoryCost = parseFloat($("#accessoryCost").val());
+        var packagingCost = parseFloat($("#packagingCost").val());
+        var overheadCost = parseFloat($("#overheadCost").val());
+        var transportationCost = parseFloat($("#transportationCost").val());
+        var labourCost = parseFloat($("#labourCost").val());
+        var quantity = parseFloat($("#quantity").val());
+        
+        // Calculate total cost
+        var totalCost = fabricCost + accessoryCost + packagingCost + overheadCost + labourCost +transportationCost;
+        
+        // Calculate cost per unit
+        var costPerUnit = totalCost / quantity;
+        
+        $("#result").text("Cost per Unit: " + costPerUnit.toFixed(2));
+        $("#cost_per_unit").val(costPerUnit);
+        // return   console.log(costPerUnit,'cost');
+
+    };
+//method end
+
+//Update Caculation
+            $('#resultUp').hide();
+    
+            function calculateCostUp() {       
+        var fabricCostdUp = parseFloat($("#fabricCostUp").val());
+        var accessoryCostdUp = parseFloat($("#accessoryCostUp").val());
+        var packagingCostdUp = parseFloat($("#packagingCostUp").val());
+        var overheadCostdUp = parseFloat($("#overheadCostUp").val());
+        var transportationCostdUp = parseFloat($("#transportationCostUp").val());
+        var labourCostdUp = parseFloat($("#labourCostUp").val());
+        var quantitydUp = parseFloat($("#quantityUp").val());
+        
+        // Calculate total cost
+        var totalCostdUp = fabricCostdUp + accessoryCostdUp + packagingCostdUp + overheadCostdUp + labourCostdUp +transportationCostdUp;
+        
+        // Calculate cost per unit
+        var costPerUnitUp = totalCostdUp / quantitydUp;
+        
+        // Update result on the frontend
+          
+        $("#resultUp").text("Cost per Unit: " + costPerUnitUp.toFixed(2));
+        $("#cost_per_unit_up").val(costPerUnitUp);
+
+
+    };
+    
+
+    function showCost(){
+        $('#result').show();
+        
+    };
+    function showCostUp(){
+        $('#resultUp').show();
+    };
+    
+    
+    
+    
+        
+    </script>
+           
+
+@endsection
+
+
+
+
+    
