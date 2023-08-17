@@ -28,7 +28,7 @@
                       <th> Fabric Qty</th>
                       <th>Quantity</th>
                       <th>Cost Per Unit</th>
-                      <th>Action</th>
+                      {{-- <th>Action</th> --}}
 
                     </tr>
                   </thead>
@@ -50,13 +50,13 @@
                               
                               <td>
                                 ${{ number_format(($cc->fabric_cost + $cc->labor_cost + $cc->transportation_cost + $cc->other_overhead_cost + $cc->accessory_cost + $cc->packaging_cost) / $cc->quantity, 2) }}
-                            </td>
+                            {{-- </td>
                               <td>
                                
                                   <a href="" class="btn btn-sm btn-warning" data-toggle="modal" data-target=" #update_cogs{{$cc->id}}">Update</a>
                                   <a href="{{route('cogs#delete',$cc->id)}} " class="btn btn-danger" title="Delete Data" id="delete"><i class="fa fa-trash"></i> </a>
 
-                              </td>
+                              </td> --}}
                           </tr>
                       @endforeach
                   </tbody>
@@ -139,11 +139,13 @@
                 <input type="number" class="form-control border border-info" name="selling_price" value="{{$cc->selling_price}}">
             </div>
             <div class="">
-                {{-- <input type="text" id="result"  name="costPerUnit" disabled> --}}
-                <button disabled  id="result">
+                <label for="name">Cost Per Unit</label>
+                {{-- <input class="form-control" type="text" id="result"  name="costPerUnit" disabled> --}}
+                <button  class="form-control text-bold" id="result">
                 </button>
 
-                <input hidden type="text" id="cost_per_unit" name="cost_per_unit">
+
+                <input hidden class="form-control" type="text" id="cost_per_unit" name="cost_per_unit">
             </div>
         </div>
         <div class="modal-footer">
@@ -242,10 +244,10 @@
                 </button>
             </div> --}}
             <div class="">
-                <button disabled  id="resultUp">
+                <button class="form-control" disabled  id="resultUp">
                 </button>
 
-                <input hidden type="text" id="cost_per_unit_up" name="cost_per_unit">
+                <input hidden type="text" class="form-control" id="cost_per_unit_up" name="cost_per_unit">
             </div>
         </div>
         <div class="modal-footer">
@@ -336,7 +338,7 @@
 
 
 
-              $('#result').hide();
+            //   $('#result').hide();
            //Caculation create
           
                function calculateCost() {
@@ -362,7 +364,7 @@
 //method end
 
 //Update Caculation
-            $('#resultUp').hide();
+            // $('#resultUp').hide();
     
             function calculateCostUp() {       
         var fabricCostdUp = parseFloat($("#fabricCostUp").val());
