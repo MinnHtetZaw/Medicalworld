@@ -28,7 +28,7 @@
                       <th> Fabric Qty</th>
                       <th>Quantity</th>
                       <th>Cost Per Unit</th>
-                      {{-- <th>Action</th> --}}
+                      <th>Action</th>
 
                     </tr>
                   </thead>
@@ -50,13 +50,13 @@
                               
                               <td>
                                 ${{ number_format(($cc->fabric_cost + $cc->labor_cost + $cc->transportation_cost + $cc->other_overhead_cost + $cc->accessory_cost + $cc->packaging_cost) / $cc->quantity, 2) }}
-                            {{-- </td>
+                            </td>
                               <td>
                                
                                   <a href="" class="btn btn-sm btn-warning" data-toggle="modal" data-target=" #update_cogs{{$cc->id}}">Update</a>
                                   <a href="{{route('cogs#delete',$cc->id)}} " class="btn btn-danger" title="Delete Data" id="delete"><i class="fa fa-trash"></i> </a>
 
-                              </td> --}}
+                              </td>
                           </tr>
                       @endforeach
                   </tbody>
@@ -140,7 +140,6 @@
             </div>
             <div class="">
                 <label for="name">Cost Per Unit</label>
-                {{-- <input class="form-control" type="text" id="result"  name="costPerUnit" disabled> --}}
                 <button  class="form-control text-bold" id="result">
                 </button>
 
@@ -149,7 +148,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="calculateButton" onmouseover="showCost()">Check Cost Per Unit</button>
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal" id="calculateButton" onmouseover="showCost()">Check Cost Per Unit</button> --}}
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary">Set</button>
         </div>
@@ -244,14 +243,15 @@
                 </button>
             </div> --}}
             <div class="">
+                <label for="name">Cost Per Unit</label>
                 <button class="form-control" disabled  id="resultUp">
                 </button>
 
-                <input hidden type="text" class="form-control" id="cost_per_unit_up" name="cost_per_unit">
+                <input hidden  type="text" class="form-control" id="cost_per_unit_up" name="cost_per_unit">
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"  onmouseover="showCostUp()" id="calculateButtonUp" >Check Cost Per Unit</button>
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal"  onmouseover="showCostUp()" id="calculateButtonUp" >Check Cost Per Unit</button> --}}
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary">Set</button>
         </div>
