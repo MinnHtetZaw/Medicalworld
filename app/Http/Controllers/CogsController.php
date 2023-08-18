@@ -33,7 +33,12 @@ class CogsController extends Controller
     }//End Method
 //Update Section
         public function cogsUpdate(Request $request){
-                    dd($request->toArray());
+                    // dd($request->toArray());
+
+        $count_unit_purchase = CountingUnit::where('id',$request->count_unit_id)->update([
+            'order_price'=>$request->selling_price,
+            'purchase_price'=>$request->cost_per_unit
+        ]);
 
             $cogsId = $request->id;
             $data= $this->reqData($request);
