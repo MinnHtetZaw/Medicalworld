@@ -28,7 +28,7 @@
                       <th> Fabric Qty</th>
                       <th>Quantity</th>
                       <th>Cost Per Unit</th>
-                      <th>Action</th>
+                      {{-- <th>Action</th> --}}
 
                     </tr>
                   </thead>
@@ -51,12 +51,12 @@
                               <td>
                                 ${{ number_format(($cc->fabric_cost + $cc->labor_cost + $cc->transportation_cost + $cc->other_overhead_cost + $cc->accessory_cost + $cc->packaging_cost) / $cc->quantity, 2) }}
                             </td>
-                              <td>
+                              {{-- <td>
                                
                                   <a href="" class="btn btn-sm btn-warning" data-toggle="modal" data-target=" #update_cogs{{$cc->id}}">Update</a>
                                   <a href="{{route('cogs#delete',$cc->id)}} " class="btn btn-danger" title="Delete Data" id="delete"><i class="fa fa-trash"></i> </a>
 
-                              </td>
+                              </td> --}}
                           </tr>
                       @endforeach
                   </tbody>
