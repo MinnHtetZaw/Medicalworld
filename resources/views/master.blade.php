@@ -323,7 +323,8 @@
                         @if (session()->get('user')->role == 'Owner' ||
                                 session()->get('user')->role == 'Sales' ||
                                 session()->get('user')->role == 'Sales_Inventory' ||
-                                session()->get('user')->role == 'Finance')
+                                session()->get('user')->role == 'Finance'||
+				session()->get('user')->name == "POE")
                             <li>
                                 <a class="has-arrow " href="#" aria-expanded="false">
                                     <i class="mdi mdi-sale" style="font-size: 18px"></i>
