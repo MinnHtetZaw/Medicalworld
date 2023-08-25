@@ -4119,6 +4119,15 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
             $cash_account = Accounting::find($request->cash_acc);
             $cash_account->balance += $request->pay_amt;
             $cash_account->save();
+
+             $transaction = Transaction::create([
+                'bank_acc_id' => 0,
+                'account_id' =>  $cash_account->id,
+                'tran_date' => $request->pay_date,
+                'remark' => $request->remark,
+                'pay_amount' => $request->pay_amt,
+                'order_id' => $request->ord_id,
+            ]);
         }
         else if($request->cash_acc == null)
         {
@@ -4132,8 +4141,9 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
             $bank->balance += $request->pay_amt;
             $bank->save();
 
-            $transaction = Transaction::create([
-                'bank_acc_id' => $bank->old_bank_id ?? null,
+             $transaction = Transaction::create([
+                'bank_acc_id' => $bank->old_bank_id ?? 0,
+                'account_id' =>  $bank_account->id,
                 'tran_date' => $request->pay_date,
                 'remark' => $request->remark,
                 'pay_amount' => $request->pay_amt,
