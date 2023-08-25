@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Bank;
 use App\From;
 use App\Item;
 use DateTime;
@@ -15,11 +16,14 @@ use Carbon\Carbon;
 use App\Accounting;
 use App\Itemadjust;
 use App\Stockcount;
+use App\BankAccount;
 use App\SubCategory;
 use App\CountingUnit;
 use App\DiscountMain;
 use App\OrderVoucher;
 use App\SalesCustomer;
+use App\FinancialMaster;
+use App\FinancialIncoming;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
 use App\FinancialTransactions;
@@ -98,6 +102,64 @@ class SaleController extends Controller
         return view('Sale.sale_page',compact('voucher_code','items','categories','customers','employees','today_date','sub_categories','salescustomers',
         'counting_units','vou_date','cash_account','bank_account','incoming_tran'));
     }//End method
+
+    // ZZ
+    protected function voucherEditPage(Request $request){
+        // dd($request->toArray());
+        // return "hello";
+
+        $incoming_tran = FinancialTransactions::where('incoming_flag',1)->get();
+        // return $incoming_tran;
+
+        $role= $request->session()->get('user')->role;
+        if($role=='Sale_Person'){
+            $item_from= $request->session()->get('user')->from_id;
+        }
+        else {
+            $item_from= $request->session()->get('from');
+        }
+        $froms=From::find(1);
+//        $items = $froms->items()->with('category')->with('counting_units')->with("counting_units.stockcount")->with('sub_category')->get();
+        // $items = Item::with('counting_units')->get();
+
+        $items = Item::where("category_id",1)->where("sub_category_id",2)->get();
+        $item_ids=[];
+        //$counting_units=[];
+        foreach ($items as $item){
+            array_push($item_ids,$item->id);
+        }
+        $counting_units = CountingUnit::whereIn('item_id',$item_ids)->get();
+
+        $categories = Category::all();
+
+        $sub_categories = SubCategory::all();
+
+        $customers = Customer::all();
+
+        $employees = Employee::all();
+
+        $date = new DateTime('Asia/Yangon');
+
+        $today_date = strtotime($date->format('d-m-Y H:i'));
+        $vou_date = $date->format('d M Y');
+
+
+        $last_voucher = Voucher::count();
+        if($last_voucher != null){
+            $voucher_code =  "SVOU-" .date('y') . sprintf("%02s", (intval(date('m')))) . sprintf("%02s", ($last_voucher - 916));
+
+        }else{
+            $voucher_code =  "SVOU-" .date('y') . sprintf("%02s", (intval(date('m')))) .sprintf("%02s", 1);
+        }
+
+        $salescustomers = SalesCustomer::all();
+        $cash_account = Accounting::where('subheading_id',7)->get();
+        $bank_account = Accounting::where('subheading_id',19)->get();
+
+        return view('Sale.voucher_edit_page',compact('voucher_code','items','categories','customers','employees','today_date','sub_categories','salescustomers',
+        'counting_units','vou_date','cash_account','bank_account','incoming_tran'));
+    }//End method
+    // ZZ
 
     protected function getVucherPage(Request $request){
         // dd($request->item);
@@ -504,7 +566,7 @@ class SaleController extends Controller
 
         $search_sales = 0;
         return view('Sale.sale_history_page',compact('search_sales','voucher_lists','total_sales','daily_sales','monthly_sales','weekly_sales'));
-    }
+    }//End method
 
     protected function saleHistoryExport(Request $request,$from,$to,$id,$sales,$data_type,$type){
         return $this->excel->download(new SalesHistoryExport($from,$to,$id,$sales,$data_type),'sale_voucher_history.xlsx');
@@ -792,15 +854,25 @@ class SaleController extends Controller
 
     }
     protected function getVoucherDetails(request $request, $id){
+
+        $cash_account = Accounting::where('subheading_id',7)->get();
+        $bank_account = Accounting::where('subheading_id',19)->get();
+
+        
+        // return "Hello";
         $voucher = Voucher::find($id);
 
         $unit = Voucher::with('counting_unit')->with('counting_unit.stockcount')->find($id);
 
-        return view('Sale.voucher_details', compact('unit','voucher'));
-    }
+        return view('Sale.voucher_details', compact('unit','voucher','cash_account','bank_account'));
+    }//End method
 
     protected function saleReturn(Request $request)
     {
+       
+        //   dd($request->toArray());
+
+
         $data=Voucher::with('counting_unit')->find($request->voucher_id);
 
         foreach($data->counting_unit as $item)
@@ -814,8 +886,89 @@ class SaleController extends Controller
         }
         $data->sale_return_flag = 1;
         $data->save();
+        $total_amount = $request->totalPrice;
+        $date = new DateTime('Asia/Yangon');
+        $remark = $request->remark;
 
-        return response()->json(['success'=>'Succeed']);
+        $voucher_date = $date->format('Y-m-d');
+        //ZZ
+        $FM = FinancialMaster::first();
+        $accounting = Accounting::find($FM->showroom_sales_account_id);
+        $accounting->balance += $total_amount;
+        $accounting->save();
+        $incoming = FinancialIncoming::create([
+            "initial_currency_id"=>$accounting->currency_id,
+            'final_currency_id'=>$accounting->currency_id,
+            'initial_amount'=>$total_amount,
+            'final_amount'=>$total_amount,
+            'amount' =>$total_amount,
+            'remark' =>$remark,
+             'date' => $voucher_date,
+        ]);
+        if($request->bank_acc == null)
+        {
+            $bc_acc = $request->cash_acc;
+
+            $cash_account = Accounting::find($request->cash_acc);
+            $cash_account->balance +=  $total_amount;
+            $cash_account->save();
+        }
+        else if($request->cash_acc == null)
+        {
+            $bc_acc = $request->bank_acc;
+
+            $bank_account =  Accounting::find($request->bank_acc);
+            $bank_account->balance += $total_amount;
+            $bank_account->save();
+
+            $bank=Bank::where('account_id',$request->bank_acc)->first();
+            $bank->balance += $total_amount;
+            $bank->save();
+
+            if($bank->old_bank_id != null)
+            {
+                $oldBank = BankAccount::find($bank->old_bank_id);
+                $oldBank->balance +=  $total_amount;
+                $oldBank->save();
+            }
+
+        }
+        $tran1 = FinancialTransactions::create([
+            'account_id' => $accounting->id,
+            'type' => 2, // credit
+            'amount' => $total_amount,
+            'remark' => $remark,
+            'date' =>$voucher_date,
+            'type_flag' =>4, // income credit type
+            'currency_id' =>$accounting->currency_id,
+            'all_flag'  =>3,
+            'incoming_flag' => 1,
+            'incoming_id'=> $incoming->id
+         ]);
+         $tran = FinancialTransactions::create([
+            'account_id' => $request->cash_acc == null ? $request->bank_acc : $request->cash_acc,
+            'type' => 1, //  debit
+            'amount' => $total_amount - $request->second_payment,
+            'remark' => $remark,
+            'date' => $voucher_date,
+            'type_flag' =>3, // income debit type
+            'incoming_flag' => 2,
+            'currency_id' => $accounting->currency_id,
+            'all_flag'  =>3,
+            'incoming_id'=> $incoming->id
+        ]);
+
+
+    $tran1->related_transaction_id = $tran->id;
+    $tran1->save();
+
+        // ZZ
+
+        return response()->json([
+            'success'=>'Succeed',
+            'tran1'=>$tran1
+            
+        ]);
     }
 
     protected function getVoucherSummaryMain(){

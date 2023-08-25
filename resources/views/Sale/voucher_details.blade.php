@@ -379,14 +379,137 @@
             <button id="delete" class="btn btn-danger" data-id="{{$unit->id}}" type="button">
                 <span><i class="fa fa-trash"></i> Delete</span>
             </button>
-            @if ($unit->sale_return_flag != 1)
-            <button id="sale_return" class="btn btn-info" data-id="{{$unit->id}}" type="button">
+            {{-- @if ($unit->sale_return_flag != 1) --}}
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#choose_return_data">Sale Return</button>
+            {{-- <button id="sale_return" class="btn btn-info" data-id="{{$unit->id}}" type="button">
                 <span>Sale Return</span>
-            </button>
-            @endif
+            </button> --}}
+            {{-- @endif --}}
 
         </div>
     </div>
+
+    {{-- ZZ --}}
+    <div class="modal fade" id="choose_return_data" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Choose Sale Return</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+    
+                <div class="modal-body">
+    
+                    <form action="" method="POST">
+    
+                        @csrf
+                        <div class="row flex">
+                           
+                            <div class="col-10 offset-1">    
+    
+                            </div>
+    
+                        </div>
+    
+                                    <div class="row">
+                                        <div class=" row mt-4 col-md-10">
+                                           
+                                            @if ($unit->sale_return_flag != 1)
+
+                                            <div class="col-md-6">
+                                                <div class="form-check form-check-inline" id="edit_sale_return">
+    
+                                                    <input class="form-check-input mt-1" type="radio" name="edit_sale_return" id="edit_voucher" value="1">
+    
+                                                    <label class="form-check-label text-success" for="edit_voucher">Edit Sale Return</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check form-check-inline">
+    
+                                                    {{-- data-toggle="modal" data-target="#currency" --}}
+                                                    
+                                                    <input id="sale_return" class="form-check-input" data-id="{{$unit->id}}" type="radio" value="sale_return" onclick="show_bank_cash_div()"> 
+                                                    {{-- close few minite --}}
+                                                    <label class=" row form-check-label text-success"    for="sale_return">Sale Return</label>
+                                                 
+                                                </div>
+                                            </div>
+                                            <div class="mt-3" id="Bank_cash_div">
+                                                <div class="form-check form-check-inline">
+                        
+                                                    <input class="form-check-input" type="radio" name="account" id="bank" value="1" onclick="show_bank_acc()">
+                        
+                                                    <label class="form-check-label text-success" for="bank">Bank</label>
+                                                  </div>
+                                                <div class="form-check form-check-inline">
+                        
+                                                    <input class="form-check-input" type="radio" name="account" id="cash" value="2" onclick="show_cash_acc()">
+                        
+                                                    <label class="form-check-label text-success" for="cash">Cash</label>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="form-group mt-3" id="bankkk">
+                                                    <label class="control-label">Bank Account</label>
+                                                    <select class="form-control" name="bank_acc" id="bank_acc" class="bk">
+                                                        <option value="">Select Bank Account</option>
+                                                       @foreach ($bank_account as $acc)
+                                
+                                                        <option value="{{$acc->id}}" >{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                                                       @endforeach
+                                                    </select>
+                                                </div>
+                                                    <div class="form-group mt-3" id="cashhh">
+                                                        <label class="control-label">Cash Account</label>
+                                                        <select class="form-control" name="cash_acc" id="cash_acc">
+                                                            <option value="">Select Cash Account</option>
+                                                           @foreach ($cash_account as $acc)
+                                
+                                                            <option value="{{$acc->id}}">{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                                                           @endforeach
+                                                        </select>
+                                                    </div> 
+                                                    <div class="form-group mt-3" id="">
+                                                        {{-- <label class="control-label">Cash Account</label> --}}
+                                                        <input id="totalPrice" class="form-control m-auto"  type="number" value="totalPrice" placeholder="Enter Total Price" > 
+
+                                                    </div> 
+                                                    <div class=" my-1" id="remark">
+                                                        <label class="control-label text-black col-5 font14">Remark</label>
+                                                        {{-- <input type="text" class="form-control col-7 font14 text-black" id="remark_input" value="remark" --}}
+                                                               {{-- placeholder="remark"> --}}
+                                                               <input id="remark_input" class="form-control m-auto"  type="text" value="" placeholder="Remark" > 
+
+                                                    </div>
+                                                    
+
+                                                    {{-- <button id="confirm" data-id="{{$unit->id}}" value="confirm">Confirm</button> --}}
+                                                   
+                                                     <input id="confirm" class="btn btn-primary m-auto" data-id="{{$unit->id}}" type="button" value="confirm" > 
+    
+                                               
+                                            </div>
+                                            
+
+                                              
+
+                                            @else
+                                               <div class="mx-auto fs-10"  style="color:red;text-align:center;font:500;">Your Refund Process Complete Done !</div> 
+                                          
+                                            @endif
+                                            
+                                        </div>
+                                    </div>
+    
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- ZZ --}}
 
 @endsection
 
@@ -488,7 +611,91 @@
 
                     window.location.href = "{{ route('sale_page')}}";
 
-            })
+            })//End Edit Method
+
+            // ZZ
+            $('#edit_voucher').click(function(){
+                var unit = @json($unit);
+
+               // console.log(unit);
+
+
+                localStorage.removeItem('voucher_details');
+                localStorage.removeItem('mycart');
+                localStorage.removeItem('grandTotal');
+
+                var voucher_details = {
+                    voucher_code: unit.voucher_code,
+                    voucher_date: unit.voucher_date,
+                    customer_id: unit.sales_customer_id,
+                    customer_name: unit.sales_customer_name,
+                    customer_phone: unit.sales_customer_phone,
+                    remark: unit.sales_remark
+                };
+
+                localStorage.setItem('voucher_details', JSON.stringify(voucher_details));
+
+
+                $.each(unit.counting_unit,function(i,countingUnit){
+
+                    var item = {
+                        id: countingUnit.id,
+                        unit_name: countingUnit.unit_name,
+                        current_qty: countingUnit.current_quantity,
+                        order_qty: countingUnit.pivot.quantity,
+                        selling_price: countingUnit.pivot.price,
+                        each_sub: countingUnit.pivot.quantity * countingUnit.pivot.price,
+                        discount: 0,
+                        design_name: countingUnit.design ? countingUnit.design.design_name : '',
+                        fabric_name: countingUnit.fabric ? countingUnit.fabric.fabric_name : '',
+                        colour_name: countingUnit.colour ? countingUnit.colour.colour_name : '',
+                        size_name: countingUnit.size ? countingUnit.size.size_name : '',
+                        discount_type: countingUnit.pivot.discount_type,
+                        discount_value: countingUnit.pivot.discount_value
+                    };
+                    console.log(item);
+
+                    var mycart = localStorage.getItem('mycart');
+
+                    if (mycart == null) {
+
+                    mycart = '[]';
+
+                    var mycartobj = JSON.parse(mycart);
+
+                    mycartobj.push(item);
+
+                    localStorage.setItem('mycart', JSON.stringify(mycartobj));
+
+                    } else {
+
+                    var mycartobj = JSON.parse(mycart);
+
+                    mycartobj.push(item);
+
+                    localStorage.setItem('mycart', JSON.stringify(mycartobj));
+                    }
+
+                })
+                    var total_amount = {
+                        sub_total: unit.total_price,
+                        total_qty: unit.total_quantity,
+                        vou_discount: 0,
+                        total_discount_type: unit.discount_type,
+                        total_discount_value: unit.discount_value
+                    };
+                    console.log("grand",total_amount);
+
+                    var grand_total = localStorage.getItem('grandTotal');
+
+                    localStorage.setItem('grandTotal', JSON.stringify(total_amount));
+
+                    localStorage.setItem('editvoucher', JSON.stringify(unit.id));
+
+                    window.location.href = "{{ route('voucher_edit_page')}}";
+
+            })//End Edit Method
+            // ZZ
             $('#delete').click(function(){
 
                 var voucher_id = $(this).data('id');
@@ -542,31 +749,32 @@
                 });
 
             })
-
-            $('#sale_return').click(function(){
+// close afew minutes
+            $('#confirm').click(function(){
+                $('#choose_return_data').hide();
                     var id = $(this).data('id');
-                    swal(
-                    {
-                      title: "Sale Return",
-                      text: "Enter Admin Code to refund voucher!",
-                      content: "input",
-                      showCancelButton: true,
-                      closeOnConfirm: false,
-                      animation: "slide-from-top",
-                      inputPlaceholder: "Admin Code"
-                    }
-
-                ).then((result)=> {
+                    var bank_acc = $('#bank_acc').val();
+                    var cash_acc = $('#cash_acc').val();
+                    var totalPrice = $('#totalPrice').val();
+                    var remark = $('#remark_input').val();
+                   
+                    
                     $.ajax({
                         type : 'POST',
-                        url  : '/Sale/sale_return',
+                        url  : '{{route('sale#sale_return')}}',
                         data : {
                             "_token" : "{{csrf_token()}}",
                             "voucher_id": id,
+                            "bank_acc":bank_acc,
+                            "cash_acc":cash_acc,
+                            "totalPrice":totalPrice,
+                            "remark":remark
                         },
 
                         success:function(data)
                         {
+
+                            console.log(data);
                             swal({
                                         title: "Success",
                                         text: "Sale Return Completed!",
@@ -579,9 +787,56 @@
                         }
 
                     })
-            })
-        })
+                    swal(
+                    {
+                      title: "Sale Return",
+                      text: "Sale Return Successfully!",
+                    //   content: "input",
+                      showCancelButton: true,
+                      closeOnConfirm: false,
+                      animation: "slide-from-top",
+                    //   inputPlaceholder: "Admin Code"
+                    })
+         
+        })//close afew minite
         });
+        $('#Bank_cash_div').hide();
+        $('#cashhh').hide();
+        $('#bankkk').hide();
+        $('#confirm').hide();
+        $('#totalPrice').hide();
+        $('#remark').hide();
+
+        function show_bank_cash_div()
+                {
+                    $('#Bank_cash_div').show();
+                    $('#edit_sale_return').hide();
+                   
+                  
+
+
+                }
+      function show_bank_acc(){
+    
+              $('#cashhh').hide();
+              $('#bankkk').show();
+              $('#confirm').show();
+              $('#totalPrice').show();
+              $('#remark').show();
+
+
+                      }    
+        function show_cash_acc(){
+    
+    $('#cashhh').show();
+    $('#bankkk').hide();
+    $('#confirm').show();
+    $('#totalPrice').show();
+    $('#remark').show();
+
+
+
+            }   
     </script>
 
 

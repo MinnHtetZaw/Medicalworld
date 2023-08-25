@@ -29,8 +29,8 @@ class FactoryItemImport implements ToModel, WithHeadingRow
             'item_name' =>$row['item_name'], 
             'created_by' =>$row['created_by'],
             'category_id' =>$row['category_id'],
-             'subcategory_id' =>$row['subcategory_id'],
-            'purchase_price' =>$row['purchase_price'],
+             'subcategory_id'=>$row['subcategory_id'],
+            'purchase_price'=>$row['purchase_price'],
             'instock_qty' =>$row['instock_qty'],
             'reserved_qty' =>$row['reserved_qty'],
         ]);
