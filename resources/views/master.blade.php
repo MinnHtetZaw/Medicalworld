@@ -339,6 +339,7 @@
                                 <li><a href="{{route('sale_page')}}">@lang('lang.sale')</a></li>
                                 @endif
                                 @if(session()->get('user')->role == "Owner")
+
                                 <li><a href="{{route('sale_history')}}">@lang('lang.sale_history')</a></li>
                                 <li><a href="{{ route('saleCount',[$current_Date,$current_Date,'sale']) }}">Item Sales Summary</a></li>
                                 <li><a href="{{route('salescustomers_list')}}">@lang('lang.sale_customer_list')</a></li>
@@ -349,6 +350,7 @@
                                 @endif
                                 <li><a href="{{ route('reset_quantity') }}">Result Quantity</a></li>
                             </ul>
+                         
                         </li>
 			@endif
 

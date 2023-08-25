@@ -19,8 +19,10 @@ class FabricCostingImport implements ToCollection,WithHeadingRow
 
         foreach($rows as $row)
         {
+            // dd($row->toArray());
 
             $design = Design::where('design_name','Like','%'.$row['design'].'%')->first();
+            // dd($design->toArray());
             $fabric = Fabric::where('fabric_name','Like','%'.$row['fabric'].'%')->first();
 
             $color = Colour::where('colour_name','Like','%'.$row['color'].'%')->first();
@@ -29,13 +31,14 @@ class FabricCostingImport implements ToCollection,WithHeadingRow
             if($design && $fabric && $color && $size && $row['yards'] && $row['pricing'] != null)
             {
                 FabricCosting::create([
-                    'design_id' => $design->id,
+                    'design_id' =>$design->id,
                     'fabric_id' =>$fabric->id,
                     'color_id' =>$color->id,
                     'size_id' =>$size->id,
                     'yards' =>$row['yards'],
                     'pricing' =>$row['pricing'],
                  ]);
+                 
             }
         }
     }

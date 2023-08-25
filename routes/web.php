@@ -8,6 +8,7 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\ProductFlagController;
+use App\Http\Controllers\SaleVoucherController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\FinancialAccountController;
 use App\Http\Controllers\FinancialExpenseController;
@@ -203,6 +204,8 @@ Route::group(['middleware' => ['UserAuth']], function () {
 
     //Sale
     Route::get('Sale', 'Web\SaleController@getSalePage')->name('sale_page');
+    Route::get('Voucher/Edit', 'Web\SaleController@voucherEditPage')->name('voucher_edit_page');
+  
     Route::post('Sale/Voucher', 'Web\SaleController@storeVoucher');
     Route::post('Sale/Get-Voucher', 'Web\SaleController@getVucherPage')->name('get_voucher');
     Route::get('Sale/History', 'Web\SaleController@getSaleHistoryPage')->name('sale_history');
@@ -218,7 +221,7 @@ Route::group(['middleware' => ['UserAuth']], function () {
     });
     Route::post('Sale/search_sale_discount_record', 'Web\SaleController@search_sale_discount_record')->name('search_sale_discount_record');
     Route::get('Sale/Voucher-Details/{id}', 'Web\SaleController@getVoucherDetails')->name('getVoucherDetails');
-    Route::post('Sale/sale_return','Web\SaleController@saleReturn');
+    Route::post('Sale/sale_return','Web\SaleController@saleReturn')->name("sale#sale_return");
     Route::get('discount_record_list', 'Web\SaleController@show_discount_list')->name('discount_record_list');
     Route::post('getSelectionDiscount', 'Web\SaleController@show_discount_type')->name('getSelectionDiscount');
     Route::post('getDateDiscount', 'Web\SaleController@show_discount_date')->name('getDateDiscount');
@@ -502,8 +505,9 @@ Route::group(['middleware' => ['UserAuth']], function () {
 
     Route::get('Admin/Shop/{id}', 'Web\DeliveryController@SalePage')->name('admin_sale_page');
     Route::post('testVoucher', 'Web\DeliveryController@storetestVoucher');
-    Route::post('getItemForA5', 'Web\DeliveryController@getItemA5')->name('getItemForA5');
+    Route::post('updateVoucher',[SaleVoucherController::class,'updatetestVoucher'])->name('update#voucher');
 
+    Route::post('getItemForA5', 'Web\DeliveryController@getItemA5')->name('getItemForA5');
 
     Route::get('item-assign', 'Web\InventoryController@itemAssign')->name('item_assign');
     Route::post('assign-item-ajax', 'Web\InventoryController@itemAssignajax')->name('item_assign_ajax');

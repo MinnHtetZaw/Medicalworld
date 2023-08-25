@@ -1124,7 +1124,6 @@ class InventoryController extends Controller
         $fabrics = Fabric::all();
         $colors = Colour::all();
         $sizes = Size::all();
-
         return view('Inventory.fabric_costing', compact('fabricCost', 'designs', 'fabrics', 'colors', 'sizes'));
     }
 
@@ -1168,8 +1167,6 @@ class InventoryController extends Controller
 
         return back();
     }
-
-
     public function costingImport(Request $request){
         Excel::import(new FabricCostingImport(),$request->file('import_file'));
         alert()->success('Excel Import Succeeded');
