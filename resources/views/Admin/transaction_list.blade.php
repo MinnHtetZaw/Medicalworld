@@ -286,7 +286,18 @@
                             <tr>
                             <td style="font-size:16px">{{$i++}}</td>
                             <td style="font-size:16px">{{$tran->tran_date}}-{{$tran->tran_time}}</td>
+                                
+                            @if ($tran->bank_acc_id == 0 && $tran->account_id != 0)
+                            <td style="font-size:16px">{{$tran->account->account_name}}-{{$tran->account->account_code}}</td>
+
+                            @elseif ($tran->account_id == 0 && $tran->bank_acc_id != 0)
                             <td style="font-size:16px">{{$tran->bank_account->bank_name}}-{{$tran->bank_account->account_number}}</td>
+                            @elseif ($tran->account_id == 0 && $tran->bank_acc_id == 0)
+                            <td style="font-size:16px">-</td>
+                            @elseif ($tran->account_id != 0 && $tran->bank_acc_id != 0)
+                            <td style="font-size:16px">{{$tran->bank_account->bank_name}}-{{$tran->bank_account->account_number}}</td>
+                            @endif
+                                
                             <td style="font-size:16px">{{$tran->pay_amount}}</td>
                             <td style="font-size:16px">{{$tran->remark}}</td>
                             <td><a href="" class="btn btn-danger">Delete</a></td>
