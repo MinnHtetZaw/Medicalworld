@@ -418,14 +418,14 @@
                                            
                                             @if ($unit->sale_return_flag != 1)
 
-                                            <div class="col-md-6">
+                                            {{-- <div class="col-md-6">
                                                 <div class="form-check form-check-inline" id="edit_sale_return">
     
                                                     <input class="form-check-input mt-1" type="radio" name="edit_sale_return" id="edit_voucher" value="1">
     
                                                     <label class="form-check-label text-success" for="edit_voucher">Edit Sale Return</label>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="col-md-6">
                                                 <div class="form-check form-check-inline">
     

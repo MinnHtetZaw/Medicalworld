@@ -2498,7 +2498,7 @@
                         // alert("in");
                         $.ajax({
                             type: 'POST',
-                            url: '/updateVoucher',
+                            url: '/testVoucher',
                             dataType: 'json',
                             data: {
                                 "_token": "{{ csrf_token() }}",
@@ -2607,7 +2607,7 @@
 
                         $.ajax({
                             type: 'POST',
-                            url: '/updateVoucher',
+                            url: '/testVoucher',
                             dataType: 'json',
                             data: {
                                 "_token": "{{ csrf_token() }}",
