@@ -597,6 +597,8 @@ Route::post('/genderImport', "\App\Http\Controllers\GenderController@import")->n
 Route::get('/genderExport', "\App\Http\Controllers\GenderController@export")->name('genderExport');
 //Item Excel
 Route::get('/itemExport', "\App\Http\Controllers\Web\InventoryController@export")->name('itemExport');
+Route::get('/countingExport', "\App\Http\Controllers\Web\InventoryController@countingExport")->name('countingExport');
+
 Route::post('/itemImport', "\App\Http\Controllers\Web\InventoryController@import")->name('itemImport');
 Route::post('/factoryItemImport', "\App\Http\Controllers\FactoryItemController@import")->name('factoryItemImport');
 //Counting Unit Excel
