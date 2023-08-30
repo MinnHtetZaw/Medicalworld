@@ -24,7 +24,7 @@ class TransferController extends Controller
     //Create Transfer
     public function storeTransfer(Request $request)
     {
-
+    //   dd($request->toArray());
         $from_acc = $request->from_bank_acc != null ? $request->from_bank_acc : $request->from_cash_acc;
         $to_acc = $request->to_bank_acc !=null ? $request->to_bank_acc : $request->to_cash_acc;
 

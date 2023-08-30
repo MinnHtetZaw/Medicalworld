@@ -29,17 +29,20 @@
 </div>
 </div> --}}
 
-<div class="row">
+<div class="row mt-16">
     <div class="col-12">
-          <div class="card">
-          <div class="card-header">
+          <div class="">
+          <div class="">
 
             <div class="col-12">
-          <div class="row justify-content-between">
+          <div class=" justify-content-between ">
+            <label for="name" class="float-left">Transfer List</label> <br>
+            <button type="button" data-toggle="modal" data-target="#add_transfer" class="btn btn-primary " onclick="hide_bank_acc()"><i class="fas fa-plus"></i> Transfer</button>
 
-              <label class="mt-3 ">Transfer List<span class="float-right">	<button type="button" data-toggle="modal" data-target="#add_transfer" class="btn btn-primary" onclick="hide_bank_acc()"><i class="fas fa-plus"></i> Transfer</button>
+              {{-- <label class="mt-3 ">Transfer List<span class="float-right">	 --}}
 
           </div>
+         
 
           <div class="row" id="trial_balance">
 
@@ -156,6 +159,7 @@
                             <span aria-hidden="true">&times;</span>
                           </button>
                     </div>
+                    
 
                     <div class="modal-body">
 
@@ -226,9 +230,10 @@
                                         <div class="col-md-3">
                                             <div class="form-check form-check-inline">
 
-                                                <input class="form-check-input mt-1" type="radio" name="to_account" id="bank" value="1" onclick="show_to_bank_account()">
+                                                <input class="form-check-input mt-1" type="radio" name="to_account" id="tobank" value="1" onclick="show_to_bank_acc()">
 
-                                                <label class="form-check-label text-success" for="tobank">Bank</label>
+                                                <label class="form-check-label text-success" for="to
+                                                bank">Bank</label>
                                             </div>
                                         </div>
                                         <div class="col-md-3 ml-5">
@@ -282,12 +287,15 @@
                                               <div class="card">
                                               <div class="card-header">
                                     
-                                                <div class="col-12">
+                                                <div class="col-12 mt-4">
                                               <div class="row justify-content-between">
+                                                <label for="name" class="" style="font-size: 24px;color:gray"> Transfer List</label>
+                                                <button type="button" data-toggle="modal" data-target="#add_transfer" class="btn btn-primary" onclick="hide_bank_acc()"><i class="fas fa-plus"></i> Transfer</button>
                                     
-                                                  <label class="mt-3 ">Transfer List<span class="float-right">	<button type="button" data-toggle="modal" data-target="#add_transfer" class="btn btn-primary" onclick="hide_bank_acc()"><i class="fas fa-plus"></i> Transfer</button>
+                                                  {{-- <label class="mt-3 ">Transfer List<span class="float-right">	<button type="button" data-toggle="modal" data-target="#add_transfer" class="btn btn-primary" onclick="hide_bank_acc()"><i class="fas fa-plus"></i> Transfer</button> --}}
                                     
                                               </div>
+                                              
                                     
                                               <div class="row" id="trial_balance">
                                     
@@ -472,19 +480,19 @@
                                                                         <div class="row mt-3">
                                                                             <label >To</label>
                                                                             <div class="col-md-3">
-                                                                                <div class="form-check form-check-inline">
+                                                                                <div class="form-check form-check-inline" id="toBank">
                                     
-                                                                                    <input class="form-check-input mt-1" type="radio" name="to_account" id="to_bank" value="1" onclick="show_to_bank_acc()">
+                                                                                    <input class="form-check-input mt-1" type="radio" name="to_account" id="to_bank_acc" value="1" onclick="show_to_bank_acc()">
                                     
-                                                                                    <label class="form-check-label text-success" for="to_bank">Bank</label>
+                                                                                    <label class="form-check-label text-success" for="to_bank_acc">Bank</label>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-3 ml-5">
-                                                                              <div class="form-check form-check-inline">
+                                                                              <div class="form-check form-check-inline" id="">
                                     
-                                                                                <input class="form-check-input mt-1" type="button" name="to_account" id="cash" value="2" onclick="show_to_cash_acc()">
+                                                                                <input class="form-check-input mt-1" type="radio" name="to_account" id="to_cash_acc" value="2" onclick="show_to_cash_acc()">
                                     
-                                                                                <label class="form-check-label text-success" for="cash">Cash</label>
+                                                                                <label class="form-check-label text-success" for="to_cash_acc">Cash</label>
                                                                             </div>
                                                                             </div>
                                                                         </div>
@@ -499,17 +507,17 @@
                                                                     </div>
                                                                     <div class="form-group mt-3 col-6" id="to_cash">
                                                                         <label class="control-label">Cash Account</label>
-                                                                        <select class="form-control" name="to_cash_acc" id="cash_acc">
+                                                                        <select class="form-control" name="to_cash_acc" id="">
                                                                             <option value="">Select Cash Account</option>
                                                                            @foreach ($cash_accounts as $acc)
                                         
                                                                             <option value="{{$acc->id}}">{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
                                                                            @endforeach
                                                                         </select>
-                                                                         </div>
-                                                                    <div class="form-group mt-3 col-6" id="to_bank">
+                                                                 </div>
+                                                                    <div class="form-group mt-3 col-6 " id="to_bank">
                                                                         <label class="control-label">Bank Account</label>
-                                                                        <select class="form-control" name="to_bank_acc" id="bank_acc">
+                                                                        <select class="form-control" name="to_bank_acc" id="">
                                                                             <option value="">Select Bank Account</option>
                                                                            @foreach ($bank_accounts as $acc)
                                     
@@ -700,11 +708,16 @@
                                         $('#from_bank').show();
                                     
                                     }
+                                    $('#defaultAcc_to').hide()
+                                    $('#toCash').hide()
+                                    $('#toBank').hide()
                                     
+
                                     function show_to_bank_acc(){
-                                        console.log("hello b");
+                                    console.log("hello bank");
                                     $('#defaultAcc_to').hide()
                                     $('#to_cash').hide();
+                                    // $('#toCash').hide();
                                     $('#to_bank').show();
                                     
                                     }
@@ -716,12 +729,12 @@
                                         $('#from_cash').show();
                                     }
                                     
-                                    // function show_to_cash_acc(){
+                                    function show_to_cash_acc(){
                                       
-                                    //     $('#defaultAcc_to').hide()
-                                    // $('#to_bank').hide();
-                                    // $('#to_cash').show();
-                                    // }
+                                        $('#defaultAcc_to').hide()
+                                    $('#to_bank').hide();
+                                    $('#to_cash').show();
+                                    }
                                     
                                     function hide_bank_acc(){
                                     
@@ -734,6 +747,8 @@
                                     
                                         $('#to_bank').hide();
                                         $('#to_cash').hide();
+                                        // $('#toBank').hide();
+                                        // $('#toCash').hide();
                                     }
                                     
                                         function date_filter(){
@@ -872,7 +887,7 @@
                                         <option >Select Account</option>
                                     </select>
                                 </div>
-                                <div class="form-group mt-3 col-6" id="to_bank">
+                                {{-- <div class="form-group mt-3 col-6" id="to_bank">
                                     <label class="control-label">Bank Account</label>
                                     <select class="form-control" name="to_bank_acc" id="bank_acc">
                                         <option value="">Select Bank Account</option>
@@ -881,7 +896,7 @@
                                         <option value="{{$acc->id}}">{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
                                        @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
 
 
                                  <div class="form-group mt-3 col-6" id="to_cash">
@@ -1076,10 +1091,12 @@ function show_from_bank_acc(){
 }
 
 function show_to_bank_acc(){
-    console.log("hello b");
+console.log("hello b");
 $('#defaultAcc_to').hide()
-$('#to_cash').hide();
+// $('#toCash').hide();
 $('#to_bank').show();
+$('#to_cash').hide();
+
 
 }
 
@@ -1093,6 +1110,7 @@ function show_from_cash_acc(){
 function show_to_cash_acc(){
 console.log("hello");
 $('#defaultAcc_to').hide()
+// $('#toBank').hide();
 $('#to_bank').hide();
 $('#to_cash').show();
 }
