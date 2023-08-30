@@ -20,6 +20,7 @@ use App\UnitConversion;
 use App\Exports\ItemExport;
 use App\Imports\ItemsImport;
 use Illuminate\Http\Request;
+use App\Exports\CountingExport;
 use App\Imports\CategoryImport;
 use App\Exports\FactoryItemExport;
 use App\Exports\SubCategoryExport;
@@ -45,6 +46,10 @@ class InventoryController extends Controller
     public function export()
     {
         return Excel::download(new ItemExport(),'item_export.xlsx');
+    }
+    public function countingExport()
+    {
+        return Excel::download(new CountingExport(),'counting_export.xlsx');
     }
 
 //    Counting Unit Excel Import

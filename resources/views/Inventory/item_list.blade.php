@@ -44,10 +44,19 @@
                             </form>
                         </div>
                     </div>
-
-                    <div class="col-md-4">
-                        <a href="{{ route('itemExport') }}" class="btn btn-primary mx-2">Export</a>
+                    <div class="row ">
+                        <div class="  col-md-4">
+                            <a href="{{ route('itemExport') }}" class="btn btn-primary mx-2">Item Export</a>
+                        </div>
+                      
+                         
                     </div>
+                    <div class="col-md-2">
+                    <div class=" col-md-4 " style="margin-right: 4px">
+                        <a href="{{ route('countingExport') }}" class="btn btn-primary mx-2">Unit Export</a>
+                    </div>
+                </div>
+                   
 
                     <div class="col-md-2">
                         <a href="#" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#create_item">

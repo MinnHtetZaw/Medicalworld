@@ -15,6 +15,7 @@ class ItemExport implements FromCollection,WithHeadings
     {
         return Item::all();
     }
+   
     
     public function headings():array{
      
@@ -38,7 +39,9 @@ class ItemExport implements FromCollection,WithHeadings
             'discount_price',
             'new_product_flag',
             'promotion_product_flag',
-            'hot_sale_flag'
+            'hot_sale_flag',
+            'related_item_id',
+            
 
 
         ];
