@@ -17,6 +17,7 @@ class FinancialExpenseController extends Controller
    {
 
        $expense_tran = FinancialTransactions::where('expense_flag',1)->get();
+    //    dd($expense_tran->toArray());
 
        $bank_cash_tran = FinancialTransactions::where('expense_flag',2)->get();
 

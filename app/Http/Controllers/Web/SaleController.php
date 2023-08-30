@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Bank;
+use App\FinancialExpense;
 use App\From;
 use App\Item;
 use DateTime;
@@ -886,6 +887,7 @@ class SaleController extends Controller
         }
         $data->sale_return_flag = 1;
         $data->save();
+
         $total_amount = $request->totalPrice;
         $date = new DateTime('Asia/Yangon');
         $remark = $request->remark;
@@ -896,7 +898,7 @@ class SaleController extends Controller
         $accounting = Accounting::find($FM->showroom_sales_account_id);
         $accounting->balance += $total_amount;
         $accounting->save();
-        $incoming = FinancialIncoming::create([
+        $expense = FinancialExpense::create([
             "initial_currency_id"=>$accounting->currency_id,
             'final_currency_id'=>$accounting->currency_id,
             'initial_amount'=>$total_amount,
@@ -910,7 +912,7 @@ class SaleController extends Controller
             $bc_acc = $request->cash_acc;
 
             $cash_account = Accounting::find($request->cash_acc);
-            $cash_account->balance +=  $total_amount;
+            $cash_account->balance -=  $total_amount;
             $cash_account->save();
         }
         else if($request->cash_acc == null)
@@ -918,44 +920,44 @@ class SaleController extends Controller
             $bc_acc = $request->bank_acc;
 
             $bank_account =  Accounting::find($request->bank_acc);
-            $bank_account->balance += $total_amount;
+            $bank_account->balance -= $total_amount;
             $bank_account->save();
 
             $bank=Bank::where('account_id',$request->bank_acc)->first();
-            $bank->balance += $total_amount;
+            $bank->balance -= $total_amount;
             $bank->save();
 
             if($bank->old_bank_id != null)
             {
                 $oldBank = BankAccount::find($bank->old_bank_id);
-                $oldBank->balance +=  $total_amount;
+                $oldBank->balance -=  $total_amount;
                 $oldBank->save();
             }
 
         }
         $tran1 = FinancialTransactions::create([
             'account_id' => $accounting->id,
-            'type' => 2, // credit
+            'type' => 1, // debit
             'amount' => $total_amount,
             'remark' => $remark,
             'date' =>$voucher_date,
-            'type_flag' =>4, // income credit type
+            'type_flag' =>1, // expense debit type
             'currency_id' =>$accounting->currency_id,
-            'all_flag'  =>3,
-            'incoming_flag' => 1,
-            'incoming_id'=> $incoming->id
+            'all_flag'  =>4,
+            'expense_flag' => 1, // expense account type
+            'expense_id'=> $expense->id
          ]);
          $tran = FinancialTransactions::create([
             'account_id' => $request->cash_acc == null ? $request->bank_acc : $request->cash_acc,
-            'type' => 1, //  debit
-            'amount' => $total_amount - $request->second_payment,
+            'type' => 2, //  credit
+            'amount' =>$total_amount,
             'remark' => $remark,
             'date' => $voucher_date,
-            'type_flag' =>3, // income debit type
-            'incoming_flag' => 2,
+            'type_flag' =>2, // expense credit type
+            'expense_flag' => 2, // expense bank_cash type
             'currency_id' => $accounting->currency_id,
-            'all_flag'  =>3,
-            'incoming_id'=> $incoming->id
+            'all_flag'  =>4,
+            'expense_id'=> $expense->id
         ]);
 
 
