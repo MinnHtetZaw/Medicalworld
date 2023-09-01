@@ -350,7 +350,7 @@
                                 @endif
                                 <li><a href="{{ route('reset_quantity') }}">Result Quantity</a></li>
                             </ul>
-                         
+
                         </li>
 			@endif
 
@@ -638,6 +638,14 @@
                                       </p>
                                     </a>
                                   </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('reportList') }}" class="nav-link">
+                                        {{-- <i class="nav-icon far fa-address-card"></i> --}}
+                                        <p>
+                                            Report List
+                                        </p>
+                                    </a>
+                                </li>
 
                             </ul>
                         </li>
@@ -771,7 +779,7 @@
 
     <script src="{{ asset('assets/plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
 
-    
+
 
     <script src="{{ asset('js/validation.js') }}"></script>
 

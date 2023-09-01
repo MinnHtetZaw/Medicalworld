@@ -205,7 +205,7 @@ Route::group(['middleware' => ['UserAuth']], function () {
     //Sale
     Route::get('Sale', 'Web\SaleController@getSalePage')->name('sale_page');
     Route::get('Voucher/Edit', 'Web\SaleController@voucherEditPage')->name('voucher_edit_page');
-  
+
     Route::post('Sale/Voucher', 'Web\SaleController@storeVoucher');
     Route::post('Sale/Get-Voucher', 'Web\SaleController@getVucherPage')->name('get_voucher');
     Route::get('Sale/History', 'Web\SaleController@getSaleHistoryPage')->name('sale_history');
@@ -450,7 +450,12 @@ Route::group(['middleware' => ['UserAuth']], function () {
        Route::get('cogs/delete/{id}',[CogsController::class,'cogsDelete'])->name('cogs#delete');
        Route::post('countUnit-get/ajax',[CogsController::class,'countUnitGet'])->name('cogs#CountingUnitAjax');
 
-      
+
+        //Export
+        Route::get('report_list',[\App\Http\Controllers\ReportListController::class,'getExportList'])->name('reportList');
+        Route::get('sofb_list',[\App\Http\Controllers\SofbController::class,'getExportList'])->name('sofbList');
+        Route::get('sopl_list',[\App\Http\Controllers\SoplController::class,'getExportList'])->name('soplList');
+        Route::get('tri_list',[\App\Http\Controllers\TriController::class,'getExportList'])->name('trilList');
 
 
 
