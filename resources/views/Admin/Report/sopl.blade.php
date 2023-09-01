@@ -3,7 +3,7 @@
 @section('link','Sopl  List')
 @section('content')
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-12">
             <div class="">
                 <div class="mt-5">
                     <h3 class="text-center font-weight-bold">Medical World Co.Ltd</h3>
@@ -16,18 +16,8 @@
                         <p class="text-decoration-underline font-weight-bold">Revenue</p>
                     </div>
                 </div>
-                <div class="">
+                <hr class="">
                     <div class="">
-                        <div class="">
-
-
-                            <form class="d-flex " role="search" >
-                                <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
-
-
-                        </div>
                         <table class="table">
                             <thead>
                             <tr>
@@ -69,17 +59,13 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+
                 <div class="mt-5">
                     <div class="">
                         <p class="text-decoration-underline font-weight-bold">Cost of Good Sold</p>
                     </div>
-                    <div class="">
+                    <hr class="">
                         <div class="">
-                            <form class="d-flex " role="search" >
-                                <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -101,16 +87,14 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+
                     <div class="mt-5">
                         <div class="">
                             <p class="font-weight-bold">Direct Cost</p>
                         </div>
+                        <hr class="">
                         <div class="">
-                            <form class="d-flex " role="search" >
-                                <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
+
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -172,17 +156,9 @@
                         <div class="">
                             <p class="text-decoration-underline font-weight-bold">Marketing Expenses</p>
                         </div>
+                        <hr class="">
                         <div class="">
-                            <div class="">
 
-
-                                <form class="d-flex " role="search" >
-                                    <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                                    <button class="btn btn-outline-success" type="submit">Search</button>
-                                </form>
-
-
-                            </div>
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -250,17 +226,9 @@
                         <div class="">
                             <p class="text-decoration-underline font-weight-bold">Administrative Expenses</p>
                         </div>
+                        <hr class="">
                         <div class="">
-                            <div class="">
 
-
-                                <form class="d-flex " role="search" >
-                                    <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                                    <button class="btn btn-outline-success" type="submit">Search</button>
-                                </form>
-
-
-                            </div>
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -467,7 +435,6 @@
                                     <td></td>
                                 </tr>
 
-
                                 </tbody>
                             </table>
                         </div>
@@ -476,11 +443,9 @@
                         <div class="">
                             <p class="text-decoration-underline font-weight-bold">Finance Expenses</p>
                         </div>
+                        <hr class="">
                         <div class="">
-                            <form class="d-flex " role="search" >
-                                <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
+
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -512,17 +477,9 @@
                         <div class="">
                             <p class="text-decoration-underline font-weight-bold">Factory Operation Expenses</p>
                         </div>
+                        <hr class="">
                         <div class="">
-                            <div class="">
 
-
-                                <form class="d-flex " role="search" >
-                                    <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                                    <button class="btn btn-outline-success" type="submit">Search</button>
-                                </form>
-
-
-                            </div>
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -658,7 +615,7 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <br>
+
                                 <tr>
                                     <th scope="row">18</th>
                                     <td class="font-weight-bold fs-5">

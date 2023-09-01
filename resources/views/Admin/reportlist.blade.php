@@ -23,7 +23,7 @@
                 <div class="card p-3">
 
                     <div class="card-body">
-                        <h5 class="card-title">Tril Balance Sheet</h5>
+                        <h5 class="card-title">Trial Balance Sheet</h5>
                         <a href="{{ route('trilList') }}" class="btn btn-primary">Go to Detail List</a>
                     </div>
                 </div>

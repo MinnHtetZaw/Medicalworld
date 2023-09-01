@@ -4,11 +4,11 @@
 @section('content')
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-12">
             <div class="">
                 <div class="mt-5">
                     <h3 class="text-center font-weight-bold">Medical World Co.Ltd</h3>
-                    <p class="text-center">Statement of financial position as at 31 Dec 2021</p>
+                    <p class="text-center ">Statement of financial position as at 31 Dec 2021</p>
                 </div>
                 <div class="">
                     <div class="">
@@ -16,13 +16,9 @@
                         <p class="font-weight-bold">Non-Current Assets</p>
                     </div>
                 </div>
-
+                <hr class="">
                 <div class="">
-                    <div class="">
-                        <form class="d-flex " role="search" >
-                            <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
+
 
                         <table class="table">
                             <thead>
@@ -104,19 +100,13 @@
 
                             </tbody>
                         </table>
-                    </div>
+
                 </div>
                 <div class="mt-5">
                     <div class="">
                         <p class="text-decoration-underline font-weight-bold">Current Assets</p>
                     </div>
                     <div class="">
-
-                        <div class="">
-                            <form class="d-flex " role="search" >
-                                <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -231,7 +221,6 @@
                                     <th scope="row">20</th>
                                     <td class="font-weight-bold">Total Current Assets</td>
                                 </tr>
-                                <hr class="border bottom-50 text-black">
                                 <tr>
                                     <th scope="row">21</th>
                                     <td class="font-weight-bold">Total  Assets</td>
@@ -239,17 +228,14 @@
 
                                 </tbody>
                             </table>
-                        </div>
                     </div>
                     <div class="mt-5">
                         <div class="">
                             <p class="text-decoration-underline font-weight-bold">Liabilities</p>
                         </div>
+                        <hr class="">
                         <div class="">
-                            <form class="d-flex " role="search" >
-                                <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
+
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -282,11 +268,9 @@
                         <div class="">
                             <p class="text-decoration-underline font-weight-bold">Non-Liabilities</p>
                         </div>
+                        <hr class="">
                         <div class="">
-                            <form class="d-flex " role="search" >
-                                <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
+
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -333,7 +317,7 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <hr class="">
+
                                 <tr>
                                     <th scope="row">7</th>
                                     <td class="font-weight-bold">
@@ -350,11 +334,9 @@
                         <div class="">
                             <p class="text-decoration-underline font-weight-bold">Equity</p>
                         </div>
+                        <hr class="">
                         <div class="">
-                            <form class="d-flex " role="search" >
-                                <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
+
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -378,14 +360,14 @@
                                     <td></td>
                                 </tr>
 
-                                <hr class="">
+
                                 <tr>
                                     <th scope="row">3</th>
                                     <td class="fw-bolder">
                                         Total Equity
                                     </td>
                                 </tr>
-                                <hr class="">
+
                                 <tr>
                                     <th scope="row">4</th>
                                     <td class="font-weight-bold">

@@ -5,18 +5,15 @@
     <div class="row">
         <div class="col-12">
             <div class="mt-5 text-center">
-                <p class="font-weight-bold mt-5">Account Name</p>
+                <p class="font-weight-bold  mt-5">Account Name</p>
             </div>
-
             <div class="mt-5">
                 <div class="">
                     <p class="text-decoration-underline font-weight-bold">User Account</p>
                 </div>
+                <hr class="">
                 <div class="">
-                    <form class="d-flex " role="search" >
-                        <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
+
                     <table class="table">
                         <thead>
                         <tr>
