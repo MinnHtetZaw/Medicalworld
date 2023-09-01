@@ -1,6 +1,6 @@
 @extends('master')
-@section('title','Sale Project List')
-@section('link','Sale Project List')
+@section('title','Transaction List')
+@section('link','Transaction List')
 @section('content')
 
 <div class="row">

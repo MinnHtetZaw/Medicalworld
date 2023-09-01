@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Accounting;
 use Illuminate\Http\Request;
 
 class TriController extends Controller
 {
     public function getExportList(){
-        return view('Admin.Report.tri');
+        $accountLists = Accounting::get();
+        // dd($accountLists->toArray());
+        return view('Admin.Report.tri',compact('accountLists'));
     }
 }
