@@ -338,6 +338,7 @@
                                 @if (session()->get('user')->name != "Wai" ||  session()->get('user')->name != "OS-AMThu" ||  session()->get('user')->name == "OS-HTZA")
                                 <li><a href="{{route('sale_page')}}">@lang('lang.sale')</a></li>
                                 @endif
+                              
                                 @if(session()->get('user')->role == "Owner")
 
                                 <li><a href="{{route('sale_history')}}">@lang('lang.sale_history')</a></li>
@@ -347,12 +348,14 @@
                                 @elseif(session()->get('user')->role == "Sales")
                                 <li><a href="{{route('salescustomers_list')}}">@lang('lang.sale_customer_list')</a></li>
                                 <li><a href="{{route('sale_history')}}">@lang('lang.sale_history')</a></li>
+                               
                                 @endif
                                 <li><a href="{{ route('reset_quantity') }}">Result Quantity</a></li>
                             </ul>
                          
                         </li>
 			@endif
+            
 
                         @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Sales" || session()->get('user')->role == "Sales_Inventory" || session()->get('user')->role == "Finance")
                         <li>
