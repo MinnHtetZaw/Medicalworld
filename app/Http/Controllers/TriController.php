@@ -9,7 +9,15 @@ class TriController extends Controller
 {
     public function getExportList(){
         $accountLists = Accounting::get();
-        // dd($accountLists->toArray());
-        return view('Admin.Report.tri',compact('accountLists'));
+        $debitTotal = Accounting::where('nature',1)->sum('balance');
+        $creditTotal = Accounting::where('nature',2)->sum('balance');
+
+        $netDebitTotal = $debitTotal > $creditTotal ? ($debitTotal - $creditTotal) : 0;
+        $netCreditTotal = $creditTotal  > $debitTotal? ( $creditTotal- $debitTotal ) : 0;
+
+
+
+
+        return view('Admin.Report.tri',compact('accountLists','debitTotal','creditTotal','netDebitTotal','netCreditTotal'));
     }
 }

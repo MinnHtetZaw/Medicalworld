@@ -37,12 +37,13 @@
 
 
     <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 
     <script src="https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery/jscroll.min.js"></script>
-
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery/jscroll.min.js"></script> --}}
+    {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script> --}}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script> 
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>-->
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -754,9 +755,9 @@
     <script src="{{ asset('assets/plugins/popper/popper.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
-    <script src="{{ asset('js/jquery.slimscroll.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.slimscroll.js') }}"></script>
     <!--Wave Effects -->
-    <script src="{{ asset('js/waves.js') }}"></script>
+    <script src="{{ asset('assets/js/waves.js')}}"></script>
     <!--Menu sidebar -->
     <script src="{{ asset('js/sidebarmenu.js') }}"></script>
     <!--stickey kit -->
@@ -764,7 +765,7 @@
     <script src="{{ asset('assets/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
     <!--Custom JavaScript -->
-    <script src="{{ asset('js/custom.min.js') }}"></script>
+    <script src="{{ asset('assets/js/custom.min.js') }}"></script>
 
     <!--c3 JavaScript -->
     <script src="{{ asset('assets/plugins/d3/d3.min.js') }}"></script>

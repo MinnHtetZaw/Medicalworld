@@ -3,26 +3,60 @@
 @section('link','Tri List')
 @section('content')
 
-<div class="row">
-  <div class="col-md-6">
-      <div class="row">
-    <div class="form-group col-md-5">
-        <label>From</label>
-        <input type="date" name="from" id="from" class="form-control">
-    </div>
-    <div class="form-group col-md-5">
-        <label>To</label>
-        <input type="date" name="to" id="to" class="form-control">
-    </div>
-    <div class="form-group col-md-2">
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="row">
+      <div class="form-group col-md-5">
+          <label>From</label>
+          <input type="date" name="from" id="from" class="form-control">
+      </div>
+      <div class="form-group col-md-5">
+          <label>To</label>
+          <input type="date" name="to" id="to" class="form-control">
+      </div>
+      <div class="form-group col-md-2">
+  
+          <button class="btn btn-sm btn-primary form-control" style="margin-top:38px;" onclick="date_filter()">Search</button>
+      </div>
+  </div>
+  
+  </div>
+  <div class="offset-md-1 col-md-5 mt-2">
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters ">
+          <div class="">
+            {{-- <img src="..." class="card-img" alt="..."> --}}
+          </div>
+          <div class="col">
+            <div class="card-body">
+                <div class="row">
+                    <h5 class="card-title col-6">Debit Amount Total:</h5>
+                    <h5 class="card-title  col-6 ">{{number_format($debitTotal,0,'',',') }} MMK</h5>
 
-        <button class="btn btn-sm btn-primary form-control" style="margin-top:38px;" onclick="date_filter()">Search</button>
-    </div>
-</div>
+                </div>
+                <div class="row">
+                    <h5 class="card-title col-6">Credit Amount Total:</h5>
+                    <h5 class="card-title  col-6 ">{{number_format($creditTotal,0,'',',') }} MMK </h5>
 
-</div>
+                </div>
+                <hr>
+                <div class="row">
+                   @if ($netDebitTotal > $netCreditTotal)
+                   <h5 class="card-title col-6">Net Debit Amount: </h5>
+                    <h5 class="card-title  col-6 ">{{$netDebitTotal}} </h5>
+                    @else
+                    <h5 class="card-title col-6">Net Credit Amount: </h5>
+                    <h5 class="card-title  col-6 ">{{ number_format($netCreditTotal,0,'',',') }}MMK </h5>  
+                   @endif
+                   
 
-</div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  </div>
 
 <div class="row">
     <div class="col-12">
@@ -32,7 +66,7 @@
             <div class="col-12">
           <div class="row justify-content-between">
 
-              <label class="">Transaction List<span class="float-right">
+              <label class="">Account List<span class="float-right">
 
           </div>
 
@@ -56,7 +90,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Account Code</th>
-                                <th>Accont Name</th>
+                                <th>Account Name</th>
                                 <th>Subheading</th>
                                 <th>Balance</th>
                                 <th>Debit</th>
@@ -111,10 +145,12 @@
 
                             </tr>
                             @endforeach
+                           
                         </tbody>
 
 
                 </table>
+               
 
             </div>
         </div>
