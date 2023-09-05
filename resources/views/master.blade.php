@@ -9,7 +9,7 @@
     <title>@yield('title')</title>
     <!-- Bootstrap Core CSS -->
     <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         .groundqty {
             display: block;
@@ -45,7 +45,8 @@
     {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script> --}}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script> 
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>-->
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fontawesome.com/icons/caret-down?f=classic&s=solid">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
@@ -258,7 +259,34 @@
                                  <li><a href="{{route('cogs_caculator')}}">Cogs Caculator</a></li>
 
 {{--                                Specification List--}}
-                                <li>
+
+                                   
+                                      
+                               
+                                 <li>
+                                    <p>
+                                        <div class="dropdown show">
+                                           
+                                            <a class="dropdown-toggle" href="#collapseExample" role="#" id="dropdownMenuLink" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
+                                                Specification List</i>
+                                            </a>
+                                        </div>  
+                                      </a>
+                                             
+                                             </p>
+                                             <div class="collapse" id="collapseExample">
+                                               <div class="#">
+                                                <a href="{{ route('specs',1) }}">Design</a>
+                                                <a href="{{ route('specs',2) }}">Fabric</a>
+                                                <a href="{{ route('specs',3) }}">Color</a>
+                                                <a href="{{ route('specs',4) }}">Size</a>
+                                                <a href="{{ route('specs',5) }}">Gender</a>
+
+                                               </div>
+                                             </div>
+                                 </li>
+
+                                {{-- <li>
                                     <a class="has-arrow " href="#" aria-expanded="false">
                                         <span class="hide-menu">
                                     Specification List</i>
@@ -281,7 +309,7 @@
                                             <a href="{{ route('specs',5) }}">Gender</a>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> --}}
 				</ul>
 			</li>
                         @endif
@@ -533,24 +561,62 @@
                             </a>
 
                             <ul class="nav nav-treeview">
+                                
+                                
                                 <li>
-                                    <a class="has-arrow " href="#" aria-expanded="false">
+                                    {{-- <a class="has-arrow " href="#" aria-expanded="false" >
                                         <span class="hide-menu">
                                             Financial List</i>
                                         </span>
-                                    </a>
-                                    <ul aria-expanded="false" class="collapse">
-                                        <li class="nav-item">
-                                            <a href="{{ route('accounttypeList') }}" class="nav-link ">
+                                    </a> --}}
+                                   
+                                        <div class="dropdown show">
+                                            <a class="dropdown-toggle" href="#" role="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Financial List</i>
+                                            </a>
+                                          
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                              {{-- <a class="dropdown-item" href="#">Action</a> --}}
+                                              <a  class="dropdown-item"  href="{{ route('accounttypeList') }}" class="nav-link ">
                                                 {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
                                                 <p>
                                                     Account Type
                                                 </p>
                                             </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ route('headingList') }}" class="nav-link">
+                                              {{-- <a class="dropdown-item" href="#">Another action</a> --}}
+                                              <a class="dropdown-item"  href="{{ route('headingList') }}" class="nav-link2">
                                                 {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
+                                                <p>
+                                                    Heading
+                                                </p>
+                                            </a>
+                                            <a class="dropdown-item"  href="{{ route('subheadingList') }}" class="nav-link">
+                                                {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
+                                                <p>
+                                                    Sub Heading
+                                                </p>
+                                            </a>
+                                              <a class="dropdown-item" href="{{ route('account_list') }}" class="nav-link">
+                                                {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
+                                                <p>
+                                                    Account Lists
+                                                </p>
+                                            </a>
+                                            </div>
+                                          </div>
+                                  
+                                    
+                                    {{-- <ul aria-expanded="false" class="collapse">
+                                       
+                                        <li class="nav-item" >
+                                            <a href="{{ route('accounttypeList') }}" class="nav-link ">
+                                                <p>
+                                                    Account Type
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" >
+                                            <a href="{{ route('headingList') }}" class="nav-link2">
                                                 <p>
                                                     Heading
                                                 </p>
@@ -559,15 +625,13 @@
 
                                 <li class="nav-item">
                                     <a href="{{ route('subheadingList') }}" class="nav-link">
-                                        {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
                                         <p>
                                             Sub Heading
                                         </p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" >
                                     <a href="{{ route('account_list') }}" class="nav-link">
-                                        {{-- <i class="nav-icon far fa-address-card ml-4"></i> --}}
                                         <p>
                                             Account Lists
                                         </p>
@@ -575,7 +639,7 @@
                                 </li>
 
 
-                                    </ul>
+                                    </ul> --}}
                                 </li>
 
 
@@ -1021,7 +1085,9 @@
         }, 5000);
 
     </script> --}}
+   
 
 </body>
+
 
 </html>
