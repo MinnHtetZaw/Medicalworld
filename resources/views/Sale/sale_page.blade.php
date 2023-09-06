@@ -876,8 +876,7 @@
                                 </div>
                             </div>
 
-                            <button type="button" class="btn btn-success" id="vou_price_change_btn" btn-lg
-                                    btn-block">Change Price</button>
+                            <button type="button" class="btn btn-success" id="vou_price_change_btn" > Change Price</button>
                         </div>
 
 
@@ -2437,6 +2436,7 @@
 
 
                 $(".store_voucher").click(function() {
+                    console.log("Hello V");
 
                     var mycart = localStorage.getItem('mycart');
 
@@ -2498,7 +2498,7 @@
                         // alert("in");
                         $.ajax({
                             type: 'POST',
-                            url: '/testVoucher',
+                            url: '{{route('testVoucher')}}',
                             dataType: 'json',
                             data: {
                                 "_token": "{{ csrf_token() }}",
@@ -2552,9 +2552,9 @@
                         });
                     }
                 });//End Voucher
-                $("#repaymentDate").datetimepicker({
-                    format: 'YYYY-MM-DD'
-                });
+                // $("#repaymentDate").datetimepicker({
+                //     format: 'YYYY-MM-DD'
+                // });
                 // Begin Print
                 $("#print").click(function() {
 
@@ -2607,7 +2607,7 @@
 
                         $.ajax({
                             type: 'POST',
-                            url: '/testVoucher',
+                            url:'{{route('testVoucher')}}',
                             dataType: 'json',
                             data: {
                                 "_token": "{{ csrf_token() }}",
@@ -2683,8 +2683,7 @@
                 }
 
                 $('#vou_price_change_btn').click(function() {
-
-
+                  console.log("hello");
                     var grand_total = localStorage.getItem('grandTotal');
 
                     var grand_total_obj = JSON.parse(grand_total);
@@ -3043,6 +3042,7 @@
                 })
 
                 $("#itemDiscountSave").click(function (){
+                    
                     let id = $("#discount_id").val();
                     let type = $("#discount_type").val();
                     console.log(id,type);
