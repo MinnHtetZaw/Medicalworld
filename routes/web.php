@@ -456,8 +456,9 @@ Route::group(['middleware' => ['UserAuth']], function () {
         Route::get('sofb_list',[\App\Http\Controllers\SofbController::class,'getExportList'])->name('sofbList');
         Route::get('sopl_list',[\App\Http\Controllers\SoplController::class,'getExportList'])->name('soplList');
         Route::get('tri_list',[\App\Http\Controllers\TriController::class,'getExportList'])->name('trilList');
+        Route::post('accouting_filter',[\App\Http\Controllers\TriController::class,'getAccountList'])->name('accountlList');
 
-
+       
 
 
 
