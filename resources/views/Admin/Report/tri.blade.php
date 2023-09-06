@@ -91,57 +91,53 @@
                                 <th>#</th>
                                 <th>Account Code</th>
                                 <th>Account Name</th>
-                                <th>Subheading</th>
+                                {{-- <th>Subheading</th> --}}
                                 <th>Balance</th>
                                 <th>Debit</th>
                                 <th>Credit</th>
                                 <th>Nature</th>
                                 <th>Currency</th>
                                 <th>Date</th>
+                                <th>Remark</th>
 
                             </tr>
                         </thead>
                         <tbody id="filter_date">
                             <?php $i = 1; ?>
-                            @foreach ($accountLists as $data)
+                            @foreach ($transaction as $data)
 
                             <tr class="text-center">
                             <td style="font-size:15px; width:50px" class="border-0">{{$i++}}</td>
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->account_code}}</td>
+                            <td style="font-size:15px; width:50px" class="border-0">{{$data->accounting->account_code}}</td>
                            
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->account_name}} </td>
+                            <td style="font-size:15px; width:50px" class="border-0">{{$data->accounting->account_name}} </td>
                            
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->subheading->name}} </td>
+                            {{-- <td style="font-size:15px; width:50px" class="border-0">{{$data->accounting->subheading->name}} </td> --}}
                             
                            
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->balance}}</td>
-                            @if ($data->nature == 1 )
-                             <td style="font-size:15px; width:50px" class="border-0">{{$data->balance}} </td>   
-                            @elseif ($data->nature !=null ||$data->nature == 2)
+                            <td style="font-size:15px; width:50px" class="border-0">{{$data->accounting->balance}}</td>
+                            @if ($data->type == 'Debit')
+                            <td style="font-size:15px; width:50px" class="border-0">{{$data->amount}}</td>
                             <td style="font-size:15px; width:50px" class="border-0">-</td>
-       
-                            @endif
+                          @elseif ($data->type == 'Credit')
+                            <td style="font-size:15px; width:50px" class="border-0">-</td>
+                            <td style="font-size:15px; width:50px" class="border-0">{{$data->amount}}</td>
+                          @endif
                             
-                            @if ($data->nature == 1 )
-                             <td style="font-size:15px; width:50px" class="border-0">-</td>   
-                            @elseif ($data->nature !=null ||$data->nature == 2)
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->balance}} </td>
-       
-                            @endif
                             
                            
-                            {{-- <td style="font-size:15px; width:50px" class="border-0">{{$data->nature}} </td> --}}
-                            @if ($data->nature == 1 )
+                           
+                            @if ($data->type == 'Debit')
                              <td style="font-size:15px; width:50px" class="border-0">Debit</td>   
-                            @elseif ($data->nature !=null ||$data->nature == 2)
+                            @elseif ($data->type == 'Credit')
                             <td style="font-size:15px; width:50px" class="border-0">Credit</td>
        
                             @endif
                             
                            
                             <td style="font-size:15px; width:50px" class="border-0">{{$data->currency->name}}</td>
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->created_at->format('m/d/y') }}</td>
-
+                            <td style="font-size:15px; width:50px" class="border-0">{{$data->date}}</td>
+                            <td style="font-size:15px; width:50px" class="border-0">{{$data->remark}}</td>
 
                             </tr>
                             @endforeach
@@ -173,7 +169,7 @@
 
             $.ajax({
            type:'POST',
-           url:'/financial_transaction_filter',
+           url:'/accouting_filter',
            dataType:'json',
            data:{ "_token": "{{ csrf_token() }}",
            "from":from,
@@ -197,11 +193,37 @@
 
                     <tr>
                             <td style="font-size:15px;" class="text-center">${++i}</td>
-                            <td style="font-size:15px;" class="text-center">${v.accounting.account_code}-${v.accounting.account_name}</td>
-                            <td style="font-size:15px;" class="text-center">${v.type}</td>
-                            <td style="font-size:15px;" class="text-center">${v.date}</td>
-                            <td style="font-size:15px;" class="text-center">${v.amount}</td>
-                            <td style="font-size:15px;" class="text-center">${v.remark}</td>
+                            <td style="font-size:15px;" class="text-center">${v.accounting.account_code}</td>
+                            <td style="font-size:15px;" class="text-center">${v.accounting.account_name}</td>
+                            <td style="font-size:15px; width:50px" class="border-0">${v.accounting.balance}</td>
+                           
+                            <td class="price" data-title="Price">
+                            ${v.type == 1
+                            ? `<span> ${v.amount}  </span>`
+                            : `<h6 class="text-body">- </h6>`
+                            }
+                        </td>
+                        <td class="price" data-title="Price">
+                            ${v.type == 1
+                            ? `<span> - </span>`
+                            : `<h6 class="text-body">${v.amount}  </h6>`
+                            }
+                        </td>
+                       
+                            <td class="price" data-title="Price">
+                            ${v.type == 1
+                            ? `<span> Debit </span>`
+                            : `<h6 class="text-body"> Credit </h6>`
+                            }
+                        </td>
+                        <td style="font-size:15px;" class="text-center">${v.currency.name}</td>
+                        <td style="font-size:15px; width:50px" class="border-0">${v.date}</td>
+                        <td style="font-size:15px; width:50px" class="border-0">${v.remark}</td>
+
+
+
+
+                           
 
                     </tr>
 
