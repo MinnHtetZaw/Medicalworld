@@ -27,7 +27,7 @@
           <div class="">
             {{-- <img src="..." class="card-img" alt="..."> --}}
           </div>
-          <div class="col">
+          {{-- <div class="col">
             <div class="card-body">
                 <div class="row">
                     <h5 class="card-title col-6">Debit Amount Total:</h5>
@@ -52,7 +52,7 @@
 
                 </div>
             </div>
-          </div>
+          </div> --}}
         </div>
       </div>
   </div>
@@ -104,22 +104,21 @@
                         </thead>
                         <tbody id="filter_date">
                             <?php $i = 1; ?>
-                            @foreach ($transaction as $data)
-
+                            @foreach ($accountLists as $data)
                             <tr class="text-center">
                             <td style="font-size:15px; width:50px" class="border-0">{{$i++}}</td>
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->accounting->account_code}}</td>
+                            <td style="font-size:15px; width:50px" class="border-0">{{$data->account_code}}</td>
                            
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->accounting->account_name}} </td>
+                            <td style="font-size:15px; width:50px" class="border-0">{{$data->account_name}} </td>
                            
                             {{-- <td style="font-size:15px; width:50px" class="border-0">{{$data->accounting->subheading->name}} </td> --}}
                             
                            
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->accounting->balance}}</td>
-                            @if ($data->type == 'Debit')
+                            <td style="font-size:15px; width:50px" class="border-0">{{$data->balance}}</td>
+                            @if ($data->type == '1')
                             <td style="font-size:15px; width:50px" class="border-0">{{$data->amount}}</td>
                             <td style="font-size:15px; width:50px" class="border-0">-</td>
-                          @elseif ($data->type == 'Credit')
+                          @elseif ($data->type == '2')
                             <td style="font-size:15px; width:50px" class="border-0">-</td>
                             <td style="font-size:15px; width:50px" class="border-0">{{$data->amount}}</td>
                           @endif
@@ -127,15 +126,15 @@
                             
                            
                            
-                            @if ($data->type == 'Debit')
+                          @if ($data->type == '1')
                              <td style="font-size:15px; width:50px" class="border-0">Debit</td>   
-                            @elseif ($data->type == 'Credit')
+                            @elseif ($data->type == '2')
                             <td style="font-size:15px; width:50px" class="border-0">Credit</td>
        
                             @endif
                             
                            
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->currency->name}}</td>
+                            <td style="font-size:15px; width:50px" class="border-0">{{$data->currency_name}}</td>
                             <td style="font-size:15px; width:50px" class="border-0">{{$data->date}}</td>
                             <td style="font-size:15px; width:50px" class="border-0">{{$data->remark}}</td>
 
@@ -183,7 +182,8 @@
             var html2 = "";
 
             $.each(data.date_filter, function(i, v) {
-                if(v.type == "Debit"){
+                // console.log('v');
+                if(v.type == '1'){
                     debit += v.amount;
                 }else{
                     credit += v.amount;
@@ -193,9 +193,9 @@
 
                     <tr>
                             <td style="font-size:15px;" class="text-center">${++i}</td>
-                            <td style="font-size:15px;" class="text-center">${v.accounting.account_code}</td>
-                            <td style="font-size:15px;" class="text-center">${v.accounting.account_name}</td>
-                            <td style="font-size:15px; width:50px" class="border-0">${v.accounting.balance}</td>
+                            <td style="font-size:15px;" class="text-center">${v.account_code}</td>
+                            <td style="font-size:15px;" class="text-center">${v.account_name}</td>
+                            <td style="font-size:15px; width:50px" class="border-0">${v.balance}</td>
                            
                             <td class="price" data-title="Price">
                             ${v.type == 1
@@ -216,7 +216,7 @@
                             : `<h6 class="text-body"> Credit </h6>`
                             }
                         </td>
-                        <td style="font-size:15px;" class="text-center">${v.currency.name}</td>
+                        <td style="font-size:15px;" class="text-center">${v.currency_name}</td>
                         <td style="font-size:15px; width:50px" class="border-0">${v.date}</td>
                         <td style="font-size:15px; width:50px" class="border-0">${v.remark}</td>
 

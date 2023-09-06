@@ -26,4 +26,7 @@ class Accounting extends Model
     public function currency(){
     	return $this->belongsTo('App\Currency','currency_id');
     }
+    public function financial_transaction(){
+		return $this->belongsTo(FinancialTransaction::class);
+	}
 }
