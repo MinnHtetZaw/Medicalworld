@@ -29,4 +29,8 @@ class Accounting extends Model
     public function financial_transaction(){
 		return $this->belongsTo(FinancialTransaction::class);
 	}
+    public function transactions()
+    {
+        return $this->hasMany(FinancialTransaction::class, 'accounting_id');
+    }
 }
