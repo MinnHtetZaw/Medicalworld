@@ -2499,9 +2499,9 @@
                         //end last_row_id
                     }
                 });
-                $("#repaymentDate").datetimepicker({
-                    format: 'YYYY-MM-DD'
-                });
+                // $("#repaymentDate").datetimepicker({
+                //     format: 'YYYY-MM-DD'
+                // });
                 // Begin Print
 
                 $("#print").click(function(){

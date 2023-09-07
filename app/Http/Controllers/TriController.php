@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Accounting;
 use Illuminate\Http\Request;
 use App\FinancialTransactions;
+use Illuminate\Support\Facades\DB;
 
 class TriController extends Controller
 {
@@ -27,22 +28,26 @@ class TriController extends Controller
             // dd($accountLists->toArray());
 
 
-        $accountLists = Accounting::select('accountings.*','financial_transactions.*','currencies.name as currency_name')
+        // $accountLists = Accounting::select('accountings.*','financial_transactions.*','currencies.name as currency_name')
                                    
-                                      ->leftJoin('financial_transactions','accountings.id','financial_transactions.account_id','financial_transactions.amount') 
-                                     ->leftJoin('currencies','currencies.id','financial_transactions.currency_id','currencies.name')                 
-                                      ->get();;
+        //                               ->leftJoin('financial_transactions','accountings.id','financial_transactions.account_id','financial_transactions.amount') 
+        //                              ->leftJoin('currencies','currencies.id','financial_transactions.currency_id','currencies.name')                 
+        //                               ->get();;
                     // dd($accountLists->toArray());
 
         // dd($transaction->toArray());
-        $debitTotal = FinancialTransactions::where('type','1')->sum('amount');
+        // $debitTotal = FinancialTransactions::where('type','1')->sum('amount');
     //    return $debitTotal;
-        $creditTotal = FinancialTransactions::where('type','2')->sum('amount');
+        // $creditTotal = FinancialTransactions::where('type','2')->sum('amount');
         // return $creditTotal;
 
-        $netDebitTotal = $debitTotal > $creditTotal ? ($debitTotal - $creditTotal) : 0;
-        $netCreditTotal = $creditTotal  > $debitTotal? ( $creditTotal- $debitTotal ) : 0;
-
+        // $netDebitTotal = $debitTotal > $creditTotal ? ($debitTotal - $creditTotal) : 0;
+        // $netCreditTotal = $creditTotal  > $debitTotal? ( $creditTotal- $debitTotal ) : 0;
+        $data = Accounting::leftJoin('financial_transactions', 'accountings.id', '=', 'financial_transactions.account_id')
+        ->select('accountings.*', DB::raw('SUM(CASE WHEN financial_transactions.type = "Debit" THEN financial_transactions.amount ELSE 0 END) AS debit_sum'), DB::raw('SUM(CASE WHEN financial_transactions.type = "Credit" THEN financial_transactions.amount ELSE 0 END) AS credit_sum'))
+        ->groupBy('accountings.id')
+        ->get();
+        dd($data->toArray());
 
 
         return view('Admin.Report.tri',compact('debitTotal','creditTotal','netDebitTotal','netCreditTotal','accountLists'));

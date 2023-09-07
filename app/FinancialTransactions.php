@@ -64,4 +64,5 @@ class FinancialTransactions extends Model
     {
         return $this->amount."-".$this->currency->name;
     }
+    
 }
