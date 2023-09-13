@@ -204,6 +204,7 @@
                             <th>Discount</th>
                             <th>Advance</th>
                             <th>Outstanding</th>
+                          
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -224,6 +225,7 @@
                                 <td>{{$ov->discount??0}}</td>
                                 <td>{{$ov->advance??0}}</td>
                                 <td>{{$ov->outstanding - $ov->discount ??0}}</td>
+                                
                                 <td style="text-align: center;" ><a href="{{route('orderVoucherDetails',$ov->id)}}" class="btn btn-sm rounded btn-outline-info">@lang('lang.details')</a></td>
                             </tr>
                         @endforeach

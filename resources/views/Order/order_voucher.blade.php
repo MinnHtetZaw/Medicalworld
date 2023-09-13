@@ -156,12 +156,15 @@
             <a href="{{route('order_history')}}" class="btn btn-outline-info rounded mr-3">
                 <i class="fas fa-arrow-left mr-1"></i>Back
             </a>
-            <button id="print" class="btn btn-outline-info rounded">
+            <button id="print" class="btn btn-outline-info rounded mr-3">
                 <i class="fas fa-print mr-1"></i>Print
             </button>
+            {{-- <button type="button" class="btn btn-info" data-toggle="modal" data-target="#choose_return_data">Sale Return</button> --}}
+           
         </div>
 </div>
 </div>
+
 
 
 @endsection
@@ -183,5 +186,11 @@
             $("div.printableArea").printArea(options);
         });
     });
+
+   
+        
+
+   
+      
     </script>
 @endsection

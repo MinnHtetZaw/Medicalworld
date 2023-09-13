@@ -766,6 +766,7 @@
                             "_token" : "{{csrf_token()}}",
                             "voucher_id": id,
                             "bank_acc":bank_acc,
+                            
                             "cash_acc":cash_acc,
                             "totalPrice":totalPrice,
                             "remark":remark

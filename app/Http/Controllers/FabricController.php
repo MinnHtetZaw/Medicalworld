@@ -41,6 +41,7 @@ class FabricController extends Controller
      */
     public function store(Request $request)
     {
+        // return "hello";
         $request->validate([
             "fabric_name"=> "required|min:2",
         ]);

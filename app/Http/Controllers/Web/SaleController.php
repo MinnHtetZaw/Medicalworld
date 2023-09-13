@@ -870,10 +870,8 @@ class SaleController extends Controller
 
     protected function saleReturn(Request $request)
     {
-       
+      
         //   dd($request->toArray());
-
-
         $data=Voucher::with('counting_unit')->find($request->voucher_id);
 
         foreach($data->counting_unit as $item)
@@ -887,7 +885,6 @@ class SaleController extends Controller
         }
         $data->sale_return_flag = 1;
         $data->save();
-
         $total_amount = $request->totalPrice;
         $date = new DateTime('Asia/Yangon');
         $remark = $request->remark;
@@ -910,7 +907,6 @@ class SaleController extends Controller
         if($request->bank_acc == null)
         {
             $bc_acc = $request->cash_acc;
-
             $cash_account = Accounting::find($request->cash_acc);
             $cash_account->balance -=  $total_amount;
             $cash_account->save();
@@ -971,7 +967,7 @@ class SaleController extends Controller
             'tran1'=>$tran1
             
         ]);
-    }
+    }//End method
 
     protected function getVoucherSummaryMain(){
         return view('Sale.voucher_history');

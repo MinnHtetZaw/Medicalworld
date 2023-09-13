@@ -37,7 +37,10 @@
 
                         <div class="col-md-2">
                             <label class="control-label font-weight-bold">From Date</label>
-                            <input type="date" name="entry_date" id="entry_date" class="form-control" value=""
+                            {{-- <input type="date" name="entry_date" id="entry_date" class="form-control" value=""
+                                required> --}}
+                                {{-- hello --}}
+                                <input type="date" name="entry_date" id="entry_date" class="form-control" value=""
                                 required>
                         </div>
 
@@ -227,7 +230,9 @@
                                     <th>In</th>
                                     <th>Out</th>
                                     <th>Closing @lang('lang.quantity')</th>
+                                    <th>Count Date</th>
                                     <th>Remark</th>
+                                    {{-- <th>Count Date</th> --}}
                                 </tr>
                             </thead>
                             <tbody id="items_table">
@@ -271,6 +276,10 @@
                                                 id="closestock{{ $item->factory_item_id }}"
                                                 data-id="{{ $item->factory_item_id }}"value="{{ $item->instock_qty }}" disabled>
                                         </td>
+                                        <td>
+                                            {{-- {{$item->fabric_entry_item}} --}}
+                                        </td>
+                                        
 
                                         <td>
                                             <input type="text" class="form-control w-75 remark text-black"
@@ -278,6 +287,7 @@
                                                 id="remark{{ $item->factory_item_id }}"
                                                 data-id="{{ $item->factory_item_id }}"value="">
                                         </td>
+                                      
 
 
                                     </tr>
