@@ -70,6 +70,7 @@
                         Prepaid amount : {{$orders->advance_pay}}</span>
                     </div>
                 </div>
+               
                 <div class="row mb-2">
                     <div class="col-md-6">
                         Customer Address : {{$orders->address}}
@@ -322,15 +323,143 @@
             <button id="print" class="btn btn-success" type="button" data-id="{{$orders->id ?? 0}}">
                 <span><i class="fa fa-print"></i> Print</span>
             </button>
-            <button id="edit" class="btn btn-warning" data-status="{{$orders->status ?? 0}}" data-updatetimes="{{$orders->update_times ?? 0}}" type="button">
+            {{-- <button id="edit" class="btn btn-warning" data-status="{{$orders->status ?? 0}}" data-updatetimes="{{$orders->update_times ?? 0}}" type="button">
                 <span><i class="fa fa-edit"></i> Edit</span>
-            </button>
+            </button> --}}
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#choose_return_data">Sale Return</button>
+
+        
             {{-- //TODO Payment Delete --}}
             <button id="delete" class="btn btn-danger" data-id="{{$orders->id ?? 0}}" data-status="{{$orders->status ?? 0}}" type="button">
                 <span><i class="fa fa-trash"></i> Delete</span>
             </button>
         </div>
     </div>
+    {{-- ZZ --}}
+ <div class="modal fade" id="choose_return_data" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Choose Sale Return</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+
+            <div class="modal-body">
+
+                <form action="" method="POST">
+
+                    @csrf
+                    <div class="row flex">
+                       
+                        <div class="col-10 offset-1">    
+
+                        </div>
+
+                    </div>
+
+                                <div class="row">
+                                    <div class=" row mt-4 col-md-10">
+                                       
+                                        @if ($orders->payment_clear_flag!= 1)
+
+                                        <div class="col-md-7">
+                                            <div class="form-check form-check-inline" id="edit" >
+
+                                                <input class="form-check-input mt-1" data-status="{{$orders->status ?? 0}}" data-updatetimes="{{$orders->update_times ?? 0}}"  type="radio" name="edit" value="1">
+
+                                                <label class="form-check-label text-success" for="edit_order_voucher">Edit Voucher</label>
+                                            </div>
+                                            {{-- <button id="edit" class="btn btn-warning" data-status="{{$orders->status ?? 0}}" data-updatetimes="{{$orders->update_times ?? 0}}" type="button">
+                                                <span><i class="fa fa-edit"></i> Edit</span>
+                                            </button> --}}
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-check form-check-inline">
+
+                                                {{-- data-toggle="modal" data-target="#currency" --}}
+                                                
+                                                <input id="sale_return" class="form-check-input" data-id="{{$orders->id}}" type="radio" value="sale_return" onclick="show_bank_cash_div()"> 
+                                                {{-- close few minite --}}
+                                                <label class=" row form-check-label text-success"    for="sale_return">Sale Return</label>
+                                             
+                                            </div>
+                                        </div>
+                                        <div class="mt-3" id="Bank_cash_div">
+                                            <div class="form-check form-check-inline">
+                    
+                                                <input class="form-check-input" type="radio" name="account" id="bank" value="1" onclick="show_bank_acc()">
+                    
+                                                <label class="form-check-label text-success" for="bank">Bank</label>
+                                              </div>
+                                            <div class="form-check form-check-inline">
+                    
+                                                <input class="form-check-input" type="radio" name="account" id="cash" value="2" onclick="show_cash_acc()">
+                    
+                                                <label class="form-check-label text-success" for="cash">Cash</label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="form-group mt-3" id="bankkk">
+                                                <label class="control-label">Bank Account</label>
+                                                <select class="form-control" name="bank_acc" id="bank_acc" class="bk">
+                                                    <option value="">Select Bank Account</option>
+                                                   @foreach ($bank_account as $acc)
+                            
+                                                    <option value="{{$acc->id}}" >{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                                                   @endforeach
+                                                </select>
+                                            </div>
+                                                <div class="form-group mt-3" id="cashhh">
+                                                    <label class="control-label">Cash Account</label>
+                                                    <select class="form-control" name="cash_acc" id="cash_acc">
+                                                        <option value="">Select Cash Account</option>
+                                                       @foreach ($cash_account as $acc)
+                            
+                                                        <option value="{{$acc->id}}">{{$acc->account_name}}-{{$acc->account_code}}-{{$acc->currency->name}}</option>
+                                                       @endforeach
+                                                    </select>
+                                                </div> 
+                                                <div class="form-group mt-3" id="">
+                                                    {{-- <label class="control-label">Cash Account</label> --}}
+                                                    <input id="totalPrice" class="form-control m-auto"  type="number" value="totalPrice" placeholder="Enter Total Price" > 
+
+                                                </div> 
+                                                <div class=" my-1" id="remark">
+                                                    <label class="control-label text-black col-5 font14">Remark</label>
+                                                    {{-- <input type="text" class="form-control col-7 font14 text-black" id="remark_input" value="remark" --}}
+                                                           {{-- placeholder="remark"> --}}
+                                                           <input id="remark_input" class="form-control m-auto"  type="text" value="" placeholder="Remark" > 
+
+                                                </div>
+                                                
+
+                                                {{-- <button id="confirm" data-id="{{$unit->id}}" value="confirm">Confirm</button> --}}
+                                               
+                                                 <input id="confirm" class="btn btn-primary m-auto" data-id="{{$orders->id}}" type="button" value="confirm" > 
+
+                                           
+                                        </div>
+                                        
+
+                                          
+
+                                        @else
+                                           <div class="mx-auto fs-10"  style="color:red;text-align:center;font:500;">Your Refund Process Complete Done !</div> 
+                                      
+                                        @endif
+                                        
+                                    </div>
+                                </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- ZZ --}}
+
 
 @endsection
 
@@ -576,5 +705,106 @@
                 }
             })
         });
+
+        //Order Sale Return Section
+         // ZZ
+    $('#confirm').click(function(){
+        console.log("hello order voucher");
+                $('#choose_return_data').hide();
+                    var id = $(this).data('id');
+                    console.log(id);
+                    var bank_acc = $('#bank_acc').val();
+                    // console.log(bank_acc);
+                    var cash_acc = $('#cash_acc').val();
+                    // console.log(cahs_acc);
+                    var totalPrice = $('#totalPrice').val();
+                    var remark = $('#remark_input').val();
+                    console.log(remark);
+                   
+                    // order#order_sale_return
+                    $.ajax({
+                        type : 'POST',
+                        url  : '{{route('order#order_sale_return')}}',
+                        data : {
+                            "_token" : "{{csrf_token()}}",
+                            "order_id": id,
+                            "bank_acc":bank_acc,
+                            "cash_acc":cash_acc,
+                            "totalPrice":totalPrice,
+                            "remark":remark
+                        },
+
+                        success:function(data)
+                        {
+                        
+                        console.log(data);
+                            swal({
+                                        title: "Success",
+                                        text: "Sale Return Completed!",
+                                        icon: "info",
+                                    });
+                                    // setTimeout(function() {
+                                    //     window.location.href = "{{route('order_history')}}";
+                                    // }, 600);
+                        }
+
+                    })
+                    swal(
+                    {
+                      title: "Sale Return",
+                      text: "Order Sale Return Successfully!",
+                    //   content: "input",
+                      showCancelButton: true,
+                      closeOnConfirm: false,
+                      animation: "slide-from-top",
+                    //   inputPlaceholder: "Admin Code"
+                    })
+         
+        })//close afew minite
+        $('#Bank_cash_div').hide();
+        $('#cashhh').hide();
+        $('#bankkk').hide();
+        $('#confirm').hide();
+        $('#totalPrice').hide();
+        $('#remark').hide();
+
+        function show_bank_cash_div()
+                {
+                    $('#Bank_cash_div').show();
+                    $('#edit_order_sale_return').hide();
+                   
+                  
+
+
+                }
+      function show_bank_acc(){
+    
+              $('#cashhh').hide();
+              $('#bankkk').show();
+              $('#confirm').show();
+              $('#totalPrice').show();
+              $('#remark').show();
+
+
+                      }    
+        function show_cash_acc(){
+    
+    $('#cashhh').show();
+    $('#bankkk').hide();
+    $('#confirm').show();
+    $('#totalPrice').show();
+    $('#remark').show();
+
+
+
+            } //End method
+
+    //   Edit Order Voucher 
+    $('#edit_order_sale_return').click(function(){
+        console.log("Hello Order Voucher Edit");
+                
+                window.location.href = "{{ route('neworder_page')}}";
+                
+            });
     </script>
 @endsection

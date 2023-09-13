@@ -66,6 +66,7 @@ Route::group(['middleware' => ['UserAuth']], function () {
     Route::get('Stock-Dashboard', 'Web\StockController@getStockPanel')->name('stock_dashboard');
     Route::get('Sale-Dashboard', 'Web\SaleController@getSalePanel')->name('sale_panel');
     Route::get('Order-Dashboard', 'Web\OrderController@getOrderPanel')->name('order_panel');
+    Route::post('Order/sale/return','Web\OrderController@orderSaleReturn')->name('order#order_sale_return');
     Route::get('Admin-Dashboard', 'Web\AdminController@getAdminDashboard')->name('admin_dashboard');
 
     //Ajax List

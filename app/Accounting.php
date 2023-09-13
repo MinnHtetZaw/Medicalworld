@@ -27,10 +27,10 @@ class Accounting extends Model
     	return $this->belongsTo('App\Currency','currency_id');
     }
     public function financial_transaction(){
-		return $this->belongsTo(FinancialTransaction::class);
+		return $this->belongsTo(FinancialTransactions::class,'account_id');
 	}
     public function transactions()
     {
-        return $this->hasMany(FinancialTransaction::class, 'accounting_id');
+        return $this->hasMany(FinancialTransactions::class,'account_id');
     }
 }

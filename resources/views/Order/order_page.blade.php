@@ -158,6 +158,7 @@
                                 <th>Deliver Remark</th>
                                 @endif
                                 <th>@lang('lang.order') @lang('lang.status')</th>
+                                <th>Sale Return</th>
 
                                 <th class="text-center">@lang('lang.details')</th>
                                 @if($type != 5)
@@ -205,6 +206,13 @@
                                     @elseif($order->status == 5)
                                     <td><span class="badge badge-pill badge-info font-weight-bold">Accepted Order</span></td>
                                     @endif
+                                    <td>
+                                        @if ($order->payment_clear_flag == 1)
+                                        <span class="text-success">Refund</span>
+                                        @else
+                                        <span class="text-info">Not Refund</span>
+                                        @endif
+                                    </td>
 
                                      @if(session()->get('user')->role != "Partner")
                                 	<td class="text-center">

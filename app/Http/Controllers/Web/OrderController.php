@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Bank;
 use App\From;
 use App\Size;
 use Datetime;
@@ -14,6 +15,8 @@ use App\Category;
 use App\Customer;
 use App\Employee;
 use App\FactoryPo;
+use App\Accounting;
+use App\BankAccount;
 use App\FactoryItem;
 use App\SubCategory;
 use App\Transaction;
@@ -26,8 +29,11 @@ use App\SalesCustomer;
 use http\Env\Response;
 use App\EcommerceOrder;
 use App\CustomUnitOrder;
+use App\FinancialMaster;
+use App\FinancialExpense;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
+use App\FinancialTransactions;
 use App\CustomUnitFactoryOrder;
 use App\EcommerceOrderScreenshot;
 use Illuminate\Support\Facades\DB;
@@ -59,13 +65,115 @@ class OrderController extends Controller
     {
 
         $order_lists = Order::where('status', $type)->orderBy('id', 'desc')->get();
+        // return $order_lists;
         $vouchers = Voucher::find($type);
 
         $employee_lists = Employee::all();
 
         return view('Order.order_page', compact('order_lists', 'type', 'employee_lists', 'vouchers'));
     }
-
+            // ZZ
+            protected function orderSaleReturn(Request $request)
+            {
+                $data=Order::find($request->order_id);
+        // return $data;
+                foreach($data->counting_unit as $item)
+                {
+        
+                $counting_unit = CountingUnit::find($item->id);
+        
+                $counting_unit->current_quantity += $item->pivot->quantity;
+        
+                $counting_unit->save();
+                }
+                $data->	payment_clear_flag = 1;
+                $data->save();
+        
+                $total_amount = $request->totalPrice;
+                $date = new DateTime('Asia/Yangon');
+                $remark = $request->remark;
+        
+                $voucher_date = $date->format('Y-m-d');
+                //ZZ
+                $FM = FinancialMaster::first();
+                $accounting = Accounting::find($FM->showroom_sales_account_id);
+                $accounting->balance += $total_amount;
+                $accounting->save();
+                $expense = FinancialExpense::create([
+                    "initial_currency_id"=>$accounting->currency_id,
+                    'final_currency_id'=>$accounting->currency_id,
+                    'initial_amount'=>$total_amount,
+                    'final_amount'=>$total_amount,
+                    'amount' =>$total_amount,
+                    'remark' =>$remark,
+                     'date' => $voucher_date,
+                ]);
+                if($request->bank_acc == null)
+                {
+                    $bc_acc = $request->cash_acc;
+        
+                    $cash_account = Accounting::find($request->cash_acc);
+                    $cash_account->balance -=  $total_amount;
+                    $cash_account->save();
+                }
+                else if($request->cash_acc == null)
+                {
+                    $bc_acc = $request->bank_acc;
+        
+                    $bank_account =  Accounting::find($request->bank_acc);
+                    $bank_account->balance -= $total_amount;
+                    $bank_account->save();
+        
+                    $bank=Bank::where('account_id',$request->bank_acc)->first();
+                    $bank->balance -= $total_amount;
+                    $bank->save();
+        
+                    if($bank->old_bank_id != null)
+                    {
+                        $oldBank = BankAccount::find($bank->old_bank_id);
+                        $oldBank->balance -=  $total_amount;
+                        $oldBank->save();
+                    }
+        
+                }
+                $tran1 = FinancialTransactions::create([
+                    'account_id' => $accounting->id,
+                    'type' => 1, // debit
+                    'amount' => $total_amount,
+                    'remark' => $remark,
+                    'date' =>$voucher_date,
+                    'type_flag' =>1, // expense debit type
+                    'currency_id' =>$accounting->currency_id,
+                    'all_flag'  =>4,
+                    'expense_flag' => 1, // expense account type
+                    'expense_id'=> $expense->id
+                 ]);
+                 $tran = FinancialTransactions::create([
+                    'account_id' => $request->cash_acc == null ? $request->bank_acc : $request->cash_acc,
+                    'type' => 2, //  credit
+                    'amount' =>$total_amount,
+                    'remark' => $remark,
+                    'date' => $voucher_date,
+                    'type_flag' =>2, // expense credit type
+                    'expense_flag' => 2, // expense bank_cash type
+                    'currency_id' => $accounting->currency_id,
+                    'all_flag'  =>4,
+                    'expense_id'=> $expense->id
+                ]);
+        
+        
+            $tran1->related_transaction_id = $tran->id;
+            $tran1->save();
+        
+                // ZZ
+        
+                return response()->json([
+                    'success'=>'Succeed',
+                    'tran1'=>$tran1
+                    
+                ]);
+            }//End method
+            // ZZ
 
 
     protected function getWebsiteOrder()
@@ -663,10 +771,25 @@ class OrderController extends Controller
 
     protected function getOrderDetailsPage($id)
     {
-
+        // /return $id;
+        // try {
+        //     $orderVoucher = OrderVoucher::find($id);
+        //     $order = Order::where('id', $orderVoucher->order_id)->first();
+            
+        // } catch (\Exception $e) {
+        //     alert()->error("Order Not Found!")->persistent("Close!");
+        //     return redirect()->back();
+        // }
+        // $cash_account = Accounting::where('subheading_id',7)->get();
+        // $bank_account = Accounting::where('subheading_id',19)->get();
+        // $unit = OrderVoucher::find($id);
+////
         try {
 
             $orders = Order::findOrFail($id);
+            $unit = Voucher::find($id);
+             $cash_account = Accounting::where('subheading_id',7)->get();
+             $bank_account = Accounting::where('subheading_id',19)->get();
             $customUnitOrders = CustomUnitOrder::where('order_id', $id)->get();
 
             $customUnitOrder_ids = [];
@@ -683,8 +806,12 @@ class OrderController extends Controller
         }
         //        return redirect()->back();
 
-        return view('Order.neworder_details', compact('orders', 'customUnitOrders', 'design', 'transaction'));
+        return view('Order.neworder_details', compact('orders', 'customUnitOrders', 'design', 'transaction',
+    'unit','cash_account','bank_account'));
     }
+
+    //Order Sale Return Edit
+   
 
     protected function getWebsiteOrderDetailsPage($id)
     {
@@ -1169,11 +1296,16 @@ class OrderController extends Controller
         try {
             $orderVoucher = OrderVoucher::find($id);
             $order = Order::where('id', $orderVoucher->order_id)->first();
+            
         } catch (\Exception $e) {
             alert()->error("Order Not Found!")->persistent("Close!");
             return redirect()->back();
         }
-        return view('Order.order_voucher', compact('orderVoucher', 'order'));
+        $cash_account = Accounting::where('subheading_id',7)->get();
+        $bank_account = Accounting::where('subheading_id',19)->get();
+        $unit = OrderVoucher::find($id);
+
+        return view('Order.order_voucher', compact('orderVoucher', 'order','unit','cash_account','bank_account'));
     }
 
     public function getSpecId(Request $request)

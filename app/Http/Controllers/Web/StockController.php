@@ -157,7 +157,9 @@ class StockController extends Controller
 
     protected function getFabricCountPage(Request $request)
     {
+        // dd($request->toArray());
         $fabric_entry_items = FabricEntryItem::all();
+        // dd($fabric_entry_items->toArray());
         $categories = Category::where('type_flag', 2)->get();
         $sub_categories = SubCategory::where('type_flag', 2)->get();
         $factory_items = FactoryItem::where('category_id', 9)->where('subcategory_id', 19)->get();

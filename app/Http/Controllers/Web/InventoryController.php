@@ -1140,6 +1140,7 @@ class InventoryController extends Controller
 
     public function saveFabricCosting(Request $request)
     {
+        // return $request;
         FabricCosting::create([
             'design_id' => $request->design,
             'fabric_id' => $request->fabric,
