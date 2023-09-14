@@ -61,6 +61,7 @@
                             <thead class="bg-info text-white">
                             <tr>
                                 <th>#</th>
+                                <th class="text-center">Code</th>
                                 <th class="text-center">Account</th>
                                 <th class="text-center">Date</th>
                                 <th class="text-center">Debit</th>
@@ -75,7 +76,8 @@
                             @if($trans->type_flag == 1)
                             <tr class="text-center">
                             <td style="font-size:15px;width:15%;" >{{$i++}}</td>
-                            <td style="font-size:15px;width:15%;" >{{$trans->accounting->account_name}}-{{$trans->accounting->account_code}}</td>
+                            <td style="font-size:15px;width:15%;" >{{$trans->accounting->account_code}} </td>
+                            <td style="font-size:15px;width:15%;" >{{$trans->accounting->account_name}}</td>
                             <td style="font-size:15px;width:15%;" >{{$trans->date}}</td>
                             <td style="font-size:15px;width:15%;" >{{$trans->amount}}-{{$trans->currency->name}}</td>
                             <td style="font-size:15px;width:15%;" >-</td>
@@ -103,7 +105,8 @@
                                                 <tbody>
                                                     <tr class="text-center">
                                                         <td style="font-size:15px; width:15%;" >-</td>
-                                                        <td style="font-size:15px; width:15%;">{{$transa->accounting->account_name}}-{{$transa->accounting->account_code}}</td>
+                                                        <td style="font-size:15px; width:15%;">{{$transa->accounting->account_code}}</td>
+                                                        <td style="font-size:15px; width:15%;">{{$transa->accounting->account_name}}</td>
                                                         <td style="font-size:15px; width:15%;">{{$transa->date}}</td>
                                                         <td style="font-size:15px; width:15%;">-</td>
                                                         <td style="font-size:15px; width:15%;">{{$transa->transactionFormat()}}</td>
@@ -406,6 +409,8 @@ function acc_code_search(){
             <thead class="bg-info text-white">
                             <tr>
                                 <th>#</th>
+                                <th class="text-center">Code</th>
+
                                 <th class="text-center">Account</th>
                                 <th class="text-center">Type</th>
                                 <th class="text-center">Date</th>
@@ -428,7 +433,8 @@ function acc_code_search(){
                     <tbody>
                     <tr>
                             <td style="font-size:15px;" class="text-center">${++i}</td>
-                            <td style="font-size:15px;" class="text-center">${v.accounting.account_name} &nbsp;(${v.accounting.account_code})</td>
+                            <td style="font-size:15px;" class="text-center">${v.accounting.account_code}</td>
+                            <td style="font-size:15px;" class="text-center">${v.accounting.account_name} </td>
                             <td style="font-size:15px;" class="text-center">${v.type}</td>
                             <td style="font-size:15px;" class="text-center">${v.date}</td>
                             <td style="font-size:15px;" class="text-center">${v.amount}</td>
@@ -454,9 +460,16 @@ function acc_code_search(){
 
                                             </div>
                                             <div class="col-md-2">
+                                                <label style="font-size:15px;" class="text-info">Code</label>
+
+                                                <div style="font-size:15px;">${b.accounting.account_code}</div>
+
+
+                                            </div>
+                                            <div class="col-md-2">
                                                 <label style="font-size:15px;" class="text-info">Account</label>
 
-                                                <div style="font-size:15px;">${b.accounting.account_name} &nbsp;(${b.accounting.account_code})</div>
+                                                <div style="font-size:15px;">${b.accounting.account_name}</div>
 
 
                                             </div>
@@ -477,6 +490,7 @@ function acc_code_search(){
                                                 <div style="font-size:15px;">${b.amount}</div>
 
                                             </div>
+                                            
                     `;
                     if(b.project_id == null){
                         html += `
@@ -607,6 +621,7 @@ function show_project(){
             <thead class="bg-info text-white">
                             <tr>
                                 <th>#</th>
+                                <th class="text-center">Code</th>
                                 <th class="text-center">Account</th>
                                 <th class="text-center">Type</th>
                                 <th class="text-center">Date</th>
@@ -627,7 +642,8 @@ function show_project(){
                     <tbody>
                     <tr>
                             <td style="font-size:15px;" class="text-center">${++i}</td>
-                            <td style="font-size:15px;" class="text-center">${v.accounting.account_name}-${v.accounting.account_code}</td>
+                            <td style="font-size:15px;" class="text-center">${v.accounting.account_code}</td>
+                            <td style="font-size:15px;" class="text-center">${v.accounting.account_name}</td>
                             <td style="font-size:15px;" class="text-center">${v.type}</td>
                             <td style="font-size:15px;" class="text-center">${v.date}</td>
                             <td style="font-size:15px;" class="text-center">${v.amount}</td>
@@ -652,7 +668,14 @@ function show_project(){
                                             <div class="col-md-2">
                                                 <label style="font-size:15px;" class="text-info">Account</label>
 
-                                                <div style="font-size:15px;">${v.accounting.account_name}-${v.accounting.account_code}</div>
+                                                <div style="font-size:15px;">${v.accounting.account_code}</div>
+
+
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label style="font-size:15px;" class="text-info">Account</label>
+
+                                                <div style="font-size:15px;">${v.accounting.account_name}</div>
 
 
                                             </div>
