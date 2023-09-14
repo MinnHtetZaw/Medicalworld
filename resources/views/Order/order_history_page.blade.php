@@ -9,7 +9,7 @@
 
 <section id="plan-features">
     
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-12">
             <div class="d-flex justify-content-between mt-3 mb-5">
                 <div class="col-xl-3 col-lg-6">
