@@ -97,8 +97,8 @@
                                 <th>Credit</th>
                                 <th>Nature</th>
                                 <th>Currency</th>
-                                <th>Date</th>
-                                <th>Remark</th>
+                                {{-- <th>Date</th> --}}
+                                {{-- <th>Remark</th> --}}
 
                             </tr>
                         </thead>
@@ -115,28 +115,37 @@
                             
                            
                             <td style="font-size:15px; width:50px" class="border-0">{{$data->balance}}</td>
-                            @if ($data->type == '1')
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->amount}}</td>
+                            @if ( count($data['transactions']) == 0)
+
                             <td style="font-size:15px; width:50px" class="border-0">-</td>
-                          @elseif ($data->type == '2')
+ 
+                            @else
+                            <td style="font-size:15px; width:50px" class="border-0">{{ $data['transactions'][0]['debit_sum'] }}</td>
+      
+                            @endif
+                            @if ( count($data['transactions']) == 0)
+
                             <td style="font-size:15px; width:50px" class="border-0">-</td>
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->amount}}</td>
-                          @endif
+ 
+                            @else
+                            <td style="font-size:15px; width:50px" class="border-0">{{ $data['transactions'][0]['credit_sum'] }}</td>
+      
+                            @endif
                             
                             
                            
                            
-                          @if ($data->type == '1')
+                          @if ($data->nature == '1')
                              <td style="font-size:15px; width:50px" class="border-0">Debit</td>   
-                            @elseif ($data->type == '2')
+                            @elseif ($data->nature == '2')
                             <td style="font-size:15px; width:50px" class="border-0">Credit</td>
        
                             @endif
                             
                            
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->currency_name}}</td>
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->date}}</td>
-                            <td style="font-size:15px; width:50px" class="border-0">{{$data->remark}}</td>
+                            <td style="font-size:15px; width:50px" class="border-0">{{$data->currency['name']}}</td>
+                            {{-- <td style="font-size:15px; width:50px" class="border-0">{{$data->date}}</td> --}}
+                            {{-- <td style="font-size:15px; width:50px" class="border-0">{{$data->remark}}</td> --}}
 
                             </tr>
                             @endforeach
