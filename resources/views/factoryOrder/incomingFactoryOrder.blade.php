@@ -50,7 +50,7 @@
                         <select name="sales_person" id="sales_person" class="form-control form-control-sm select2">
                             <option>Select Sales Person</option>
                                 <option value='All' selected>All</option>
-                            @foreach(\App\User::where('role','Sales')->orWhere('role','Owner')->get() as $employee)
+                            @foreach(\App\User::where('role','Sales')->orWhere('role','Owner',)->orWhere('role','Sales_Inventory')->get() as $employee)
                                 <option value="{{$employee->name}}">{{$employee->name}}</option>
                             @endforeach
                         </select>
