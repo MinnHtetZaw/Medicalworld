@@ -239,7 +239,8 @@
                         @endif
 
 
-                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Stock" || session()->get('user')->role == "Sales" || session()->get('user')->name == "MON" || session()->get('user')->name == "POE" || session()->get('user')->role == "Finance" || session()->get('user')->name == "ATDK" || session()->get('user')->name == "Wai" || session()->get('user')->name == "Store-HHW")
+                        @if(session()->get('user')->role == "Owner" || session()->get('user')->role == "Stock" || session()->get('user')->role == "Sales" || session()->get('user')->name == "MON" || session()->get('user')->name == "POE" || session()->get('user')->role == "Finance" || session()->get('user')->name == "ATDK" || session()->get('user')->name == "Wai" || session()->get('user')->name == "Store-HHW"
+                        )
 
                         <li>
                             <a class="has-arrow " href="#" aria-expanded="false">
@@ -255,14 +256,13 @@
                                 <li><a href="{{route('subcategory_list')}}">@lang('lang.subcategory') @lang('lang.list')</a></li>
                                 <li><a href="{{route('item_list')}}">Sales Product @lang('lang.list')</a></li>
                                 <li><a href="{{route('factoryitem_list')}}">Factory Item @lang('lang.list')</a></li>
-                                 <li><a href="{{route('fabric_costing')}}">Fabric Costing</a></li>
-                                 <li><a href="{{route('cogs_caculator')}}">Cogs Caculator</a></li>
+                                <li><a href="{{route('fabric_costing')}}">Fabric Costing</a></li>
+                                <li><a href="{{route('cogs_caculator')}}">Cogs Caculator</a></li>
 
 {{--                                Specification List--}}
 
                                    
-                                      
-                               
+                                    
                                  <li>
                                     <p>
                                         <div class="dropdown show">
@@ -313,6 +313,35 @@
 				</ul>
 			</li>
                         @endif
+
+                        {{-- ZZ po --}}
+                        @if(session()->get('user')->role == "InventoryPo"
+                        || session()->get('user')->name == "ThitHtoo")
+
+                        <li>
+                            <a class="has-arrow " href="#" aria-expanded="false">
+                                <i class="mdi mdi-store" style="font-size: 18px"></i>
+                                <span class="hide-menu">
+                                    @lang('lang.inventory') <i class="fas fa-angle-down"></i>
+                                </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse">
+
+                                <li><a href="{{route('inven_dashboard')}}">@lang('lang.inventory_dashboard')</a></li>
+                                <li><a href="{{route('category_list')}}">@lang('lang.category') @lang('lang.list')</a></li>
+                                <li><a href="{{route('subcategory_list')}}">@lang('lang.subcategory') @lang('lang.list')</a></li>
+                                <li><a href="{{route('item_list')}}">Sales Product @lang('lang.list')</a></li>
+                                <li><a href="{{route('factoryitem_list')}}">Factory Item @lang('lang.list')</a></li>
+                                <li><a href="{{route('fabric_costing')}}">Fabric Costing</a></li>
+                                <li><a href="{{route('cogs_caculator')}}">Cogs Caculator</a></li>
+                                <li><a href="{{route('newcreate_itemrequest')}}">Create FactoryPo</a></li>
+
+                            </ul>   
+
+                            @endif
+                       
+                      
+                        {{-- ZZ po end--}}
 
                         @if (session()->get('user')->role == 'Owner' ||
                                 session()->get('user')->role == 'Stock' ||

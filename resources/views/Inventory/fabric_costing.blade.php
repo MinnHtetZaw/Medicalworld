@@ -53,6 +53,8 @@
                                     <th>Color</th>
                                     <th>Size</th>
                                     <th>Yards</th>
+                                    <th>Subcategory</th>
+                                    <th>Gender</th>
                                     <th>Pricing</th>
                                     <th>SubTotal</th>
 
@@ -68,6 +70,8 @@
                                         <td>{{ $cost->color->colour_name }}</td>
                                         <td>{{ $cost->size->size_name }}</td>
                                         <td>{{ $cost->yards }}</td>
+                                        <td>{{$cost->subcategory->name}} </td>
+                                        <td>{{$cost->gender->gender_name}} </td>
                                         <td>{{ $cost->pricing }}</td>
                                         <td>{{ $cost->subtotal() }}</td>
 
@@ -155,12 +159,14 @@
                                                                 <input type="text" name="yards" class="form-control" placeholder="Enter Yards" value={{ $cost->yards}}
                                                                     required>
                                                             </div>
+                                                        
 
                                                             <div class="form-group">
                                                                 <label class="font-weight-bold">Pricing</label> <label class="text-muted">per Yard</label>
                                                                 <input type="text" name="pricing" class="form-control" placeholder="Enter Pricing" value={{ $cost->pricing }}
                                                                     required>
                                                             </div>
+                                                            
 
                                                             <input type="submit" name="btnsubmit"
                                                                 class="btnsubmit float-right btn btn-primary"
@@ -240,6 +246,26 @@
                                 <label class="font-weight-bold">Pricing</label> <label class="text-muted">per Yard</label>
                                 <input type="text" name="pricing" class="form-control" placeholder="Enter Pricing"
                                     required>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold">SubCategory</label>
+                                <select name="subcategory" class="form-control">
+                                    {{-- <option hidden> </option> --}}
+                                    @foreach ($subcategories as $subcategory)
+                                        <option value={{$subcategory->id}}>{{ $subcategory->name }}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold">Gender</label>
+                                <select name="gender" class="form-control">
+                                    {{-- <option hidden> </option> --}}
+                                    @foreach ($genders as $gender)
+                                        <option value={{$gender->id}}>{{ $gender->gender_name }}</option>
+                                    @endforeach
+                                </select>
+
                             </div>
 
                             <input type="submit" class="float-right btn btn-primary" value="Save Costing">
