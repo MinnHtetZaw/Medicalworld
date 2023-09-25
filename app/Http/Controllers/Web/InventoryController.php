@@ -9,6 +9,7 @@ use Exception;
 use App\Colour;
 use App\Design;
 use App\Fabric;
+use App\Gender;
 use App\Category;
 use App\Stockcount;
 use App\FactoryItem;
@@ -1130,7 +1131,9 @@ class InventoryController extends Controller
         $fabrics = Fabric::all();
         $colors = Colour::all();
         $sizes = Size::all();
-        return view('Inventory.fabric_costing', compact('fabricCost', 'designs', 'fabrics', 'colors', 'sizes'));
+        $subcategories=SubCategory::all();
+        $genders=Gender::all();
+        return view('Inventory.fabric_costing', compact('fabricCost', 'designs', 'fabrics', 'colors', 'sizes','subcategories','genders'));
     }
 
     public function searchColor(Request $request)
@@ -1141,15 +1144,17 @@ class InventoryController extends Controller
 
     public function saveFabricCosting(Request $request)
     {
-        // return $request;
-        FabricCosting::create([
+       $data= FabricCosting::create([
             'design_id' => $request->design,
             'fabric_id' => $request->fabric,
             'color_id' => $request->color,
             'size_id' => $request->size,
-            'yards' => $request->yards,
+            'subcategory_id'=>$request->subcategory,
+            'gender_id' =>$request->gender,
+            'yards' =>$request->yards,
             'pricing' => $request->pricing
         ]);
+       
         return back();
     }
 

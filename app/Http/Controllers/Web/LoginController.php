@@ -270,6 +270,11 @@ class LoginController extends Controller
             else if($request->session()->get('user')->role == "Agent"){
 		return redirect()->route('stock_count');
             }
+            else if($request->session()->get('user')->role == "InventoryPo"){
+                return redirect()->route('newcreate_itemrequest');
+
+            }
+            
         }
         else{
 

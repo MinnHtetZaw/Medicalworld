@@ -18,8 +18,11 @@ class FabricCosting extends Model
             'color_id',
             'size_id',
             'yards',
+            'subcategory_id',
+            'gender_id',
             'pricing'
     ];
+    protected $guarded=[];
 
     public function subtotal()
     {
@@ -43,6 +46,14 @@ class FabricCosting extends Model
     public function color():BelongsTo
     {
         return $this->belongsTo(Colour::class);
+    }
+    public function subcategory():BelongsTo
+    {
+        return $this->belongsTo(SubCategory::class);
+    }
+    public function gender():BelongsTo
+    {
+        return $this->belongsTo(Gender::class);
     }
 
 

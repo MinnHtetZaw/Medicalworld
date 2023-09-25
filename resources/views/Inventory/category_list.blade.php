@@ -91,7 +91,7 @@
 
                                             <div class="form-group">
                                                 <label class="font-weight-bold">@lang('lang.code')</label>
-                                                <input type="number" name="category_code" class="form-control" value="{{$category->category_code}}">
+                                                <input type="text" name="category_code" class="form-control" value="{{$category->category_code}}">
                                             </div>
                                             <div class="form-group">
                                                 <label class="font-weight-bold">@lang('lang.name')</label>
