@@ -114,20 +114,24 @@
     </div>
 
     <div class="col-md-4">
+        <form action="{{route('store_category')}}" enctype="multipart/form-data" method="post">
+            @csrf
         <div class="card shadow">
             <div class="card-body">
                 <h3 class="card-title">@lang('lang.create_category_form')</h3>
-
-
                 <div class="form-material m-t-40">
                     <div class="form-group">
                     <div class="row">
                 <div class="form-check form-check-inline offset-3">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value=1>
+                    {{-- <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value=1>
+                    <label class="form-check-label" for="inlineRadio1">Sales</label> --}}
+                    <input class="form-check-input" type="radio" name="type_flag" id="inlineRadio1" value=1>
                     <label class="form-check-label" for="inlineRadio1">Sales</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value=2>
+                    {{-- <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value=2>
+                    <label class="form-check-label" for="inlineRadio2">Factory</label> --}}
+                    <input class="form-check-input" type="radio" name="type_flag" id="inlineRadio2" value=2>
                     <label class="form-check-label" for="inlineRadio2">Factory</label>
                   </div>
                 </div>
@@ -155,14 +159,13 @@
                         @enderror
 
                     </div>
-
-
-
-
-                    <input type="submit" name="btnsubmit" class="btnsubmit float-right btn btn-primary" value="@lang('lang.save_category')" onclick=storeCategory()>
+                    {{-- <input type="submit" name="btnsubmit" class="btnsubmit float-right btn btn-primary" value="@lang('lang.save_category')" onclick=storeCategory()> --}}
+                    {{-- <input type="submit" name="btnsubmit" class="btnsubmit float-right btn btn-primary" value="Save" > --}}
+                        <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>
+        </form>
     </div>
 </div>
 
@@ -213,36 +216,36 @@
 
     }
 
-    function storeCategory(){
-        var category_code = $('#category_code').val();
-        var category_name = $('#category_name').val();
-        var type_flag = $("input[name='inlineRadioOptions']:checked").val();
-        console.log(category_code,category_name,type_flag);
-        $.ajax({
-                type:'POST',
-                url:'{{ route('category_store') }}',
-                dataType:'json',
-                data:{
-                  "_token": "{{ csrf_token() }}",
-                  "category_code": category_code,
-                  "category_name": category_name,
-                  "type_flag": type_flag,
-                },
+    // function storeCategory(){
+    //     var category_code = $('#category_code').val();
+    //     var category_name = $('#category_name').val();
+    //     var type_flag = $("input[name='inlineRadioOptions']:checked").val();
+    //     console.log(category_code,category_name,type_flag);
+    //     $.ajax({
+    //             type:'POST',
+    //             url:'{{route('store_category')}}',
+    //             dataType:'json',
+    //             data:{
+    //               "_token": "{{csrf_token() }}",
+    //               "category_code": category_code,
+    //               "category_name": category_name,
+    //               "type_flag": type_flag,
+    //             },
 
-                success: function(data){
-
-                    swal({
-                        title: "Success!",
-                        text : "Category Saved!",
-                        icon : "success",
-                    });
-
-
+    //             success: function(data){
+    //               console.log(data);
+    //                 swal({
+    //                     title: "Success!",
+    //                     text : "Category Saved!",
+    //                     icon : "success",
+    //                 });
 
 
-                },
-            });
-    }
+
+
+    //             },
+    //         });
+    // }
 
 
 

@@ -104,7 +104,8 @@ class InventoryController extends Controller
 
 	protected function storeCategory(Request $request)
 	{
-		$validator = Validator::make($request->all(), [
+        // return $request;
+        $validator = Validator::make($request->all(), [
             'category_code' => 'required',
             'category_name' => 'required',
             'type_flag' => 'required',

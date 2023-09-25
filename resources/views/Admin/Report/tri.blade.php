@@ -91,18 +91,18 @@
                                 <th>#</th>
                                 <th>Account Code</th>
                                 <th>Account Name</th>
-                                {{-- <th>Subheading</th> --}}
                                 <th>Balance</th>
                                 <th>Debit</th>
                                 <th>Credit</th>
                                 <th>Nature</th>
                                 <th>Currency</th>
-                                {{-- <th>Date</th> --}}
-                                {{-- <th>Remark</th> --}}
+                              
+                                <th>Action</th>
 
                             </tr>
                         </thead>
-                        <tbody id="filter_date">
+                        
+                        <tbody >
                             <?php $i = 1; ?>
                             @foreach ($accountLists as $data)
                             <tr class="text-center">
@@ -111,13 +111,12 @@
                            
                             <td style="font-size:15px; width:50px" class="border-0">{{$data->account_name}} </td>
                            
-                            {{-- <td style="font-size:15px; width:50px" class="border-0">{{$data->accounting->subheading->name}} </td> --}}
                             
                            
                             <td style="font-size:15px; width:50px" class="border-0">{{$data->balance}}</td>
                             @if ( count($data['transactions']) == 0)
 
-                            <td style="font-size:15px; width:50px" class="border-0">-</td>
+                            <td style="font-size:15px; width:50px" class="border-0">0</td>
  
                             @else
                             <td style="font-size:15px; width:50px" class="border-0">{{ $data['transactions'][0]['debit_sum'] }}</td>
@@ -125,7 +124,7 @@
                             @endif
                             @if ( count($data['transactions']) == 0)
 
-                            <td style="font-size:15px; width:50px" class="border-0">-</td>
+                            <td style="font-size:15px; width:50px" class="border-0">0</td>
  
                             @else
                             <td style="font-size:15px; width:50px" class="border-0">{{ $data['transactions'][0]['credit_sum'] }}</td>
@@ -144,10 +143,42 @@
                             
                            
                             <td style="font-size:15px; width:50px" class="border-0">{{$data->currency['name']}}</td>
-                            {{-- <td style="font-size:15px; width:50px" class="border-0">{{$data->date}}</td> --}}
-                            {{-- <td style="font-size:15px; width:50px" class="border-0">{{$data->remark}}</td> --}}
-
+                           
+                            <td class="col-2">
+                                <a class="btn btn-primary btn-sm " data-toggle="collapse" href="#related{{$data->id}}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Related</a>
+                            </td>
                             </tr>
+                            <tr>
+
+                                <td colspan="9">
+                                    <div class="collapse out container mr-5" id="related{{$data->id}}">
+
+                                           
+                                            @foreach($accountLists as $transa)
+                                          
+
+                                            <table class="table table-responsive">
+                                                <tbody>
+                                                    <tr class="text-center">
+                                                        <td style="font-size:15px; width:15%;" >-</td>
+                                                        <td style="font-size:15px; width:15%;">f</td>
+                                                        <td style="font-size:15px; width:15%;">e</td>
+                                                        <td style="font-size:15px; width:15%;">g</td>
+                                                        <td style="font-size:15px; width:15%;">-</td>
+                                                        <td style="font-size:15px; width:15%;">g</td>
+                                                        <td style="font-size:15px; width:15%;" class="text-center">f</td>
+                                                        <td style="font-size:15px; width:15%;">-</td>
+                                                        </tr>
+                                                </tbody>
+                                            </table>
+                                          
+                                           @endforeach
+
+                                    </div>
+
+                                <td>
+                                </tr>
+                            
                             @endforeach
                            
                         </tbody>
@@ -189,52 +220,16 @@
             console.log(data)
             var html = "";
             var html2 = "";
-
             $.each(data.date_filter, function(i, v) {
-                // console.log('v');
-                if(v.type == '1'){
+                console.log(v);
+                if(v.type == 'Debit'){
                     debit += v.amount;
                 }else{
                     credit += v.amount;
                 }
             html += `
-
-
-                    <tr>
-                            <td style="font-size:15px;" class="text-center">${++i}</td>
-                            <td style="font-size:15px;" class="text-center">${v.account_code}</td>
-                            <td style="font-size:15px;" class="text-center">${v.account_name}</td>
-                            <td style="font-size:15px; width:50px" class="border-0">${v.balance}</td>
-                           
-                            <td class="price" data-title="Price">
-                            ${v.type == 1
-                            ? `<span> ${v.amount}  </span>`
-                            : `<h6 class="text-body">- </h6>`
-                            }
-                        </td>
-                        <td class="price" data-title="Price">
-                            ${v.type == 1
-                            ? `<span> - </span>`
-                            : `<h6 class="text-body">${v.amount}  </h6>`
-                            }
-                        </td>
-                       
-                            <td class="price" data-title="Price">
-                            ${v.type == 1
-                            ? `<span> Debit </span>`
-                            : `<h6 class="text-body"> Credit </h6>`
-                            }
-                        </td>
-                        <td style="font-size:15px;" class="text-center">${v.currency_name}</td>
-                        <td style="font-size:15px; width:50px" class="border-0">${v.date}</td>
-                        <td style="font-size:15px; width:50px" class="border-0">${v.remark}</td>
-
-
-
-
-                           
-
-                    </tr>
+                    
+                   
 
             `;
         })

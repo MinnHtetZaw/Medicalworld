@@ -120,7 +120,7 @@ Route::group(['middleware' => ['UserAuth']], function () {
 
     //Category
 
-    Route::post('category/store', 'Web\InventoryController@storeCategory')->name('category_store');
+    Route::post('category/store', 'Web\InventoryController@storeCategory')->name('store_category');
     Route::post('category/update/{id}', 'Web\InventoryController@updateCategory')->name('category_update');
     Route::post('category/delete', 'Web\InventoryController@deleteCategory');
     Route::get('category', 'Web\InventoryController@categoryList')->name('category_list');
@@ -456,8 +456,8 @@ Route::group(['middleware' => ['UserAuth']], function () {
         Route::get('report_list',[\App\Http\Controllers\ReportListController::class,'getExportList'])->name('reportList');
         Route::get('sofb_list',[\App\Http\Controllers\SofbController::class,'getExportList'])->name('sofbList');
         Route::get('sopl_list',[\App\Http\Controllers\SoplController::class,'getExportList'])->name('soplList');
-        Route::get('tri_list',[\App\Http\Controllers\TriController::class,'getExportList'])->name('trilList');
-        Route::post('accouting_filter',[\App\Http\Controllers\TriController::class,'getAccountList'])->name('accountlList');
+        Route::get('tri_list',[\App\Http\Controllers\TriController::class,'getTriList'])->name('trilList');
+        Route::post('accouting_filter',[\App\Http\Controllers\TriController::class,'getAccountListFilter'])->name('accountlList');
 
        
 

@@ -429,7 +429,6 @@ function acc_code_search(){
                     credit += v.amount;
                 }
                 html += `
-
                     <tbody>
                     <tr>
                             <td style="font-size:15px;" class="text-center">${++i}</td>
@@ -450,6 +449,7 @@ function acc_code_search(){
              `;
 
             $.each(data.code_relate, function(j, b) {
+                console.log(b);
                 if(v.related_transaction_id == b.id){
 
                     html += `
@@ -457,21 +457,17 @@ function acc_code_search(){
                                             <label style="font-size:15px;" class="text-info">No</label>
                                             <div style="font-size:15px;">${++j}</div>
 
-
                                             </div>
                                             <div class="col-md-2">
                                                 <label style="font-size:15px;" class="text-info">Code</label>
 
                                                 <div style="font-size:15px;">${b.accounting.account_code}</div>
 
-
                                             </div>
                                             <div class="col-md-2">
                                                 <label style="font-size:15px;" class="text-info">Account</label>
 
                                                 <div style="font-size:15px;">${b.accounting.account_name}</div>
-
-
                                             </div>
                                             <div class="col-md-2">
                                                 <label style="font-size:15px;" class="text-info">Type</label>
@@ -629,7 +625,7 @@ function show_project(){
                                 <th class="text-center">Remark</th>
                                 <th class="text-center">Action</th>
                             </tr>
-                    </thead>
+                </thead>
             `;
             $.each(data.date_filter, function(i, v) {
                 if(v.type == "Debit"){

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class TriController extends Controller
 {
-    public function getExportList(){
+    public function getTriList(){
        
         // $transaction = FinancialTransactions::select('financial_transactions.*','accountings.*')
         //                                       ->leftJoin('accountings')
@@ -104,17 +104,35 @@ class TriController extends Controller
     // }
 
     //Filter
-    public function getAccountList(Request $request){
+    public function getAccountListFilter(Request $request){
       
         $from = $request->from;
         $to = $request->to;
+        
         // $date_filter = FinancialTransactions::whereBetween('date',[$from,$to])->with('accounting','currency')->get();
-        $date_filter = Accounting::select('accountings.*','financial_transactions.*','currencies.name as currency_name')                            
-        ->leftJoin('financial_transactions','accountings.id','financial_transactions.account_id','financial_transactions.amount') 
-       ->leftJoin('currencies','currencies.id','financial_transactions.currency_id','currencies.name')                 
-       -> whereBetween('date',[$from,$to])
-       ->get();
+        // return $date_filter;
+    //     $date_filter = Accounting::select('accountings.*','financial_transactions.*','currencies.name as currency_name')                            
+    //     ->leftJoin('financial_transactions','accountings.id','financial_transactions.account_id','financial_transactions.amount') 
+    //    ->leftJoin('currencies','currencies.id','financial_transactions.currency_id','currencies.name')                 
+    //    -> whereBetween('date',[$from,$to])
+    //    ->get();
+    
+    // $date_filter = Accounting::with(['transactions' => function ($query) {
+    //     $query->select('account_id', DB::raw('SUM(CASE WHEN type = "1" THEN amount ELSE 0 END) as debit_sum'), DB::raw('SUM(CASE WHEN type = "2" THEN amount ELSE 0 END) as credit_sum'),
+       
+    //  )
+    //         ->groupBy('account_id');
+    // }])
+    // // ->where('id', $accountId)
+    // ->get();
 
+    $date_filter = Accounting::with(['transactions' => function ($query) use ($from, $to) {
+        $query->select('account_id','date', DB::raw('SUM(CASE WHEN type = "1" THEN amount ELSE 0 END) as debit_sum'), DB::raw('SUM(CASE WHEN type = "2" THEN amount ELSE 0 END) as credit_sum'))
+            ->groupBy('account_id','date')
+            ->whereBetween('date',[$from, $to]); // Replace 'date_column_name' with the actual column name for the date field in your transactions table.
+    }])
+    // ->where('id', $accountId)
+    ->get();
     
 // dd($date_filter->toArray());
         // $date_filter = Accounting::whereBetween('created_at',[$from,$to])->with('subheading','currency')->get();
