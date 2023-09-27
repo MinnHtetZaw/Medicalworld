@@ -220,13 +220,24 @@
             console.log(data)
             var html = "";
             var html2 = "";
+            var totalDebitSum = 0;
+            var totalCreditSum = 0;
+
             $.each(data.date_filter, function(i, v) {
                 console.log(v);
-                if(v.type == 'Debit'){
-                    debit += v.amount;
-                }else{
-                    credit += v.amount;
-                }
+                var debitSum = v.transactions.reduce((total, transaction) => {
+                    return total + parseFloat(transaction.debit_sum);
+                    console.log(transaction);
+                }, 0);
+                var creditSum = v.transactions.reduce((total, transaction) => {
+                    return total + parseFloat(transaction.credit_sum);
+                }, 0);
+
+
+                totalDebitSum += debitSum;
+                totalCreditSum += creditSum; 
+               
+         
             html += `
                     
                    
@@ -234,18 +245,22 @@
             `;
         })
 
-        balance = debit - credit;
+
+console.log(`Total Debit Sum for account " ${totalDebitSum}`);
+console.log('Total Credit Sum for all accounts:', totalCreditSum);
+
+        balance = totalDebitSum - totalCreditSum;
 
         html2 += `
 
             <div class="col-md-2">
                 <label style="font-size:20px;" class="text-info">Debit: </label>
-                <div style="font-size:20px;">${debit}</div>
+                <div style="font-size:20px;">${totalDebitSum}</div>
             </div>
 
             <div class="col-md-2">
                 <label style="font-size:20px;" class="text-info">Credit: </label>
-                <div style="font-size:20px;">${credit}</div>
+                <div style="font-size:20px;">${totalCreditSum}</div>
             </div>
 
             <div class="col-md-2">
