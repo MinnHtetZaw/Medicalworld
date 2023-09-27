@@ -247,7 +247,6 @@
                                     <th scope="col">No</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Amount<th>
-                                    <th scope="col">Date</th>
     
                                 </tr>
                                 </thead>
@@ -293,7 +292,6 @@
                                     <th scope="col">No</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Amount<th>
-                                    <th scope="col">Date</th>
     
                                 </tr>
                                 </thead>
@@ -312,13 +310,7 @@
                                     @endforeach
     
                                 </tbody>
-                                <tr style="background-color: rgb(247, 250, 243);">
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"><th>
-                                    <th scope="col"></th>
-    
-                                </tr>
+                               
                                 
                             </table>
                             <div class="col ">
@@ -346,7 +338,6 @@
                                     <th scope="col">No</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Amount<th>
-                                    <th scope="col">Date</th>
     
                                 </tr>
                                 </thead>
@@ -409,13 +400,7 @@
                                     @endforeach
     
                                 </tbody>
-                                <tr style="background-color: rgb(247, 250, 243);">
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"><th>
-                                    <th scope="col"></th>
-    
-                                </tr>
+                                
                                 
                             </table>
                             <div class="col ">
