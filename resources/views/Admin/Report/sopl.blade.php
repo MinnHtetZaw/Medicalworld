@@ -49,10 +49,10 @@
                         <table class="table" >
                             <thead  style="background-color: rgba(208, 251, 149, 0.902);">
                             <tr >
-                                <th scope="col">No</th>
+                                <th scope="col"  class="col-2 text-center" >No</th>
                                 <th scope="col" class="col-4 text-center" >Name</th>
-                                <th scope="col">Amount<th>
-                                <th scope="col">Total Amount<th>
+                                <th scope="col"  class="col-3 text-center" >Amount<th>
+                                <th scope="col"  class="col-3 text-center" >Total Amount<th>
 
 
 
@@ -79,7 +79,7 @@
                                 <th scope="col"></th>
                                 <th scope="col"></th>
                                 <th scope="col"><th>
-                                <th scope="col">{{ number_format($totalRevenueAmount, 2) }}<th>
+                                <th scope="col"  class="col-3 text-center">{{ number_format($totalRevenueAmount, 2) }}<th>
 
 
 
@@ -108,10 +108,10 @@
                             <table class="table" >
                                 <thead  style="background-color: rgba(208, 251, 149, 0.902);">
                                 <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col" class="col-4 text-center">Name</th>
-                                    <th scope="col">Amount<th>
-                                     <th scope="col">Total Amount<th>
+                                    <th scope="col"  class="col-2 text-center" >No</th>
+                                    <th scope="col" class="col-4 text-center" >Name</th>
+                                    <th scope="col"  class="col-3 text-center" >Amount<th>
+                                    <th scope="col"  class="col-3 text-center" >Total Amount<th>
 
                                     
                                 </tr>
@@ -135,7 +135,7 @@
                                     <th scope="col"></th>
                                     <th scope="col"></th>
                                     <th scope="col"><th>
-                                    <th scope="col">{{ number_format($costofSaleAmount, 2) }}<th>
+                                    <th scope="col"  class="col-3 text-center">{{ number_format($costofSaleAmount, 2) }}<th>
 
     
                                 </tr>
@@ -143,7 +143,7 @@
                                     <th scope="col"></th>
                                     <th scope="col">#Gross Profit:</th>
                                     <th scope="col"><th>
-                                    <th scope="col">{{ number_format($grossProfit, 2) }}<th>
+                                    <th scope="col"  class="col-3 text-center">{{ number_format($grossProfit, 2) }}<th>
 
     
                                 </tr>
@@ -168,10 +168,10 @@
                             <table class="table" >
                                 <thead  style="background-color: rgba(208, 251, 149, 0.902);">
                                 <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col" class="col-4 text-center">Name</th>
-                                    <th scope="col">Amount<th>
-                                    <th scope="col">TotalAmount<th>
+                                    <th scope="col"  class="col-2 text-center" >No</th>
+                                    <th scope="col" class="col-4 text-center" >Name</th>
+                                    <th scope="col"  class="col-3 text-center" >Amount<th>
+                                    <th scope="col"  class="col-3 text-center" >Total Amount<th>
 
     
                                 </tr>
@@ -195,7 +195,7 @@
                                     <th scope="col"></th>
                                     <th scope="col"></th>
                                     <th scope="col"><th>
-                                    <th scope="col">{{ number_format($marketingExpAmount, 2) }}<th>
+                                    <th scope="col"  class="col-3 text-center">{{ number_format($marketingExpAmount, 2) }}<th>
 
                                 </tr>
                                 
@@ -218,10 +218,10 @@
                             <table class="table" >
                                 <thead  style="background-color: rgba(208, 251, 149, 0.902);">
                                 <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col" class="col-4 text-center">Name</th>
-                                    <th scope="col">Amount<th>
-                                    <th scope="col">TotalAmount<th>
+                                    <th scope="col"  class="col-2 text-center" >No</th>
+                                    <th scope="col" class="col-4 text-center" >Name</th>
+                                    <th scope="col"  class="col-3 text-center" >Amount<th>
+                                    <th scope="col"  class="col-3 text-center" >Total Amount<th>
 
     
                                 </tr>
@@ -245,7 +245,7 @@
                                     <th scope="col"></th>
                                     <th scope="col"></th>
                                     <th scope="col"><th>
-                                    <th scope="col">{{ number_format($AdministrativeExpAmount, 2) }}<th>
+                                    <th scope="col" class="col-3 text-center" >{{ number_format($AdministrativeExpAmount, 2) }}<th>
 
                                 </tr>
                                
@@ -264,10 +264,10 @@
                             <table class="table" >
                                 <thead  style="background-color: rgba(208, 251, 149, 0.902);">
                                 <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col" class="col-4 text-center">Name</th>
-                                    <th scope="col">Amount<th>
-                                    <th scope="col">TotalAmount<th>
+                                    <th scope="col"  class="col-2 text-center" >No</th>
+                                    <th scope="col" class="col-4 text-center" >Name</th>
+                                    <th scope="col"  class="col-3 text-center" >Amount<th>
+                                    <th scope="col"  class="col-3 text-center" >Total Amount<th>
 
     
                                 </tr>
@@ -291,7 +291,7 @@
                                     <th scope="col"></th>
                                     <th scope="col"></th>
                                     <th scope="col"><th>
-                                    <th scope="col">{{ number_format($financialExpAmount, 2) }}<th>
+                                    <th scope="col"  class="col-3 text-center">{{ number_format($financialExpAmount, 2) }}<th>
 
                                 </tr>
                                 
@@ -309,10 +309,10 @@
                             <table class="table" >
                                 <thead  style="background-color: rgba(208, 251, 149, 0.902);">
                                 <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col" class="col-4 text-center">Name</th>
-                                    <th scope="col">Amount<th>
-                                    <th scope="col">Total Amount<th>
+                                    <th scope="col"  class="col-2 text-center" >No</th>
+                                    <th scope="col" class="col-4 text-center" >Name</th>
+                                    <th scope="col"  class="col-3 text-center" >Amount<th>
+                                    <th scope="col"  class="col-3 text-center" >Total Amount<th>
 
     
                                 </tr>
@@ -336,7 +336,7 @@
                                     <th scope="col"></th>
                                     <th scope="col"></th>
                                     <th scope="col"><th>
-                                    <th scope="col">{{ number_format($depreciationExpAmount, 2) }}<th>
+                                    <th scope="col" class="col-3 text-center">{{ number_format($depreciationExpAmount, 2) }}<th>
 
                                 </tr>
                                 
@@ -358,10 +358,10 @@
                             <table class="table" >
                                 <thead  style="background-color: rgba(208, 251, 149, 0.902);">
                                 <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col" class="col-4 text-center">Name</th>
-                                    <th scope="col">Amount<th>
-                                    <th scope="col">TotalAmount<th>
+                                    <th scope="col"  class="col-2 text-center" >No</th>
+                                    <th scope="col" class="col-4 text-center" >Name</th>
+                                    <th scope="col"  class="col-3 text-center" >Amount<th>
+                                    <th scope="col"  class="col-3 text-center" >Total Amount<th>
 
     
                                 </tr>
@@ -385,14 +385,14 @@
                                     <th scope="col"></th>
                                     <th scope="col"></th>
                                     <th scope="col"><th>
-                                    <th scope="col"> {{ number_format($otherExpAmount, 2) }}<th>
+                                    <th scope="col"  class="col-3 text-center" > {{ number_format($otherExpAmount, 2) }}<th>
 
                                 </tr>
                                 <tr>
                                     <th scope="col"></th>
                                     <th scope="col">#Total All Expense Amount:</th>
                                     <th scope="col"><th>
-                                    <th scope="col">{{ number_format($totalAllExpAmount, 2) }}<th>
+                                    <th scope="col"  class="col-3 text-center" >{{ number_format($totalAllExpAmount, 2) }}<th>
 
     
                                 </tr>
@@ -400,7 +400,7 @@
                                     <th scope="col"></th>
                                     <th scope="col">#Earning Before Tax & Emotization:</th>
                                     <th scope="col"><th>
-                                    <th scope="col">{{ number_format($EBTA, 2) }}<th>
+                                    <th scope="col"  class="col-3 text-center" >{{ number_format($EBTA, 2) }}<th>
 
     
                                 </tr>
@@ -421,10 +421,10 @@
                             <table class="table" >
                                 <thead  style="background-color: rgba(208, 251, 149, 0.902);">
                                 <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col" class="col-4 text-center" >Name</th>
-                                    <th scope="col">Amount<th>
-                                    <th scope="col">Total Amount<th>
+                                    <th scope="col"  class="col-2 text-center" >No</th>
+                                <th scope="col" class="col-4 text-center" >Name</th>
+                                <th scope="col"  class="col-3 text-center" >Amount<th>
+                                <th scope="col"  class="col-3 text-center" >Total Amount<th>
 
     
                                 </tr>
@@ -448,14 +448,14 @@
                                     <th scope="col"></th>
                                     <th scope="col"></th>
                                     <th scope="col"><th>
-                                    <th scope="col"> {{ number_format($taxExpAmount, 2) }}<th>
+                                    <th scope="col" class="col-3 text-center"> {{ number_format($taxExpAmount, 2) }}<th>
 
                                 </tr>
                                 <tr>
                                     <th scope="col"></th>
                                     <th scope="col">#Net Profit:</th>
                                     <th scope="col"><th>
-                                    <th scope="col">{{ number_format($netProfit, 2) }}<th>
+                                    <th scope="col" class="col-3 text-center">{{ number_format($netProfit, 2) }}<th>
 
     
                                 </tr>
