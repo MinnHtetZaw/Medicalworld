@@ -127,8 +127,8 @@ class TriController extends Controller
     // ->get();
 
     $date_filter = Accounting::with(['transactions' => function ($query) use ($from, $to) {
-        $query->select('account_id','date', DB::raw('SUM(CASE WHEN type = "1" THEN amount ELSE 0 END) as debit_sum'), DB::raw('SUM(CASE WHEN type = "2" THEN amount ELSE 0 END) as credit_sum'))
-            ->groupBy('account_id','date')
+        $query->select('account_id','date','remark', DB::raw('SUM(CASE WHEN type = "1" THEN amount ELSE 0 END) as debit_sum'), DB::raw('SUM(CASE WHEN type = "2" THEN amount ELSE 0 END) as credit_sum'))
+            ->groupBy('account_id','date','remark')
             ->whereBetween('date',[$from, $to]); // Replace 'date_column_name' with the actual column name for the date field in your transactions table.
     }])
     // ->where('id', $accountId)
