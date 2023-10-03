@@ -187,7 +187,7 @@ $from_id = 1;
                  <label class="font-weight-bold">Purchase Type</label>
                 <select id="purchase_type" class=" p-4 select-type form-control" style="font-size: 14px" onchange="searchCategory(this.value)">
                     <option value=1 selected>Sales Product Receive</option>
-                    <option value=2>Factory Item Purchase</option>
+                    <option value=2 >Factory Item Purchase</option>
                 </select>
             </div>
 
@@ -220,7 +220,7 @@ $from_id = 1;
                 <select class="p-4 select form-control" name="item" id="counting_unit_select" >
                     <option></option>
 
-                            @foreach ($counting_units as $counting_unit)
+                     @foreach ($counting_units as $counting_unit)
 
                                 <option data-unitname="{{$counting_unit->unit_name}}"
                                     data-id="{{$counting_unit->id}}"
@@ -405,6 +405,7 @@ $from_id = 1;
     $('#addpurchase').click(function(){
         var now_price = $('#price').val();
         var id=  $( "#counting_unit_select option:selected" ).data('id');
+       
         var type = $('#purchase_type').find(":selected").val();
 
         var purchaseprice=  $( "#counting_unit_select option:selected" ).data('purchaseprice');
@@ -730,6 +731,7 @@ function showmodal()
     var pr_total_obj = JSON.parse(my_pr_total);
     var myprcartobj = JSON.parse(myprcart);
     var unitData = JSON.parse(localStorage.getItem('unitData'));
+    // console.log(unitData);
 
     var jj=1;
     $.each(myprcartobj,function(i,v){
@@ -815,8 +817,6 @@ function change_amt(id,qty)
     // localStorage.setItem('prTotal',JSON.stringify(pr_total_obj));
 
     showmodal();
-
-
 }
 
 function searchCategory(value){
@@ -841,7 +841,7 @@ function searchCategory(value){
                         success: function(data) {
                             console.log(data);
                             if(data.length > 0){
-                                $('#category').append($('<option>').text('Category'));
+                                $('#category').append($('<option>').text());
                                 $.each(data, function(i, value) {
                                     $('#category').append($('<option>').text(value.category_name).attr('value', value.id));
                                 });
@@ -882,7 +882,7 @@ function searchSubCategory(value){
                         success: function(data) {
                             console.log(data);
                             if(data.length > 0){
-                                $('#subcategory').append($('<option>').text('Subcategory'));
+                                $('#subcategory').append($('<option>').text());
                                 $.each(data, function(i, value) {
                                     $('#subcategory').append($('<option>').text(value.name).attr('value', value.id));
                                 });
@@ -922,7 +922,7 @@ function searchSubCategory(value){
 
                         success: function(data) {
                             console.log(data);
-                            $('#counting_unit_select').append($('<option>').text('units'));
+                            $('#counting_unit_select').append($('<option>').text());
                             $.each(data,function(i,v){
                                 if(type == 1){
 

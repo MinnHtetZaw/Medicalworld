@@ -3384,8 +3384,7 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
     }
 
     protected function storePurchaseHistory(Request $request){
-
-
+        //   return $request;
         $validator = Validator::make($request->all(), [
             'purchase_number' => 'required',
             'purchase_date' => 'required',

@@ -154,25 +154,31 @@
                                     <div class="collapse out container mr-5" id="related{{$data->id}}">
 
                                            
-                                            @foreach($accountLists as $transa)
+                                          
                                           
 
-                                            <table class="table table-responsive">
-                                                <tbody>
-                                                    <tr class="text-center">
-                                                        <td style="font-size:15px; width:15%;" >-</td>
-                                                        <td style="font-size:15px; width:15%;">f</td>
-                                                        <td style="font-size:15px; width:15%;">e</td>
-                                                        <td style="font-size:15px; width:15%;">g</td>
-                                                        <td style="font-size:15px; width:15%;">-</td>
-                                                        <td style="font-size:15px; width:15%;">g</td>
-                                                        <td style="font-size:15px; width:15%;" class="text-center">f</td>
-                                                        <td style="font-size:15px; width:15%;">-</td>
-                                                        </tr>
-                                                </tbody>
-                                            </table>
+                                        @foreach($accountLists as $transa)
                                           
-                                           @endforeach
+
+                                        <table class="table table-responsive">
+                                            <tbody>
+                                                <tr class="text-center">
+                                                    <td style="font-size:15px; width:15%;" >-</td>
+                                                    <td style="font-size:15px; width:15%;">f</td>
+                                                    <td style="font-size:15px; width:15%;">e</td>
+                                                    <td style="font-size:15px; width:15%;">g</td>
+                                                    <td style="font-size:15px; width:15%;">-</td>
+                                                    <td style="font-size:15px; width:15%;">g</td>
+                                                    <td style="font-size:15px; width:15%;" class="text-center">f</td>
+                                                    <td style="font-size:15px; width:15%;">-</td>
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                      
+                                       @endforeach
+
+                                          
+                                         
 
                                     </div>
 
@@ -188,6 +194,13 @@
                
 
             </div>
+           
+
+                <table class="table table-hover" id="filter_date">
+
+                </table>  
+
+           
         </div>
     </div>
         </div>
@@ -200,6 +213,8 @@
 
     function date_filter(){
             // alert('hello');
+            $("#slimtest2").hide();
+            
             var from = $('#from').val();
             var to = $('#to').val();
             var debit = 0;
@@ -214,6 +229,7 @@
            "from":from,
            "to" : to,
             },
+           
 
            success:function(data){
 
@@ -232,18 +248,145 @@
                 var creditSum = v.transactions.reduce((total, transaction) => {
                     return total + parseFloat(transaction.credit_sum);
                 }, 0);
+               
 
 
                 totalDebitSum += debitSum;
-                totalCreditSum += creditSum; 
+                totalCreditSum += creditSum;
+                                        var debitSums = [];
+                                        var creditSums=[];
+                                        var remarkTris=[];
+                                        var dateTris=[];
+
+                        v.transactions.forEach(function(transaction) {
+                            if (parseFloat(transaction.debit_sum) > 0) {
+                                debitSums.push(parseFloat(transaction.debit_sum));
+                            }
+                            if (parseFloat(transaction.credit_sum) > 0) {
+                                creditSums.push(parseFloat(transaction.credit_sum));
+                            }
+                            if (transaction.remark) {
+                                    remarkTris.push(transaction.remark);
+                                }
+                                if (transaction.date) {
+                                    dateTris.push(transaction.date);
+                                }
+                        });
+
+                       
+                                 var tableHtml = '<table>';
+                                    tableHtml += '<thead><tr><th>Debit Amount</th></tr></thead>';
+                                    tableHtml += '<tbody>';
+
+                                    debitSums.forEach(function(debitSum) {
+                                        // var displayValue = debitSum !== null ? debitSum : '0'; 
+                                        tableHtml += '<tr>';
+                                        tableHtml += '<td>' + debitSum + '</td>';
+                                        tableHtml += '</tr>';
+                                    });
+                                    tableHtml += '</tbody></table>';
+
+                                 
+
+                                    var tableHtml2 = '<table>';
+                                    tableHtml2 += '<thead><tr><th>Credit Amount</th></tr></thead>';
+                                    tableHtml2 += '<tbody>';
+
+                                        creditSums.forEach(function(creditSum) {
+                                        tableHtml2 += '<tr>';
+                                        tableHtml2 += '<td>' + creditSum + '</td>';
+                                        tableHtml2 += '</tr>';
+                                    });
+                                    tableHtml2 += '</tbody></table>';
+
+                                    var tableHtml3 = '<table>';
+                                    tableHtml3 += '<thead><tr><th>Remark</th></tr></thead>';
+                                    tableHtml3 += '<tbody>';
+
+                                        remarkTris.forEach(function(remarkTri) {
+                                        tableHtml3 += '<tr>';
+                                        tableHtml3 += '<td>' + remarkTri + '</td>';
+                                        tableHtml3 += '</tr>';
+                                    });
+
+                                    tableHtml3 += '</tbody></table>';
+
+                                    var  tableHtml4 = '<table>';
+                                     tableHtml4 += '<thead><tr><th>Date</th></tr></thead>';
+                                     tableHtml4 += '<tbody>';
+
+                                        dateTris.forEach(function(dateTri) {
+                                         tableHtml4 += '<tr>';
+                                         tableHtml4 += '<td>' + dateTri + '</td>';
+                                         tableHtml4 += '</tr>';
+                                    });
+                                     tableHtml4 += '</tbody></table>';
+
+
+                
+
+                html += `
+                    <tbody>
+                    <tr>
+                            <td style="font-size:15px;" class="text-center">${++i}</td>
+                            <td style="font-size:15px;" class="text-center">${v.account_code} </td>
+                            <td style="font-size:15px;" class="text-center">${v.account_name} </td>
+                            <td style="font-size:15px;" class="text-center">${v.balance} </td>
+                            <td style="font-size:15px;" class="text-center">
+                                ${debitSum} 
+                             </td>
+                            <td style="font-size:15px;" class="text-center">${creditSum} </td>
+                           
+                            <td class="text-center"><a class="btn btn-primary btn-sm " data-toggle="collapse" href="#related${v.id}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Related</a></td>
+                    </tr>
+                    <tr>
+                     <td></td>
+                               <td colspan="6">
+                                     <div class="collapse out container mr-5" id="related${v.id}">
+                                      <div class="row">
+
+             `;
+
+             html += `
+                    <tbody>
+                    <tr>
+                            <td style="font-size:15px;" class="text-center"></td>
+                            <td style="font-size:15px;" class="text-center"></td>
+                            <td style="font-size:15px;" class="text-center"></td>
+                            <td style="font-size:15px;" class="text-center col-3">${tableHtml4}</td>
+                            <td style="font-size:15px;" class="text-center">${tableHtml}</td>
+                            <td style="font-size:15px;" class="text-center">${tableHtml2} </td>
+                            <td style="font-size:15px;" class="text-center">${tableHtml3} </td>
+
+                           
+                    </tr>
+                    <tr>
+                     <td></td>
+                               <td colspan="6">
+                                     <div class="collapse out container mr-5" id="related${v.id}">
+                                      <div class="row">
+
+             `;
+               
                
          
-            html += `
-                    
-                   
-
-            `;
+               
         })
+        html += `
+                           <thead class="bg-info text-white">
+                            <tr>
+                                <th>#</th>
+                                <th class="text-center">Code</th>
+
+                                <th class="text-center">AccountName</th>
+                                <th class="text-center">Balance</th>
+                                <th class="text-center">Debit</th>
+                                <th class="text-center">Credit</th>
+                               
+                                <th class="text-center">Action</th>
+                            </tr>
+                    </thead>
+            `;
 
 
 console.log(`Total Debit Sum for account " ${totalDebitSum}`);
@@ -272,6 +415,11 @@ console.log('Total Credit Sum for all accounts:', totalCreditSum);
 
         $('#filter_date').html(html);
         $('#trial_balance').html(html2);
+        $('#filter_date').html(tableHtml);
+        $('#filter_date').html(tableHtml2);
+        $('#filter_date').html(tableHtml3);
+        $('#filter_date').html(tableHtml4);
+
            }
 
            })
