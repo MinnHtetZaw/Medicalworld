@@ -7,6 +7,7 @@ use App\Http\Controllers\CogsController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\TransferController;
+use App\Http\Controllers\Web\AdminController;
 use App\Http\Controllers\ProductFlagController;
 use App\Http\Controllers\SaleVoucherController;
 use App\Http\Controllers\JournalEntryController;
@@ -404,6 +405,8 @@ Route::group(['middleware' => ['UserAuth']], function () {
        Route::get('financial_heading_delete/{id}',[FinancialAccountController::class,'financial_heading_delete'])->name('financial_heading_delete');
        Route::get('financial_subheading_delete/{id}',[FinancialAccountController::class,'financial_subheading_delete'])->name('financial_subheading_delete');
        Route::get('expense_delete/{id}',[FinancialExpenseController::class,'expenseDelete'])->name('financial_expense_delete');
+       Route::get('/financialExpenseExport',[FinancialExpenseController::class,'financialExpenseExport'])->name('financialExpenseExport');
+
 //
        Route::post('store_journal_entry',[JournalEntryController::class,'storeEntry'])->name('store_journal_entry');
        Route::get('journal_entry_edit/{id}',[JournalEntryController::class,'editEntry'])->name('journal_entry_edit');
@@ -421,6 +424,8 @@ Route::group(['middleware' => ['UserAuth']], function () {
        'ajax_search_code'])->name('ajax_search_code');
        Route::post('ajax_convert',  [FinancialAccountController::class,'ajax_convert'])->name('ajax_convert');
        Route::post('ajax_date_filter', [FinancialAccountController::class,'ajax_date_filter'] )->name('ajax_date_filter');
+       Route::post('/financial/imcome/import', [FinancialAccountController::class,'financialImcomeImport'] )->name('financialImcomeImport');
+
 
 
        Route::get('financial_bank_list', [BankController::class,'financial_bank_list'])->name('financial_bank_list');
@@ -436,7 +441,9 @@ Route::group(['middleware' => ['UserAuth']], function () {
        Route::post('store_financial_expense', [FinancialExpenseController::class,'financial_store_expense'])->name('store_financial_expense');
        Route::get('financial_ajax_convert',[FinancialExpenseController::class,'ajax_convert'])->name('ajax_convert');
        Route::get('get_exchange_rate',[FinancialExpenseController::class,'get_exchange_rate']);
+       Route::post('financial/expense/import',[FinancialExpenseController::class,'financialExpenseImport'])->name("financialExpenseImport");
 
+      
        Route::post('ajax_code_search', [FinancialExpenseController::class,'ajax_code_search'])->name('ajax_code_search');
        Route::post('ajax_filter_date', [FinancialExpenseController::class,'ajax_filter_date'])->name('ajax_filter_date');
        Route::get('expense_delete/{id}',[FinancialExpenseController::class,'expenseDelete'])->name('financial_expense_delete');
@@ -587,6 +594,7 @@ Route::get('/excel', function () {
     return view('Admin.execel');
 });
 Route::post('execelImport', 'Web\AdminController@execelImport')->name('execelImport');
+Route::get('/financialImcomeExport',[AdminController::class,'financialImcomeExport'])->name('financialImcomeExport');
 //Design Excel
 Route::post('/designImport', "\App\Http\Controllers\DesignController@import")->name('designImport');
 Route::get('/designExport', "\App\Http\Controllers\DesignController@export")->name('designExport');

@@ -62,6 +62,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExpenseHistoryExport;
 use App\Exports\OrderCustomersExport;
 use Illuminate\Auth\Events\Validated;
+use App\Exports\FinancialImcomeExport;
 use Illuminate\Support\Facades\Session;
 use App\Exports\ReceivePayHistoryExport;
 use Illuminate\Support\Facades\Validator;
@@ -3955,6 +3956,12 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
         // }
         alert()->success("Success");
         return back();
+    }//End method
+    //Excel Export section
+    public function financialImcomeExport(){
+        // return "hello";
+    return Excel::download(new FinancialImcomeExport(),'financialImcome.xlsx');
+
     }
     public function delete_units(Request $request)
     {

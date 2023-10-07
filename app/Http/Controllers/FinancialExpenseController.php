@@ -9,6 +9,9 @@ use App\SubHeading;
 use App\FinancialExpense;
 use Illuminate\Http\Request;
 use App\FinancialTransactions;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\FinancialExpenseExport;
+use App\Imports\FinancialExpenseImport;
 
 class FinancialExpenseController extends Controller
 {
@@ -212,5 +215,17 @@ public function expenseDelete($id)
  FinancialTransactions::destroy($id);
  return back();
 }//End method
+
+public function financialExpenseImport(Request $request){
+    // return "hello";
+    Excel::import(new FinancialExpenseImport(),$request->file('import_file'));
+    alert()->success('Excel Import Succeeded');
+    return redirect()->back();
+}
+public function financialExpenseExport(){
+    // return "hello";
+return Excel::download(new FinancialExpenseExport(),'financialExpense.xlsx');
+
+}
 
 }

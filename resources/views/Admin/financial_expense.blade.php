@@ -28,7 +28,24 @@
       </div>
 </div>
 </div>
+<div class="col-md-6 mt-8">
+    <div class="d-flex">
+        <form action="{{route('financialExpenseImport')}}" enctype="multipart/form-data" method="POST">
+            @csrf
+            <input type="file" name="import_file" required>
 
+            <button type="submit" class="btn btn-danger">Expense Import</button>
+        </form>
+        
+        <a href="{{ route('financialExpenseExport') }}" class="btn btn-primary mx-2">Expense Export</a>
+
+        {{-- <form action="#" enctype="multipart/form-data" method="POST">
+            @csrf
+            <input type="file" name="import_file" required>
+            <button type="submit" class="btn btn-danger">UnitImport</button>
+        </form> --}}
+    </div>
+</div>
 <div class="row">
     <div class="col-12">
           <div class="card">
@@ -66,7 +83,7 @@
                                 <th class="text-center">Date</th>
                                 <th class="text-center">Debit</th>
                                 <th class="text-center">Credit</th>
-                                <th class="text-center">Remark</th>
+                                <th class="col-3 text-center">Remark</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>

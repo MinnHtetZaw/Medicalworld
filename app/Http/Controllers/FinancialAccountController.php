@@ -13,6 +13,8 @@ use App\FinancialIncoming;
 use Illuminate\Http\Request;
 use App\FinancialTransactions;
 use App\FinancialAccountingType;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\FinancialImcomeImport;
 
 class FinancialAccountController extends Controller
 {
@@ -395,4 +397,12 @@ class FinancialAccountController extends Controller
         'date_filt'   => $date_filt,
    ]);
 }//End method
+
+//imcome import
+public function financialImcomeImport(Request $request){
+    // return "hello";
+    Excel::import(new FinancialImcomeImport(),$request->file('import_file'));
+        alert()->success('Excel Import Succeeded');
+        return redirect()->back();
+}
 }
