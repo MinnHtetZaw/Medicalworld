@@ -12,76 +12,18 @@ class TriController extends Controller
 {
     public function getTriList(){
        
-        // $transaction = FinancialTransactions::select('financial_transactions.*','accountings.*')
-        //                                       ->leftJoin('accountings')
-        //                                       ->get();
-        //                dd($transaction->toArray());
-        // $transaction = FinancialTransactions::all();
       
-// dd($transaction->toArray());
-        //    $accountLists = Accounting::get();
-            // dd($accountLists->toArray());
-        // $accountLists = Accounting::select('accountings.*','currencies.name as currency_name')
-        //                               ->leftJoin('financial_transactions','accountings.id','financial_transactions.account_id','financial_transactions.amount') 
-        //                               ->leftJoin('currencies','currencies.id','financial_transactions.currency_id','currencies.name')                 
-        //                               ->get();;
-
-        //        $dataAccs = TrilResource::collection($accountLists);
-        //        return $dataAccs;                      
-                    // dd($accountLists->toArray());
-
-        // dd($transaction->toArray());
-    //     $debitTotal = FinancialTransactions::where('type','1')->sum('amount');
-    //    return $debitTotal;
-    //     $creditTotal = FinancialTransactions::where('type','2')->sum('amount');
-    //     return $creditTotal;
-
-        // $netDebitTotal = $debitTotal > $creditTotal ? ($debitTotal - $creditTotal) : 0;
-        // $netCreditTotal = $creditTotal  > $debitTotal? ( $creditTotal- $debitTotal ) : 0;
-
-        // $data = Accounting::leftJoin('financial_transactions', 'accountings.id', '=', 'financial_transactions.account_id')
-        // // ->select('accountings.*', DB::raw('SUM(CASE WHEN financial_transactions.type = "1" THEN financial_transactions.amount ELSE 0 END) AS debit_sum'), DB::raw('SUM(CASE WHEN financial_transactions.type = "2" THEN financial_transactions.amount ELSE 0 END) AS credit_sum'))
-        // ->groupBy('account_id')
-        // ->where('type', 1)
-        // ->selectRaw('account_id, SUM(CASE WHEN financial_transactions.type = "1" THEN financial_transactions.amount ELSE 0 END ) as debit_total')
-        // ->get();
-        // dd($data->toArray());
-
-    //     $summations = FinancialTransactions::groupBy('account_id')
-    //               ->where('type', 1)
-    //               ->selectRaw('account_id, SUM( amount) as debit_total')
-    //               ->get();
-    // // dd($summations->toArray());
-    // $creditTotals = FinancialTransactions::where('type', 2)
-    //                   ->groupBy('account_id')
-    //                   ->selectRaw('account_id, SUM(amount) as credit_total')
-    //                   ->get();
-              
-    // return response()->json([
-    //     "debitTotal"=>$summations,
-    //     "creditTotal"=>$creditTotals
-    // ]);
-
-
-        // $accountId = Accounting::find('id');
-        //   return $this->sumofAmount();
-
         $accountLists = Accounting::with(['transactions' => function ($query) {
-                $query->select('account_id', DB::raw('SUM(CASE WHEN type = "1" THEN amount ELSE 0 END) as debit_sum'), DB::raw('SUM(CASE WHEN type = "2" THEN amount ELSE 0 END) as credit_sum'),
+                $query->select('account_id','date','remark', DB::raw('SUM(CASE WHEN type = "1" THEN amount ELSE 0 END) as debit'), DB::raw('SUM(CASE WHEN type = "2" THEN amount ELSE 0 END) as credit'),
                
              )
-                    ->groupBy('account_id');
+                    ->groupBy('account_id','date','remark');
             }])
             // ->where('id', $accountId)
             ->get();
-                //        $dataAccs = TrilResource::collection($accountLists);
-        //        return $dataAccs;  
-            // ->sum('financial_transactions.amount');
-            // dd($accountLists->toArray());
-        // SELECT account_id, SUM(amount) AS total_amount
-        // FROM financial_transactions
-        // WHERE type = 1
-        // GROUP BY account_id;
+            // return $accountLists;
+
+           
         return view('Admin.Report.tri',compact('accountLists'));
 
         // return view('Admin.Report.tri',compact('debitTotal','creditTotal','netDebitTotal','netCreditTotal','accountLists'));

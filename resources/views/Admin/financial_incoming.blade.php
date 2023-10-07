@@ -4,7 +4,9 @@
 @section('content')
 
 
+
 <div class="row">
+    
     <div class="col-md-6">
         <div class="row">
       <div class="form-group col-md-5">
@@ -29,6 +31,19 @@
         </div>
   </div>
   </div>
+  <div class="col-md-6 mt-8">
+    <div class="d-flex">
+        <form action="{{route('financialImcomeImport')}}" enctype="multipart/form-data" method="POST">
+            @csrf
+            <input type="file" name="import_file" required>
+
+            <button type="submit" class="btn btn-danger">Imcome Import</button>
+        </form>
+        <a href="{{ route('financialImcomeExport') }}" class="btn btn-primary mx-2">Income Export</a>
+
+        
+    </div>
+</div>
 
 <div class="row">
     <div class="col-12">
@@ -61,7 +76,7 @@
                                 <th class="text-center">Date</th>
                                 <th class="text-center">Debit</th>
                                 <th class="text-center">Credit</th>
-                                <th class="text-center">Remark</th>
+                                <th class="col-3 text-center">Remark</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
