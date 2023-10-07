@@ -37,13 +37,12 @@
             <button type="submit" class="btn btn-danger">Expense Import</button>
         </form>
         
-        <a href="{{ route('financialExpenseExport') }}" class="btn btn-primary mx-2">Expense Export</a>
+<div class="">
+    <a href="{{route('financialExpenseExport')}}" class="btn btn-primary mx-2">Expense Export</a>
 
-        {{-- <form action="#" enctype="multipart/form-data" method="POST">
-            @csrf
-            <input type="file" name="import_file" required>
-            <button type="submit" class="btn btn-danger">UnitImport</button>
-        </form> --}}
+</div>       
+       
+      
     </div>
 </div>
 <div class="row">
