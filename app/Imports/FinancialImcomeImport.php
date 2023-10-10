@@ -9,9 +9,11 @@ use App\Design;
 use App\Fabric;
 use App\Gender;
 use App\Currency;
+use App\Accounting;
 use App\SubCategory;
 use App\FabricCosting;
 use App\FinancialIncoming;
+use App\FinancialTransactions;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -24,21 +26,12 @@ class FinancialImcomeImport implements ToCollection,WithHeadingRow
         foreach($rows as $row)
         {
             // dd($row->toArray());
-
+           //code by z
             $initialCurrency = Currency::where('id','Like','%'.$row['initial_currency_id'].'%')->first();
             $finalCurrency = Currency::where('id','Like','%'.$row['final_currency_id'].'%')->first();
 
-
-            // dd($initialCurrency);
-           
-            // $fabric = Fabric::where('fabric_name','Like','%'.$row['fabric'].'%')->first();
-
-            // $color = Colour::where('colour_name','Like','%'.$row['color'].'%')->first();
-            // $size = Size::where('size_name','Like','%'.$row['size'].'%')->first();
-            // $subcategory = SubCategory::where('subcategory_code','Like','%'.$row['subcategory_code'].'%')->first();
-            // $gender = Gender::whereIn('gender_name',['M/F','un'],'Like','%'.$row['gender'].'%')->first();
-
-            if($initialCurrency && $finalCurrency && $row['date']  && $row['initial_amount'] && $row['final_amount'] && $row['amount'] && $row['remark'])
+            if($initialCurrency && $finalCurrency && $row['date']  && $row['initial_amount'] && $row['final_amount'] && $row['amount'] && $row['remark']
+             && $row['income_account_id'] && $row['incoming_flag'] && $row['bank_cash_account_id'] )
             {
                 FinancialIncoming::create([
                     'date' =>$row['date'],
@@ -50,6 +43,17 @@ class FinancialImcomeImport implements ToCollection,WithHeadingRow
                     'remark'=>$row['remark']
                     
 
+                 ]);
+                 FinancialTransactions::create([
+                    // 2
+                    'account_id'=>$row['income_account_id'],
+                    'incoming_flag'=>$row['incoming_flag'],
+                    'amount'=>$row['amount'],
+                    'date' =>$row['date'],
+                    'remark'=>$row['remark'],
+                    'type'=>$row['bank_cash_account_id'],
+
+                    
                  ]);
                  
             }
