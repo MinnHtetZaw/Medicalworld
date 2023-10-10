@@ -335,6 +335,10 @@
                                 <li><a href="{{route('fabric_costing')}}">Fabric Costing</a></li>
                                 <li><a href="{{route('cogs_caculator')}}">Cogs Caculator</a></li>
                                 <li><a href="{{route('newcreate_itemrequest')}}">Create FactoryPo</a></li>
+                                <li><a href="{{ route('purchase_list') }}">@lang('lang.purchase')
+                                    @lang('lang.list')</a></li>
+                              <li><a href="{{ route('supplier_credit_list') }}">@lang('lang.supplier_credit')</a></li>
+
 
                             </ul>   
 
