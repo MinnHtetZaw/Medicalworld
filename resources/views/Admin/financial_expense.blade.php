@@ -82,7 +82,7 @@
                                 <th class="text-center">Date</th>
                                 <th class="text-center">Debit</th>
                                 <th class="text-center">Credit</th>
-                                <th class="col-3 text-center">Remark</th>
+                                <th class="text-center col-4">Remark</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -126,7 +126,7 @@
                                                         <td style="font-size:15px; width:15%;">{{$transa->date}}</td>
                                                         <td style="font-size:15px; width:15%;">-</td>
                                                         <td style="font-size:15px; width:15%;">{{$transa->transactionFormat()}}</td>
-                                                        <td style="font-size:15px; width:15%;" class="text-center">{{$transa->remark}}</td>
+                                                        <td style="font-size:15px; width:15%;" class=" col-3 text-center">{{$transa->remark}}</td>
                                                         <td style="font-size:15px; width:15%;">-</td>
                                                         </tr>
                                                 </tbody>

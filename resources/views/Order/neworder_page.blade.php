@@ -1933,8 +1933,8 @@
                                 
                             },
 
-                            success: function (data) {
-
+                            success: function (data) {4
+                                console.log(data);
                                  swal({
                                      title: "Success",
                                      text: "Order is Successfully Stored",
