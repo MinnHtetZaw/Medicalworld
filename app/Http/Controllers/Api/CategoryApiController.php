@@ -36,10 +36,9 @@ class CategoryApiController extends ApiBaseController
                                                 ->limit($limit)
                                                 ->offset(($page - 1) * $limit)
                                                 ->get();
-    $sub = SubCategory::where('category_id',$id)
-                                                ->limit($limit)
-                                                ->offset(($page - 1) * $limit)
-                                                ->get();
+    $sub = SubCategory::where('category_id',$id)->get();
+                                               
+                                                
 
     return response()->json([
         "error"=>false,
@@ -47,7 +46,7 @@ class CategoryApiController extends ApiBaseController
         "items"=>$items,
         'subs' => $sub,
         'item total' => $items->count(),
-        'subs total' => $sub->count(),
+      
         'page' => (int)$page,
         'rowPerPages' => (int)$limit,
     ]);
