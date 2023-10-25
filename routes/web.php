@@ -427,7 +427,6 @@ Route::group(['middleware' => ['UserAuth']], function () {
        Route::post('/financial/imcome/import', [FinancialAccountController::class,'financialImcomeImport'] )->name('financialImcomeImport');
 
 
-
        Route::get('financial_bank_list', [BankController::class,'financial_bank_list'])->name('financial_bank_list');
        Route::post('store_bank', [BankController::class,'store_bank'])->name('store_bank');
 
@@ -466,7 +465,8 @@ Route::group(['middleware' => ['UserAuth']], function () {
         Route::get('tri_list',[\App\Http\Controllers\TriController::class,'getTriList'])->name('trilList');
         Route::post('accouting_filter',[\App\Http\Controllers\TriController::class,'getAccountListFilter'])->name('accountlList');
 
-       
+        Route::post('/date/count',[\App\Http\Controllers\SofbController::class,'filterDateAmount']);
+  
 
 
 

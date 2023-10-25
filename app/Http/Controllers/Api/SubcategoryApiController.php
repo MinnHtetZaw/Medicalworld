@@ -41,8 +41,11 @@ class SubcategoryApiController extends ApiBaseController
    }
 
    public function getSubcategoryById(Request $request,$id){
+
+ 
        $category_id = $id;
-       $subcategories = SubCategory::where('category_id',$category_id)->get();
+       $subcategories = SubCategory::where('category_id',$category_id)
+                                    ->get();
        return response()->json($subcategories);
    }
 }

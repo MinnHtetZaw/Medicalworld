@@ -30,20 +30,45 @@ class CategoryApiController extends ApiBaseController
    }
 
    public function getCategoryId($id){
-    $items = Item::where('category_id',$id)->where('instock',1)->get();
-    $sub = SubCategory::where('category_id',$id)->get();
+    $page = Request()->has('page') ? Request()->get('page') : 1;
+    $limit = Request()->has('limit') ? Request()->get('limit') : 12;
+    $items = Item::where('category_id',$id)->where('instock',1)
+                                                ->limit($limit)
+                                                ->offset(($page - 1) * $limit)
+                                                ->get();
+    $sub = SubCategory::where('category_id',$id)
+                                                ->limit($limit)
+                                                ->offset(($page - 1) * $limit)
+                                                ->get();
 
     return response()->json([
-        'items' => $items,
+        "error"=>false,
+        "message"=>" item list",
+        "items"=>$items,
         'subs' => $sub,
+        'item total' => $items->count(),
+        'subs total' => $sub->count(),
+        'page' => (int)$page,
+        'rowPerPages' => (int)$limit,
     ]);
 }
 
     public function getItembySub($cid,$sid){
-        $items = Item::where('category_id',$cid)->where('sub_category_id',$sid)->where('instock',1)->get();
+
+    $page = Request()->has('page') ? Request()->get('page') : 1;
+    $limit = Request()->has('limit') ? Request()->get('limit') : 12;
+        $items = Item::where('category_id',$cid)->where('sub_category_id',$sid)->where('instock',1)
+                                                ->limit($limit)
+                                                ->offset(($page - 1) * $limit)
+                                                ->get();
 
         return response()->json([
-            'items' => $items
+            "error"=>false,
+            "message"=>" item list",
+            "data"=>$items,
+            'total' => $items->count(),
+            'page' => (int)$page,
+            'rowPerPages' => (int)$limit,
         ]);
     }
 }

@@ -11,15 +11,8 @@ class SoplController extends Controller
 {
     public function getExportList(){
 
-        // $accountLists = Accounting::with(['transactions' => function ($query) {
-        //     $query->select('account_id', DB::raw('SUM(amount) as amount'))
-        //           ->groupBy('account_id');
-        // }])->get();
-        // $openingInventory = Expense::where('description','Factory Disel')->get();
-
-        //  return $openingInventory;
+       
         $accountLists = Accounting::whereIn('subheading_id', [10, 26])->get();
-        // return $accountLists;
         $totalRevenueAmount = Accounting::whereIn('subheading_id', [10, 26])->sum('balance');
         $costofSaleList = Accounting::where('subheading_id','11')->get();
         $costofSaleAmount = Accounting::where('subheading_id','11')->sum('balance');
@@ -43,5 +36,5 @@ class SoplController extends Controller
         'grossProfit','marketingExpLists','marketingExpAmount','administrativeExpenseList','AdministrativeExpAmount',
     'financialExpLists','financialExpAmount','depreciationExpLists','depreciationExpAmount','taxExpLists','taxExpAmount',
 'otherExpLists','otherExpAmount','totalAllExpAmount','EBTA','netProfit'));
-    }
+    }//code by ziizii
 }

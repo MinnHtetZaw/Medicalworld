@@ -10,6 +10,79 @@
                     <h3 class="text-center font-weight-bold">Medical World Co.Ltd</h3>
                     <p class="text-center ">Statement of financial position as at 31 Dec 2021</p>
                 </div>
+                <div class="row">
+                <div class="form-group col-md-3">
+                    <label>Select Date</label>
+                    <input type="date" name="dateCount" id="dateCount" class="form-control" >
+                </div>
+               
+                <div class="form-group col-md-1">
+              
+                    <button class="btn btn-sm btn-primary form-control" style="margin-top:38px;" data-toggle="modal" data-target="#openingData">Opening</button>
+                </div>
+                
+                <div class="modal fade bs-example-modal-sm" id="openingData" role="dialog" aria-hidden="true">
+                    
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-info">
+                                <h4 class="modal-title">Opening Account Dilalog </h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="#" method="POST">
+                                    @csrf
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <div class="form-group">
+                                                <label class="control-label">Opening Date</label>
+                                                <input type="date" class="form-control" name="bank_name" id="openingDate">
+                                            </div>
+                                        </div>
+        
+                                       
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <div class="form-group">
+                                                <label class="control-label">Opening Amount</label>
+                                                <input type="text" class="form-control" placeholder="" name="bank_contact" id="openingAmount" disabled>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                   
+                                   
+                                      <div class="row">
+                                        
+                                        
+                                        <div class="col-md"></div>
+        
+                                      </div>
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md">
+                                                <div class="row">
+                                                    <div class=" col-md-9">
+                                                        <button type="submit" class="btn btn-primary">Save</button>
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                   </div>
+                                </div>
+                            </form>
+                        </div>
+        
+                        </div>
+                    </div>
+                </div>
+        
+                </div>
                 <div class="">
                     <div class="">
                         <p class="font-weight-bold">Assets</p>
@@ -20,15 +93,8 @@
                 <div class="">
 
 
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Date<th>
-                            </tr>
-                            </thead>
+                        <table class="table" id="filter_date">
+                            
                             <tbody class="table-group-divider">
                             <tr>
                                 <th scope="row">1</th>
@@ -36,67 +102,8 @@
                                 <td></td>
                                 <td></td>
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Office Equipment</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td >Furniture & Fitting</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td >Motor Vehicle</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>Phone & Other</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">6</th>
-                                <td >Computer,Printer,Camera,CCTV</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">7</th>
-                                <td>Air Con & Equiment</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">8</th>
-                                <td >Generator</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">9</th>
-                                <td >Machine & Equipment</td>
-                                <td></td>
-                                <td></td>
-
-                            </tr>
-                            <tr>
-                                <th scope="row">10</th>
-                                <td >Accumulated Depreciation for NCA</td>
-                                <td></td>
-                                <td></td>
-
-                            </tr>
-
-                            <tr>
-                                <th scope="row">11</th>
-                                <td class="font-weight-bold">Total Non-Current Assets</td>
-                            </tr>
+                           
+                            
 
                             </tbody>
                         </table>
@@ -387,6 +394,125 @@
 @endsection
 
 @section('js')
+<script>
+$('#dateCount').on('change', function () {
+    // function date_filter(){
+            // alert('hello');
+            var  dateCount= $('#dateCount').val();
+            // var to = $('#to').val();
+            var debit = 0;
+            var credit = 0;
+            var balance =0;
+
+            $.ajax({
+           type:'POST',
+           url:'/date/count',
+           dataType:'json',
+           data:{ "_token": "{{ csrf_token() }}",
+           "dateCount":dateCount,
+            },
+
+           success:function(data){
+           
+            // console.log(data)
+            var html = "";
+            var html2 = "";
+            var sumBalance=0;
+            $.each(data.date_filter,function(i, v) {
+                console.log(v);
+            var date = new Date(v.created_at);
+            // var options = { month: 'short', day: 'numeric', year: 'numeric' };
+            // var formattedDate = date.toLocaleDateString('en-US', options);
+                    var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Ensure zero-padding
+                    var day = date.getDate().toString().padStart(2, '0'); // Ensure zero-padding
+                    var year = date.getFullYear().toString().slice(-4); // Get the last two digits of the year
+
+            var formattedDate = month + '/' + day + '/' + year;
+
+            sumBalance += parseFloat(v.balance);
+            $('#openingAmount').val(sumBalance);
+            // $('#openingDate').val(formattedDate);
+            document.getElementById('openingDate').value = formattedDate;
+           
+            html += `
+            <tbody>
+                    <tr>
+                            <td style="font-size:15px;" class="text-center">${++i} </td>
+                            <td style="font-size:15px;" class="text-center">${v.account_code} </td>
+                            <td style="font-size:15px;" class="text-center">${v.account_name} </td>
+                            <td style="font-size:15px;" class="text-center col-3">${v.balance} </td>
+                            <td style="font-size:15px;" class="text-center">${formattedDate} </td>
+                            
+
+                           
+                    </tr>
+                    <tr>
+                     <td></td>
+                               <td colspan="6">
+                                     <div class="collapse out container mr-5" id="related${v.id}">
+                                      <div class="row"> 
+                   
+
+            `;
+        })
+           
+            console.log('Sum of balance:', sumBalance);
+            html += `
+                           <thead class="bg-info text-white">
+                            <tr>
+                                <th>#</th>
+                                <th class="text-center">Code</th>
+
+                                <th class="text-center">AccountName</th>
+                                <th class="text-center">Balance</th>
+                                <th class="text-center">Date</th>
+                              
+                            </tr>
+                    </thead>
+            `;
+
+            html += `
+                    
+
+             `;
+            // var totalDebitSum = 0;
+            // var totalCreditSum = 0;
+
+           
+
+
+// console.log(`Total Debit Sum for account " ${totalDebitSum}`);
+// console.log('Total Credit Sum for all accounts:', totalCreditSum);
+
+//         balance = totalDebitSum - totalCreditSum;
+
+        // html2 += `
+
+        //     <div class="col-md-2">
+        //         <label style="font-size:20px;" class="text-info">Debit: </label>
+        //         <div style="font-size:20px;">${totalDebitSum}</div>
+        //     </div>
+
+        //     <div class="col-md-2">
+        //         <label style="font-size:20px;" class="text-info">Credit: </label>
+        //         <div style="font-size:20px;">${totalCreditSum}</div>
+        //     </div>
+
+        //     <div class="col-md-2">
+        //         <label style="font-size:20px;" class="text-info">Balance: </label>
+        //         <div style="font-size:20px;">${balance}</div>
+        //     </div>
+
+        // `;
+
+        $('#filter_date').html(html);
+        // $('#trial_balance').html(html2);
+           }
+
+           })
+        });
+
+</script>
 
 @endsection
 
