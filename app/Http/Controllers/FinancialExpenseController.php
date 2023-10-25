@@ -224,7 +224,7 @@ public function financialExpenseImport(Request $request){
 }
 public function financialExpenseExport(){
     // return "hello";
-return Excel::download(new FinancialExpenseExport(),'financialExpense.xlsx');
+return Excel::download(new FinancialExpenseExport(),'financialExpenseExport.xlsx');
 
 }
 

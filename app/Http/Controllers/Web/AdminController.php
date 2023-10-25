@@ -3960,7 +3960,7 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
     //Excel Export section
     public function financialImcomeExport(){
         // return "hello";
-    return Excel::download(new FinancialImcomeExport(),'financialImcome.xlsx');
+    return Excel::download(new FinancialImcomeExport(),'financialImcomeExport.xlsx');
 
     }
     public function delete_units(Request $request)

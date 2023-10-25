@@ -787,6 +787,7 @@ function change_amt(id,qty)
 {
     // alert(qty);
     price = $('#price'+id).val();
+    // console.log(price);
     var last_total = 0;
     var last_qty = 0;
     var change_qty = parseInt(qty);

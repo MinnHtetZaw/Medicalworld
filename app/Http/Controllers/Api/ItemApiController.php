@@ -52,9 +52,15 @@ class ItemApiController extends ApiBaseController
 
    public function getItemByProductLine(Request $request){
 
+    $page = Request()->has('page') ? Request()->get('page') : 1;
+    $limit = Request()->has('limit') ? Request()->get('limit') : 12;
+
        $item = Item::find($request->item_id);
        if($item->related_item_id == null){
-        $items = Item::where('sub_category_id',$request->subcategory_id)->get();
+        $items = Item::where('sub_category_id',$request->subcategory_id)
+                        ->limit($limit)
+                        ->offset(($page - 1) * $limit)
+                        ->get();
         // $items = SubCategory::where('category_id',$request->category_id)->get();
        }else{
         $it = explode(',',$item->related_item_id);
@@ -64,7 +70,14 @@ class ItemApiController extends ApiBaseController
             array_push($items,$arr);
         }
        }
-       return response()->json($items);
+       return response()->json([
+        "error"=>false,
+        "message"=>" item list",
+        "items"=>$items,
+        'item total' => $items->count(),
+        'page' => (int)$page,
+        'rowPerPages' => (int)$limit,
+       ]);
    }
 
    public function getNewArrivalItems(){
