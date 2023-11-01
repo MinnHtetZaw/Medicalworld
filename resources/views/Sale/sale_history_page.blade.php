@@ -145,7 +145,7 @@
             </div>
         </div>
 
-         @if(session()->get('user')->role != "Partner")
+         @if(session()->get('user')->role != "Partner" && session()->get('user')->role != "Finance")
          <div class="col-md-4 mt-4">
 
              <form id="exportForm" onsubmit="return exportForm()" method="get">

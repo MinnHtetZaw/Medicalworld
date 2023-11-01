@@ -335,7 +335,8 @@
                                 <li><a href="{{route('fabric_costing')}}">Fabric Costing</a></li>
                                 <li><a href="{{route('cogs_caculator')}}">Cogs Caculator</a></li>
                                 <li><a href="{{route('newcreate_itemrequest')}}">Create FactoryPo</a></li>
-                                <li><a href="{{ route('purchase_list') }}">@lang('lang.purchase')
+				<li><a href="{{route('factorypo_page')}}">Factory PO List</a></li>                               
+ <li><a href="{{ route('purchase_list') }}">@lang('lang.purchase')
                                     @lang('lang.list')</a></li>
                               <li><a href="{{ route('supplier_credit_list') }}">@lang('lang.supplier_credit')</a></li>
 
@@ -410,7 +411,8 @@
                                 @elseif(session()->get('user')->role == "Sales")
                                 <li><a href="{{route('salescustomers_list')}}">@lang('lang.sale_customer_list')</a></li>
                                 <li><a href="{{route('sale_history')}}">@lang('lang.sale_history')</a></li>
-                               
+				@elseif(session()->get('user')->role ==  "Finance")
+				<li><a href="{{route('sale_history')}}">@lang('lang.sale_history')</a></li>                               
                                 @endif
                                 <li><a href="{{ route('reset_quantity') }}">Result Quantity</a></li>
                             </ul>

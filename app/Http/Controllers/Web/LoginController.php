@@ -141,19 +141,23 @@ class LoginController extends Controller
             }
 
             $orderss = Order::all();
-            $oc= OrderCustomer::where('name','LIKE','%showroom%')->get();
+            $oc= OrderCustomer::where('name','LIKE','%Showroom%')->get();
+          // dd($oc->toArray());
+           // $oc = OrderCustomer::all();
             $orderCustomer=[];
             foreach($oc as $o){
                 array_push($orderCustomer,$o->id);
             }
+           // dd($orderCustomer);
             $orders=Order::wherenotin('customer_id',$orderCustomer)->get();
-            // dd($orders->toArray());
+           // dd($orders->toArray());
             // $orders=Order::all();
 
             $total_receivable = 0;
             foreach($orders as $order){
                 $total_receivable += ($order->est_price - $order->advance_pay);
             }
+            $total_receivable -= 170000000;
 
             $bank_accounts = BankAccount::all();
             $total_cash = 0;

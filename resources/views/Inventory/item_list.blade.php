@@ -45,16 +45,19 @@
                         </div>
                     </div>
                     <div class="row ">
+			@if(session()->get('user')->role != "Finance")
                         <div class="  col-md-4">
                             <a href="{{ route('itemExport') }}" class="btn btn-primary mx-2">Item Export</a>
                         </div>
-                      
+                      @endif
                          
                     </div>
                     <div class="col-md-2">
+		    @if(session()->get('user')->role != "Finance")
                     <div class=" col-md-4 " style="margin-right: 4px">
                         <a href="{{ route('countingExport') }}" class="btn btn-primary mx-2">Unit Export</a>
                     </div>
+		    @endif
                 </div>
                    
 

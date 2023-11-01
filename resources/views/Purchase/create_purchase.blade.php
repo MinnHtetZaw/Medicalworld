@@ -752,12 +752,12 @@ function showmodal()
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <input type="number" class="form-control font-weight-bold text-dark" id="qty${v.id}" name="qty[]" value="${v.qty}" onkeyup="change_amt('${v.id}',this.value)">
+                                <input type="number" class="form-control font-weight-bold text-dark" id="qty${v.id}" name="qty[]" value="${v.qty}" onkeyup="change_qty('${v.id}',this.value,event)">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <input type="text" class="form-control font-weight-bold text-dark" id="price${v.id}" name="price[]" value="${v.price}">
+                                <input type="text" class="form-control font-weight-bold text-dark" id="price${v.id}" name="price[]" value="${v.price}" onkeyup="change_price('${v.id}',this.value,event)">
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -783,9 +783,12 @@ function showmodal()
         $('#unit_Data_Po').val(unitData.po_number);
 
 }
-function change_amt(id,qty)
+function change_qty(id,qty,event)
 {
     // alert(qty);
+var keycode = (event.keyCode ? event.keyCode : event.which);
+    console.log(keycode);
+    if(keycode == '13'){
     price = $('#price'+id).val();
     // console.log(price);
     var last_total = 0;
@@ -818,6 +821,35 @@ function change_amt(id,qty)
     // localStorage.setItem('prTotal',JSON.stringify(pr_total_obj));
 
     showmodal();
+}
+}
+
+function change_price(id,price,event){
+       var keycode = (event.keyCode ? event.keyCode : event.which);
+       console.log(keycode);
+ 	if(keycode == '13'){
+	qty = $('#qty'+id).val();
+	var last_total = 0;
+	var last_qty = 0;
+        var change_price = parseInt(price);
+        var myprcart = localStorage.getItem('myprcart');
+  	var my_pr_total = localStorage.getItem('prTotal');
+  	var pr_total_obj = JSON.parse(my_pr_total);
+	var myprcartobj = JSON.parse(myprcart);
+	var item = myprcartobj.filter(item=>item.id == id);
+	$.each(myprcartobj,function(i,v){
+		if(myprcartobj[i].id == id){
+				pr_total_obj.sub_total -=parseInt(myprcartobj[i].sub_total);
+				myprcartobj[i].price = change_price;
+				myprcartobj[i].sub_total = myprcartobj[i].qty * change_price;
+				pr_total_obj.sub_total += parseInt(myprcartobj[i].sub_total);
+
+			localStorage.setItem('myprcart',JSON.stringify(myprcartobj));
+			localStorage.setItem('prTotal',JSON.stringify(pr_total_obj));						
+		}
+	});
+	showmodal();
+}
 }
 
 function searchCategory(value){
