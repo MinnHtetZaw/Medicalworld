@@ -215,10 +215,16 @@ class EcommerceOrderApiController extends ApiBaseController
    }
 
    public function  getdesignapiname($id){
-    $item = Item::where('category_id',$id)->with('counting_units')->get();
+    $page = Request()->has('page') ? Request()->get('page') : 1;
+    $limit = Request()->has('limit') ? Request()->get('limit') : 12;
+    $item = Item::where('category_id',$id)->with('counting_units')->limit($limit)
+                                                                ->offset(($page - 1) * $limit)
+                                                                ->get();
     $unit = [];
     foreach($item as $it){
        $count = CountingUnit::where('item_id',$it->id)->get();
+                                              
+                                                
        foreach($count as $c){
 
          array_push($unit,$c->design);
@@ -226,7 +232,11 @@ class EcommerceOrderApiController extends ApiBaseController
     }
     $unit = collect($unit)->unique();
     return response()->json([
-     "design" => $unit
+     "design" => $unit,
+     'item total' => $unit->count(),
+      
+     'page' => (int)$page,
+     'rowPerPages' => (int)$limit,
     ]);
 }
 
@@ -352,7 +362,9 @@ class EcommerceOrderApiController extends ApiBaseController
 
    //Preorder Store
    public function preorderstore(Request $request){
+    // return $request;
         $items = $request->orders;
+        // return $items;
         $date = new DateTime('Asia/Yangon');
 
         $tot_qty = 0;
@@ -362,6 +374,7 @@ class EcommerceOrderApiController extends ApiBaseController
         $order_date = $date->format('Y-m-d');
 
         $last_order = EcommerceOrder::count();
+        // return $last_order;
         if($last_order != null){
             $order_code =  "ECVOU-" .date('y') . sprintf("%02s", (intval(date('m')))) . sprintf("%02s", ($last_order +1));
 
@@ -380,22 +393,31 @@ class EcommerceOrderApiController extends ApiBaseController
             "order_status" => "received",
             "deliver_address" => $request->address,
         ]);
-
+        // return $ecommerce_order;
             foreach ($items as $item) {
                 $search = explode(' ', $item['testname']);
+                // return $search;
                 $design = Design::where('design_name',$search[0])->first();
+                // return $design;
                 $fabric = Fabric::where('fabric_name',$search[2])->first();
+                // return $fabric;
                 $colour = Colour::where('colour_name',$search[3])->first();
+                // return $colour;
                 $size = Size::where('size_name',$search[4])->first();
+                // return $size;
                 $gender = Gender::where('gender_name',$search[1])->first();
-                $unit = CountingUnit::where('design_id',$design->id)
+                // return $gender;
+        
+                $unit = CountingUnit::
+                where('design_id',$design->id)
                 ->where('fabric_id',$fabric->id)
                 ->where('colour_id',$colour->id)
                 ->where('size_id',$size->id)
                 ->where('gender_id',$gender->id)
                 ->first();
+               
                 // dd($unit->id);
-                DB::table('counting_unit_ecommerce_order')->insert([
+               $d= DB::table('counting_unit_ecommerce_order')->insert([
                      'order_id' => $ecommerce_order->id,
                      'counting_unit_id' =>$unit->id,
                      'quantity' => $item['testqty'],
@@ -453,6 +475,7 @@ class EcommerceOrderApiController extends ApiBaseController
     $ecommerce_order = EcommerceOrder::find($request->id);
         // foreach ($items as $item) {
             $newName='preorder_'.$request->file('attachs')->getClientOriginalName();
+            return $newName;
             $request->file('attachs')->move(public_path() . '/preorder/', $newName);
             DB::table('ecommerce_order_item_photo')->insert([
                 'order_id' => $ecommerce_order->id,
