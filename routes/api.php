@@ -58,6 +58,8 @@ Route::post('website_user_store', 'Api\WebsiteUserApiController@store');
 Route::get('ecommerce_order_index', 'Api\EcommerceOrderApiController@index');
 Route::get('design_api/{id}', 'Api\EcommerceOrderApiController@getdesignname');
 Route::get('designapi/{id}','Api\EcommerceOrderApiController@getdesignapiname');
+Route::get('designapiupdate/{id}','Api\EcommerceOrderApiController@getdesignapinameupdate');
+
 Route::get('ecommerce_order_type/{name}', 'Api\EcommerceOrderApiController@type');
 Route::get('ecommerce_order_type/{name}/{gender}', 'Api\EcommerceOrderApiController@typegender');
 Route::get('ecommerce_order_type/{name}/{gender}/{fabric}', 'Api\EcommerceOrderApiController@typefabric');

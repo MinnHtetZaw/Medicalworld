@@ -215,16 +215,31 @@ class EcommerceOrderApiController extends ApiBaseController
    }
 
    public function  getdesignapiname($id){
-    $page = Request()->has('page') ? Request()->get('page') : 1;
-    $limit = Request()->has('limit') ? Request()->get('limit') : 12;
-    $item = Item::where('category_id',$id)->with('counting_units')->limit($limit)
-                                                                ->offset(($page - 1) * $limit)
-                                                                ->get();
+    $item = Item::where('category_id',$id)->with('counting_units')->get();
     $unit = [];
     foreach($item as $it){
        $count = CountingUnit::where('item_id',$it->id)->get();
-                                              
-                                                
+       foreach($count as $c){
+
+         array_push($unit,$c->design);
+         }
+    }
+    $unit = collect($unit)->unique();
+    return response()->json([
+     "design" => $unit
+    ]);
+}
+
+public function  getdesignapinameupdate($id){
+    $page = Request()->has('page') ? Request()->get('page') : 1;
+    $limit = Request()->has('limit') ? Request()->get('limit') : 12;
+    $item = Item::where('category_id',$id)->with('counting_units')
+                                                 ->limit($limit)
+                                                ->offset(($page - 1) * $limit)
+                                                ->get();
+    $unit = [];
+    foreach($item as $it){
+       $count = CountingUnit::where('item_id',$it->id)->get();
        foreach($count as $c){
 
          array_push($unit,$c->design);
@@ -233,13 +248,12 @@ class EcommerceOrderApiController extends ApiBaseController
     $unit = collect($unit)->unique();
     return response()->json([
      "design" => $unit,
-     'item total' => $unit->count(),
-      
+     
+     'total' => $unit->count(),
      'page' => (int)$page,
      'rowPerPages' => (int)$limit,
     ]);
 }
-
 
 
    public function type($name){
