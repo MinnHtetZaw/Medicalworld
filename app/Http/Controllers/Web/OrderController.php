@@ -269,6 +269,7 @@ class OrderController extends Controller
 
     protected function storeCustomerOrderv2(Request $request)
     {
+        // return $request;
         $validator = Validator::make($request->all(), [
             'customer_name' => 'required',
             'customer_address' => 'required',
@@ -281,7 +282,8 @@ class OrderController extends Controller
             'delivery_fee' => 'required',
             'showroom' => 'required',
             'voucher_code' => 'required',
-            'customer_id' => 'required'
+            'customer_id' => 'required',
+            
         ]);
         if ($validator->fails()) {
 
@@ -289,6 +291,7 @@ class OrderController extends Controller
         }
         $user = session()->get('user');
         $payment_clear_flag = 0;
+        
         $items = json_decode($request->item);
 
         $grand = json_decode($request->grand_total);
@@ -330,6 +333,7 @@ class OrderController extends Controller
                 $order->save();
             } else {
                 $order = Order::create([
+                   
                     'order_number' => $request->voucher_code,
                     'address' => $request->customer_address,
                     'name' => $request->customer_name,
@@ -351,7 +355,7 @@ class OrderController extends Controller
                     'payment_clear_flag' => $payment_clear_flag,
                     'remark'=>$request->remark
                 ]);
-
+               
                 if ($request->customer_id != null && $request->customer_id != 0) {
                     $order_customer = OrderCustomer::find($request->customer_id);
                     $order_customer->total_purchase_amount += $total_amount;

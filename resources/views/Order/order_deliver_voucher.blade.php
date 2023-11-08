@@ -105,7 +105,7 @@
                             <tr>
                                 <td colspan="2" class="text-left" style="font-size:15px;height: 45px; border: none;">Remark :</td>
                                 <td class="text-left" colspan="2" style="font-size:15px;height: 45px; border: none;">
-                                    {{ $order->delivered_remark??""}}
+                                    {{ $order->delivered_remark? $order->delivered_remark: $order->remark}}
                                 </td>
                                 <td class="text-center" colspan="2" style="font-size:15px;height: 45px; border: 1px solid black;">Advance</td>
                                 <td colspan="2" class="text-center" style="font-size:15px;height: 10px; border: 1px solid black;">

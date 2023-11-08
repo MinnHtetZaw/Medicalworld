@@ -1905,6 +1905,7 @@
                     //let id = $(`#ordercustomer_list`).find(":selected").val();
                     var id = $('#select_cusid').val();
                     var remark=$('#remark').val();
+                    // console.log(delivered_remark);
 
                     if (!item || !grand_total) {
 
@@ -1936,11 +1937,12 @@
                                 "customer_id": id,
                                 "user_name": username,
                                 "edit_voucher" : edit_voucher ?? 0,
-                                "remark":remark
+                                'remark':remark
+                                
                                 
                             },
 
-                            success: function (data) {4
+                            success: function (data) {
                                 console.log(data);
                                  swal({
                                      title: "Success",
