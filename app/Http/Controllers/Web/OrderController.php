@@ -349,6 +349,7 @@ class OrderController extends Controller
                     'logo_fee' => $request->logo_fee,
                     'collect_amount' => $collect_amount,
                     'payment_clear_flag' => $payment_clear_flag,
+                    'remark'=>$request->remark
                 ]);
 
                 if ($request->customer_id != null && $request->customer_id != 0) {
