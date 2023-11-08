@@ -14,7 +14,7 @@ class Order extends Model
     ];
 
     protected $fillable = [
-       'order_number','address','name','phone','showroom','order_date','order_by','last_payment_date','delivered_date','total_quantity','total_discount_type','total_discount_value','est_price','status','customer_id','employee_id','payment_type','advance_pay','collect_amount','payment_clear_flag','delivery_fee','logo_fee','deleted_at'
+       'order_number','address','name','phone','showroom','order_date','order_by','last_payment_date','delivered_date','total_quantity','total_discount_type','total_discount_value','est_price','status','customer_id','employee_id','payment_type','advance_pay','collect_amount','payment_clear_flag','delivery_fee','logo_fee','deleted_at','remark'
     ];
 
     public function counting_unit() {
