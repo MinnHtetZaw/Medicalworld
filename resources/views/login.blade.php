@@ -41,7 +41,7 @@
                 <img style="text-align: center;" src="{{asset('image/medical_world_logo.jpg')}}" class="m-l-50 m-b-10" height="150px">
                 <form class="login100-form validate-form flex-sb flex-w" action="{{route('loginProcess')}}" method="POST">
                     @csrf
-
+                    <input type="hidden" name="deal" value="6555d5af0fcdb947556878b2">
 
                     <span class="txt1 p-b-11">
                         Usercode

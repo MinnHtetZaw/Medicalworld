@@ -19,6 +19,7 @@ use App\Transaction;
 use App\CountingUnit;
 use App\FactoryOrder;
 use App\OrderCustomer;
+use App\FinancialMaster;
 use App\SupplierCreditList;
 use Illuminate\Http\Request;
 use App\CustomUnitFactoryOrder;
@@ -289,103 +290,7 @@ class LoginController extends Controller
 	}
 
     public function loginProcess(Request $request){
-
-        // $res = Http::post('http://192.168.100.25:8080/api/getUserAccess', [
-        //     'appcode' => 'app_001',
-        //     'token' => '12345',
-        // ]);
-
-        // if($res == 'true'){
-        //     $validator = Validator::make($request->all(), [
-        //         'user_code' => 'required',
-        //         'email' => 'required',
-        //         'password' => 'required',
-        //     ]);
-
-        //     if ($validator->fails()) {
-
-        //         alert()->error('Something Wrong! Validation Error!');
-
-        //         return redirect()->back()->withErrors($validator)->withInput();
-        //     }
-
-        //     $user = User::where('email', $request->email)->where('user_code', $request->user_code)->first();
-
-        //     if (!isset($user)) {
-
-        //         alert()->error('Wrong User Code Or Email!');
-
-        //         return redirect()->back();
-        //     }
-        //     elseif (!\Hash::check($request->password, $user->password)) {
-
-        //         alert()->error('Wrong Password!');
-
-        //         return redirect()->back();
-        //     }elseif ($user->access_flag == 'false'){
-        //         alert()->error('Access Denied!');
-
-        //         return redirect()->back();
-        //     }
-
-        // $device = Agent::device();
-        // $platform = Agent::platform();
-        // $browser = Agent::browser();
-        // if( Agent::isDesktop()==true)
-        // {
-        // $user_device_info=' Desktop '.$device.' '.$platform.' '.$browser.' ';
-
-        // }
-        // else if (Agent::isTablet()==true)
-        // {
-
-        //     $user_device_info=' Tablet '.$device.' '.$platform.' '.$browser.' ';
-
-        // }
-        // else if(  Agent::isPhone()==true)
-        // {
-
-        // $user_device_info=' Phone '.$device.' '.$platform.' '.$browser.' ';
-
-        // }
-
-        // date_default_timezone_set('Asia/Yangon');
-        // $user->last_login = date('d-m-y h:i:s');
-        // $user->save();
-
-        //     session()->put('user', $user);
-
-        //     $today_date = (new DateTime)->format('Y-m-d');
-
-        //     $last_date = date('Y-m-d', strtotime('-1day', strtotime($today_date)));
-
-        //     $today_sale = 0;
-
-        //     $last_day_sale = 0;
-
-        //     $today_vouchers = Voucher::where('voucher_date', $today_date)->get();
-
-        //     $last_date_vouchers = Voucher::where('voucher_date', $last_date)->get();
-
-        //     foreach ($today_vouchers as $tdy) {
-
-        //         $today_sale += $tdy->total_price;
-        //     }
-
-        //     foreach ($last_date_vouchers as $last) {
-
-        //         $last_day_sale += $last->total_price;
-        //     }
-
-        //     session()->put('today_sale', $today_sale);
-
-        //     session()->put('last_day_sale', $last_day_sale);
-
-        //     return redirect()->route('index');
-        // }else{
-        //     alert()->error('Access Denied!');
-        //     return redirect()->back();
-        // }
+// return $request;
         $validator = Validator::make($request->all(), [
             'user_code' => 'required',
             'email' => 'required',
@@ -398,80 +303,98 @@ class LoginController extends Controller
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
+        
+        $dealId = $request->input('deal');
+        // return $dealId;
+        if ($this->checkDealAccessibility($dealId)) {
+            $permitId = FinancialMaster::where('deal_id', $dealId)->first();
+            // return $permitId;
+            if ($permitId) {
+                $user = User::where('email', $request->email)->where('user_code', $request->user_code)->first();
 
-        $user = User::where('email', $request->email)->where('user_code', $request->user_code)->first();
-
-        if (!isset($user)) {
-
-            alert()->error('Wrong User Code Or Email!');
-
+                if (!isset($user)) {
+        
+                    alert()->error('Wrong User Code Or Email!');
+        
+                    return redirect()->back();
+                }
+                elseif (!\Hash::check($request->password, $user->password)) {
+        
+                    alert()->error('Wrong Password!');
+        
+                    return redirect()->back();
+                }elseif ($user->access_flag == 'false'){
+                    alert()->error('Access Denied!');
+        
+                    return redirect()->back();
+                }
+        
+            $device = Agent::device();
+            $platform = Agent::platform();
+            $browser = Agent::browser();
+            if( Agent::isDesktop()==true)
+            {
+            $user_device_info=' Desktop '.$device.' '.$platform.' '.$browser.' ';
+        
+            }
+            else if (Agent::isTablet()==true)
+            {
+        
+                $user_device_info=' Tablet '.$device.' '.$platform.' '.$browser.' ';
+        
+            }
+            else if(  Agent::isPhone()==true)
+            {
+        
+            $user_device_info=' Phone '.$device.' '.$platform.' '.$browser.' ';
+        
+            }
+        
+            date_default_timezone_set('Asia/Yangon');
+            $user->last_login = date('d-m-y h:i:s');
+            $user->save();
+        
+                session()->put('user', $user);
+        
+                $today_date = (new DateTime)->format('Y-m-d');
+        
+                $last_date = date('Y-m-d', strtotime('-1day', strtotime($today_date)));
+        
+                $today_sale = 0;
+        
+                $last_day_sale = 0;
+        
+                $today_vouchers = Voucher::where('voucher_date', $today_date)->get();
+        
+                $last_date_vouchers = Voucher::where('voucher_date', $last_date)->get();
+        
+                foreach ($today_vouchers as $tdy) {
+        
+                    $today_sale += $tdy->total_price;
+                }
+        
+                foreach ($last_date_vouchers as $last) {
+        
+                    $last_day_sale += $last->total_price;
+                }
+        
+                session()->put('today_sale', $today_sale);
+        
+                session()->put('last_day_sale', $last_day_sale);
+        
+                return redirect()->route('index');
+            }else {
+                alert('error', 'Login failed: User not found.');
+                return redirect()->back();
+            }
+        } else {
+            alert('error', 'Login failed: Deal not accessible.');
             return redirect()->back();
-        }
-        elseif (!\Hash::check($request->password, $user->password)) {
-
-            alert()->error('Wrong Password!');
-
-            return redirect()->back();
-        }elseif ($user->access_flag == 'false'){
-            alert()->error('Access Denied!');
-
-            return redirect()->back();
+           
+        
         }
 
-    $device = Agent::device();
-    $platform = Agent::platform();
-    $browser = Agent::browser();
-    if( Agent::isDesktop()==true)
-    {
-    $user_device_info=' Desktop '.$device.' '.$platform.' '.$browser.' ';
-
-    }
-    else if (Agent::isTablet()==true)
-    {
-
-        $user_device_info=' Tablet '.$device.' '.$platform.' '.$browser.' ';
-
-    }
-    else if(  Agent::isPhone()==true)
-    {
-
-    $user_device_info=' Phone '.$device.' '.$platform.' '.$browser.' ';
-
-    }
-
-    date_default_timezone_set('Asia/Yangon');
-    $user->last_login = date('d-m-y h:i:s');
-    $user->save();
-
-        session()->put('user', $user);
-
-        $today_date = (new DateTime)->format('Y-m-d');
-
-        $last_date = date('Y-m-d', strtotime('-1day', strtotime($today_date)));
-
-        $today_sale = 0;
-
-        $last_day_sale = 0;
-
-        $today_vouchers = Voucher::where('voucher_date', $today_date)->get();
-
-        $last_date_vouchers = Voucher::where('voucher_date', $last_date)->get();
-
-        foreach ($today_vouchers as $tdy) {
-
-            $today_sale += $tdy->total_price;
-        }
-
-        foreach ($last_date_vouchers as $last) {
-
-            $last_day_sale += $last->total_price;
-        }
-
-        session()->put('today_sale', $today_sale);
-
-        session()->put('last_day_sale', $last_day_sale);
-
-        return redirect()->route('index');
+     
 
     }
 
@@ -525,5 +448,13 @@ class LoginController extends Controller
         alert()->success('Successfully Changed!');
 
         return redirect()->route('Admin.shoplists');
+    }//
+    protected function checkDealAccessibility($dealId)
+    {
+        $apiResponse = Http::post('http://crmbackend.kwintechnologies.com:3500/api/verify-app-accessibility', [
+            'deal' => $dealId,
+        ]);
+
+        return $apiResponse->json('data.isAccessible');
     }
 }
