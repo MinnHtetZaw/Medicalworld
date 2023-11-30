@@ -371,9 +371,7 @@ class InventoryController extends Controller
 			$image2 = $request->file('photo_right');
 
 			$photo_right = $request->item_name.'_right.'.$image2->extension();
-
 			// $photo_path =  time()."-".$name;
-
 			$image2->move(public_path() . '/ecommerce/items/', $photo_right);
 		}
         if ($request->hasfile('photo_body')) {

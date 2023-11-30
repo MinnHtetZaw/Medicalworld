@@ -1949,7 +1949,7 @@
                                      text: "Order is Successfully Stored",
                                      icon: "success",
                                  });
-                                localStorage.removeItem('exitvoucher');
+                                localStorage.removeItem('exitvoucher');/
                                  localStorage.clear();
                                  localStorage.setItem('item-count', 0);
                                  setTimeout(function () {

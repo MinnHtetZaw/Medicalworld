@@ -8,14 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class FinancialMaster extends Model
 {
     use HasFactory;
+    protected $guarded =[];
+    // protected $fillable = [
+    //     'financial_year_from',
+    //     'financial_year_to',
+    //     'showroom_sales_account_id',
+    //     'b2b_sales_account_id',
+    //     'purchase_account_id',
+            // 'deal_id'
+    // ];
 
-    protected $fillable = [
-        'financial_year_from',
-        'financial_year_to',
-        'showroom_sales_account_id',
-        'b2b_sales_account_id',
-        'purchase_account_id'
-    ];
 
     public function showroom()
     {
