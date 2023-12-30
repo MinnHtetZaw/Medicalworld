@@ -304,12 +304,12 @@ class LoginController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         
-        $dealId = $request->input('deal');
+        // $dealId = $request->input('deal');
         // return $dealId;
-        if ($this->checkDealAccessibility($dealId)) {
-            $permitId = FinancialMaster::where('deal_id', $dealId)->first();
+        // if ($this->checkDealAccessibility($dealId)) {
+            // $permitId = FinancialMaster::where('deal_id', $dealId)->first();
             // return $permitId;
-            if ($permitId) {
+            // if ($permitId) {
                 $user = User::where('email', $request->email)->where('user_code', $request->user_code)->first();
 
                 if (!isset($user)) {
@@ -383,16 +383,16 @@ class LoginController extends Controller
                 session()->put('last_day_sale', $last_day_sale);
         
                 return redirect()->route('index');
-            }else {
-                alert('error', 'Login failed: User not found.');
-                return redirect()->back();
-            }
-        } else {
-            alert('error', 'Login failed: Deal not accessible.');
-            return redirect()->back();
+            // }else {
+            //     alert('error', 'Login failed: User not found.');
+            //     return redirect()->back();
+            // }
+        // } else {
+        //     alert('error', 'Login failed: Deal not accessible.');
+        //     return redirect()->back();
            
         
-        }
+        // }
 
      
 
@@ -449,12 +449,11 @@ class LoginController extends Controller
 
         return redirect()->route('Admin.shoplists');
     }//
-    protected function checkDealAccessibility($dealId)
-    {
-        $apiResponse = Http::post('http://crmbackend.kwintechnologies.com:3500/api/verify-app-accessibility', [
-            'deal' => $dealId,
-        ]);
-
-        return $apiResponse->json('data.isAccessible');
-    }
+    // protected function checkDealAccessibility($dealId)
+    // {
+    //     $apiResponse = Http::post('http://crmbackend.kwintechnologies.com:3500/api/verify-app-accessibility', [
+    //         'deal' => $dealId,
+    //     ]);
+    //     return $apiResponse->json('data.isAccessible');
+    // }
 }

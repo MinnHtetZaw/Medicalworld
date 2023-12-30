@@ -574,12 +574,14 @@
             var sub_category_id = value;
 
             var items = @json($item_lists);
+            // console.log(items);
 
             var html = "";
 
             console.log(items);
 
             $.each(items, function(i, v) {
+                console.log(v);
 
                 if (v.sub_category_id == sub_category_id) {
 

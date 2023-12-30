@@ -272,6 +272,7 @@ class InventoryController extends Controller
 	protected function itemList()
 	{
         $item_lists =  Item::whereNull("deleted_at")->orderBy('category_id','ASC')->get();
+        // return $item_lists;
 
        // $units=CountingUnit::whereNull("deleted_at")->orderBy('id', 'ASC')->get();
 
@@ -301,17 +302,10 @@ class InventoryController extends Controller
 
     protected function factoryitemList()
 	{
-        $item_lists =  FactoryItem::whereNull("deleted_at")->orderBy('category_id','ASC')->get();
-
-        //$units=CountingUnit::whereNull("deleted_at")->orderBy('id', 'ASC')->get();
+        $item_lists =  FactoryItem::whereNull("deleted_at")->orderBy('category_id','ASC')->with('sub_category') ->get();
 
 		$categories =  Category::whereNull("deleted_at")->where('type_flag',2)->get();
-
-        // dd($item_lists[0]->subcategory_id);
-
 		$sub_categories = SubCategory::where('type_flag',2)->get();
-        // dd($sub_categories);
-
 		return view('Inventory.factoryitem_list', compact('item_lists','categories','sub_categories'));
 	}
 
