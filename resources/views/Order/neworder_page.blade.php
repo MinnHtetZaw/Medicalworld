@@ -162,7 +162,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        
                                         </div>
                                     </div>
                                     <tr class="text-center">
@@ -389,10 +388,6 @@
                     <div class="row mb-2">
                         <label class="control-label text-black col-5">ကျသင့်ငွေ</label>
                         <input type="number" id="with_dis_total" class="form-control col-7 h-75 text-black">
-                    </div>
-                    <div class="row mb-2">
-                        <label class="control-label text-black col-5">Remark</label>
-                        <input type="text" id="remark" class="form-control col-7 h-75 text-black">
                     </div>
 
                     <div class="row">
@@ -1904,8 +1899,6 @@
                     var showroom = $("#showroom").find(":selected").val();
                     //let id = $(`#ordercustomer_list`).find(":selected").val();
                     var id = $('#select_cusid').val();
-                    var remark=$('#remark').val();
-                    // console.log(delivered_remark);
 
                     if (!item || !grand_total) {
 
@@ -1936,20 +1929,18 @@
                                 "voucher_code": voucher_code,
                                 "customer_id": id,
                                 "user_name": username,
-                                "edit_voucher" : edit_voucher ?? 0,
-                                'remark':remark
-                                
+                                "edit_voucher" : edit_voucher ?? 0
                                 
                             },
 
                             success: function (data) {
-                                console.log(data);
+
                                  swal({
                                      title: "Success",
                                      text: "Order is Successfully Stored",
                                      icon: "success",
                                  });
-                                localStorage.removeItem('exitvoucher');/
+                                localStorage.removeItem('exitvoucher');
                                  localStorage.clear();
                                  localStorage.setItem('item-count', 0);
                                  setTimeout(function () {
@@ -3598,4 +3589,3 @@
 
             </script>
 @endsection
-
