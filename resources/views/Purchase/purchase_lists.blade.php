@@ -266,8 +266,8 @@
     </div>
 </div>
 <div class="row justify-content-center mt-3">
-    <div class="col-8"></div>
-    <div class="col-4">
+    <div class="col-4"></div>
+    <div class="col-8">
         {{ $purchase_lists->links() }}
     </div>
 </div>
