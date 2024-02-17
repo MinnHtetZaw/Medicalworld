@@ -3317,7 +3317,7 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
 
     protected function getPurchaseHistory(Request $request){
 
-        $purchase_lists = Purchase::paginate(20);
+        $purchase_lists = Purchase::orderBy('created_at', 'desc')->paginate(20);
         $purchase_lists->appends(request()->all());
         
         // return $purchase_lists;
