@@ -2815,7 +2815,6 @@
                     var name = $('#name').val();
 
                     var phone = $('#custphone').val();
-
                     $('#cus_name').text(name);
                     $('#cus_phone').text(phone);
 

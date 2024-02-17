@@ -1115,12 +1115,15 @@ class OrderController extends Controller
     protected function getOrderVoucherPrint($id)
     {
         $order = Order::findOrFail($id);
+        // return $order;
 
         if ($order->status == 4) {
             $orderVoucher = OrderVoucher::where('order_id', $id)->first();
         } else {
             $orderVoucher = null;
         }
+        // $transactions=Transaction::where('order_id',$order->id)->get();
+        // return $transactions;
         return view('Order.order_deliver_voucher', compact("order", "orderVoucher"));
     }
 

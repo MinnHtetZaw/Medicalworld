@@ -106,6 +106,11 @@
 
                                                         </tbody>
                                                     </table>
+                                                    {{-- <div class=" mt-3">
+                                                        {{$purchase_lists->links()}}
+                                   
+                                                       {{$purchase_lists->appends(request()->query())->links()}}
+                                                   </div> --}}
 
                                                 </div>
 
@@ -258,6 +263,12 @@
                 </table>
             </div>
         </div>
+    </div>
+</div>
+<div class="row justify-content-center mt-3">
+    <div class="col-8"></div>
+    <div class="col-4">
+        {{ $purchase_lists->links() }}
     </div>
 </div>
 @endsection

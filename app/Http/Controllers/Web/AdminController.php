@@ -3317,8 +3317,10 @@ return view('Admin.fixasset',compact('fixed_asset','done'));
 
     protected function getPurchaseHistory(Request $request){
 
-        $purchase_lists = Purchase::all();
-
+        $purchase_lists = Purchase::paginate(20);
+        $purchase_lists->appends(request()->all());
+        
+        // return $purchase_lists;
          $exp_account = Accounting::whereHas('subheading.heading.accountingtype',function ($query){
             $query->where('accounting_type_id',5);
        })->get();
